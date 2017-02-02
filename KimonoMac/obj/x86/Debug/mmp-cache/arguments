@@ -1,0 +1,26 @@
+# Version: 3.0.0.343 (master: a7f1dc3)
+# [first argument, ignore] # /Library/Frameworks/Xamarin.Mac.framework/Versions/3.0.0.343/lib/mmp/mmp.exe
+/Library/Frameworks/Xamarin.Mac.framework/Versions/3.0.0.343/lib/mmp/mmp.exe \
+	/verbose \
+	/debug \
+	/output:/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/ \
+	"/name:Kimono Designer" \
+	/profile:Xamarin.Mac \
+	/arch:x86_64 \
+	--http-message-handler=HttpClientHandler \
+	/minos=10.12 \
+	--tls-provider=default \
+	/profiling \
+	/nolink \
+	/assembly:/Library/Frameworks/Xamarin.Mac.framework/Versions/Current/lib/mono/Xamarin.Mac/System.dll \
+	/assembly:/Library/Frameworks/Xamarin.Mac.framework/Versions/Current/lib/mono/Xamarin.Mac/System.Core.dll \
+	/assembly:/Library/Frameworks/Xamarin.Mac.framework/Versions/Current/lib/mono/Xamarin.Mac/Xamarin.Mac.dll \
+	/assembly:/Users/kmullins/Projects/KimonoDesigner/packages/SkiaSharp.1.56.0/lib/XamarinMac/SkiaSharp.dll \
+	/assembly:/Users/kmullins/Projects/KimonoDesigner/KimonoCore.Mac/bin/Debug/KimonoCore.Mac.dll \
+	/assembly:/Library/Frameworks/Xamarin.Mac.framework/Versions/Current/lib/mono/Xamarin.Mac/mscorlib.dll \
+	"/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/Kimono Designer.exe" \
+	/native-reference:/Users/kmullins/Projects/KimonoDesigner/packages/SkiaSharp.1.56.0/build/XamarinMac/libSkiaSharp.dylib \
+	/sdkroot \
+	/Applications/Xcode.app/Contents/Developer \
+	--cache \
+	/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/mmp-cache \

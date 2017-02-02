@@ -1,0 +1,25 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimonoMac", "KimonoMac\KimonoMac.csproj", "{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KimonoCore", "KimonoCore\KimonoCore.shproj", "{35B94639-BB12-4729-B05B-25039986B95C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimonoCore.Mac", "KimonoCore.Mac\KimonoCore.Mac.csproj", "{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}.Debug|x86.ActiveCfg = Debug|x86
+		{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}.Debug|x86.Build.0 = Debug|x86
+		{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}.Release|x86.ActiveCfg = Release|x86
+		{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}.Release|x86.Build.0 = Release|x86
+		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Debug|x86.Build.0 = Debug|Any CPU
+		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Release|x86.ActiveCfg = Release|Any CPU
+		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

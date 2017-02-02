@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{35B94639-BB12-4729-B05B-25039986B95C}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>KimonoCore</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoBounds.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoHandle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoHandleConstraint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShape.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeRoundRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeOval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeLine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeTriangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeStar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapePolygon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoSketch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoTool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoStyleType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Kimono.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeArrow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoPortfolio.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeGroupType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoUndoHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoGradientType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoGradient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoHandleType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoBlur.cs" />
+  </ItemGroup>
+</Project>

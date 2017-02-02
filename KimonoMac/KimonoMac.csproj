@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>KimonoMac</RootNamespace>
+    <AssemblyName>Kimono Designer</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kimono Designer.xml</DocumentationFile>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <Profiling>true</Profiling>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>SdkOnly</LinkMode>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Mac" />
+    <Reference Include="SkiaSharp">
+      <HintPath>..\packages\SkiaSharp.1.56.0\lib\XamarinMac\SkiaSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconArrow.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconCursor.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRectangle.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconOval.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRoundRect.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconStar.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconPolygon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconTriangle.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconLine.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconVector.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBezier.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconText.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAdd.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAdd.imageset\Plus-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconTrash.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconTrash.imageset\Delete-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconApply.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconApply.imageset\Multiple Inputs-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconDuplicate.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDuplicate.imageset\Screensharing-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconVisible.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconVisible.imageset\Visible-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconInvisible.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconInvisible.imageset\Invisible-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconDocFolder.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDocFolder.imageset\Documents Folder-52.png" />
+    <ImageAsset Include="Assets.xcassets\IconEdit.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBack.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBack.imageset\Open Pane-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconAddLink.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAddLink.imageset\Add Link-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconArrow.imageset\Arrow-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconBezier.imageset\Vector-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconLine.imageset\Horizontal Line Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconOval.imageset\Ellipse Stroked-52.png" />
+    <ImageAsset Include="Assets.xcassets\IconPolygon.imageset\Pentagon Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconRectangle.imageset\Rectangle Stroked-52.png" />
+    <ImageAsset Include="Assets.xcassets\IconRoundRect.imageset\Rounded Rectangle Stroked Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconStar.imageset\Christmas Star-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconText.imageset\Text Box-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconTriangle.imageset\Triangle Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconVector.imageset\Polyline Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconAlignLeft.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAlignLeft.imageset\Align Left-64.png" />
+    <ImageAsset Include="Assets.xcassets\IconAlignCenter.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAlignCenter.imageset\Align Center-64.png" />
+    <ImageAsset Include="Assets.xcassets\IconAlignRight.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAlignRight.imageset\Align Right-64.png" />
+    <ImageAsset Include="Assets.xcassets\IconBringForward.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBringForward.imageset\Bring Forward-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconBringToFront.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBringToFront.imageset\Bring To Front-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconSendBackward.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconSendBackward.imageset\Send Backward-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconSendToBack.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconSendToBack.imageset\Send To Back-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconFlipHorizontal.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconFlipHorizontal.imageset\Flip Horizontal-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconFlipVertical.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconFlipVertical.imageset\Flip Vertical-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconGroup.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconGroup.imageset\Group Objects-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconUngroup.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconUngroup.imageset\Ungroup Objects-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconRotateLeft.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRotateLeft.imageset\Rotate Left-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconRotateRight.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRotateRight.imageset\Rotate Right-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconCursor.imageset\Cursor Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconCursorSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconCursorSelected.imageset\Cursor Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconLineSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconLineSelected.imageset\Horizontal Line-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconPolygonSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconPolygonSelected.imageset\Pentagon Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconVectorSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconVectorSelected.imageset\Polyline Filled-50-3.png" />
+    <ImageAsset Include="Assets.xcassets\IconRectangleSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRoundRectSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRoundRectSelected.imageset\Rounded Rectangle Stroked Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconTriangleSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconTriangleSelected.imageset\Triangle Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconBezierSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBezierSelected.imageset\Vector-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconTextSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconTextSelected.imageset\Text Box-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconArrowSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconArrowSelected.imageset\Arrow-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconOvalSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconStarSelected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconStarSelected.imageset\Christmas Star-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconOvalSelected.imageset\Ellipse Stroked Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconRectangleSelected.imageset\Rectangle Stroked-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconSketch.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconSketch.imageset\Picture-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconAddSketch.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAddSketch.imageset\Add Image-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconPortfolio.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconPortfolio.imageset\Stack of Photos-50.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_512x512%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_512x512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_256x256%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_256x256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_128x128%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_128x128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_32x32%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_32x32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_16x16%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon_16x16.png" />
+    <ImageAsset Include="Assets.xcassets\IconEdit.imageset\Edit Image-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconAccept.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAccept.imageset\Approval-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconBackToTop.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBackToTop.imageset\Login Rounded-64.png" />
+    <ImageAsset Include="Assets.xcassets\IconStyle.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconStyle.imageset\Tiles-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconStyleAdd.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconStyleAdd.imageset\Tiles-50 add.png" />
+    <ImageAsset Include="Assets.xcassets\IconBottomAlign.imageset\AlignBottom.png" />
+    <ImageAsset Include="Assets.xcassets\IconBottomAlign.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconTopAlign.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconTopAlign.imageset\AlignTop.png" />
+    <ImageAsset Include="Assets.xcassets\IconLeftAlign.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconLeftAlign.imageset\AlignLeft.png" />
+    <ImageAsset Include="Assets.xcassets\IconRigthAlign.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconRigthAlign.imageset\AlignRight.png" />
+    <ImageAsset Include="Assets.xcassets\IconCenter.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconCenter.imageset\Center.png" />
+    <ImageAsset Include="Assets.xcassets\IconCenterHorizontal.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconCenterHorizontal.imageset\CenterHorizontal.png" />
+    <ImageAsset Include="Assets.xcassets\IconCenterVertical.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconCenterVertical.imageset\CenterVertical.png" />
+    <ImageAsset Include="Assets.xcassets\IconColor.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconColor.imageset\RGB Circle 1-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconAddColor.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAddColor.imageset\AddColor.png" />
+    <ImageAsset Include="Assets.xcassets\IconDashOn.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDashOn.imageset\DashOn.png" />
+    <ImageAsset Include="Assets.xcassets\IconDashOff.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDashOff.imageset\DashOff.png" />
+    <ImageAsset Include="Assets.xcassets\IconGradient.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconGradient.imageset\Gradient.png" />
+    <ImageAsset Include="Assets.xcassets\IconAddGradient.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAddGradient.imageset\AddGradient.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Assets.xcassets\IconArrow.imageset\" />
+    <Folder Include="Assets.xcassets\IconCursor.imageset\" />
+    <Folder Include="Assets.xcassets\IconRectangle.imageset\" />
+    <Folder Include="Assets.xcassets\IconOval.imageset\" />
+    <Folder Include="Assets.xcassets\IconRoundRect.imageset\" />
+    <Folder Include="Assets.xcassets\IconStar.imageset\" />
+    <Folder Include="Assets.xcassets\IconPolygon.imageset\" />
+    <Folder Include="Assets.xcassets\IconTriangle.imageset\" />
+    <Folder Include="Assets.xcassets\IconLine.imageset\" />
+    <Folder Include="Assets.xcassets\IconVector.imageset\" />
+    <Folder Include="Assets.xcassets\IconBezier.imageset\" />
+    <Folder Include="Assets.xcassets\IconText.imageset\" />
+    <Folder Include="SourceLists\" />
+    <Folder Include="Classes\" />
+    <Folder Include="Assets.xcassets\IconAdd.imageset\" />
+    <Folder Include="Assets.xcassets\IconTrash.imageset\" />
+    <Folder Include="Assets.xcassets\IconApply.imageset\" />
+    <Folder Include="Assets.xcassets\IconDuplicate.imageset\" />
+    <Folder Include="Assets.xcassets\IconVisible.imageset\" />
+    <Folder Include="Assets.xcassets\IconInvisible.imageset\" />
+    <Folder Include="Assets.xcassets\IconDocFolder.imageset\" />
+    <Folder Include="Assets.xcassets\IconEdit.imageset\" />
+    <Folder Include="Assets.xcassets\IconBack.imageset\" />
+    <Folder Include="Assets.xcassets\IconAddLink.imageset\" />
+    <Folder Include="Assets.xcassets\IconAlignLeft.imageset\" />
+    <Folder Include="Assets.xcassets\IconAlignCenter.imageset\" />
+    <Folder Include="Assets.xcassets\IconAlignRight.imageset\" />
+    <Folder Include="Assets.xcassets\IconBringForward.imageset\" />
+    <Folder Include="Assets.xcassets\IconBringToFront.imageset\" />
+    <Folder Include="Assets.xcassets\IconSendBackward.imageset\" />
+    <Folder Include="Assets.xcassets\IconSendToBack.imageset\" />
+    <Folder Include="Assets.xcassets\IconFlipHorizontal.imageset\" />
+    <Folder Include="Assets.xcassets\IconFlipVertical.imageset\" />
+    <Folder Include="Assets.xcassets\IconGroup.imageset\" />
+    <Folder Include="Assets.xcassets\IconUngroup.imageset\" />
+    <Folder Include="Assets.xcassets\IconRotateLeft.imageset\" />
+    <Folder Include="Assets.xcassets\IconRotateRight.imageset\" />
+    <Folder Include="Assets.xcassets\IconCursorSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconLineSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconPolygonSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconVectorSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconRectangleSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconRoundRectSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconTriangleSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconBezierSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconTextSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconArrowSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconOvalSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconStarSelected.imageset\" />
+    <Folder Include="Assets.xcassets\IconSketch.imageset\" />
+    <Folder Include="Assets.xcassets\IconAddSketch.imageset\" />
+    <Folder Include="Assets.xcassets\IconPortfolio.imageset\" />
+    <Folder Include="Assets.xcassets\IconAccept.imageset\" />
+    <Folder Include="Assets.xcassets\IconBackToTop.imageset\" />
+    <Folder Include="Assets.xcassets\IconStyle.imageset\" />
+    <Folder Include="Assets.xcassets\IconStyleAdd.imageset\" />
+    <Folder Include="Assets.xcassets\IconBottomAlign.imageset\" />
+    <Folder Include="Assets.xcassets\IconTopAlign.imageset\" />
+    <Folder Include="Assets.xcassets\IconLeftAlign.imageset\" />
+    <Folder Include="Assets.xcassets\IconRigthAlign.imageset\" />
+    <Folder Include="Assets.xcassets\IconCenter.imageset\" />
+    <Folder Include="Assets.xcassets\IconCenterHorizontal.imageset\" />
+    <Folder Include="Assets.xcassets\IconCenterVertical.imageset\" />
+    <Folder Include="Assets.xcassets\IconColor.imageset\" />
+    <Folder Include="Assets.xcassets\IconAddColor.imageset\" />
+    <Folder Include="Assets.xcassets\IconDashOn.imageset\" />
+    <Folder Include="Assets.xcassets\IconDashOff.imageset\" />
+    <Folder Include="Assets.xcassets\IconGradient.imageset\" />
+    <Folder Include="Assets.xcassets\IconAddGradient.imageset\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="ViewController.designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SourceLists\SourceListView.cs" />
+    <Compile Include="SourceLists\SourceListItem.cs" />
+    <Compile Include="SourceLists\SourceListDelegate.cs" />
+    <Compile Include="SourceLists\SourceListDataSource.cs" />
+    <Compile Include="KimonoInspectorGeneralInfo.cs" />
+    <Compile Include="KimonoInspectorGeneralInfo.designer.cs">
+      <DependentUpon>KimonoInspectorGeneralInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorStar.cs" />
+    <Compile Include="KimonoInspectorStar.designer.cs">
+      <DependentUpon>KimonoInspectorStar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorPolygon.cs" />
+    <Compile Include="KimonoInspectorPolygon.designer.cs">
+      <DependentUpon>KimonoInspectorPolygon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorFill.cs" />
+    <Compile Include="KimonoInspectorFill.designer.cs">
+      <DependentUpon>KimonoInspectorFill.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorFrame.cs" />
+    <Compile Include="KimonoInspectorFrame.designer.cs">
+      <DependentUpon>KimonoInspectorFrame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindowController.cs" />
+    <Compile Include="MainWindowController.designer.cs">
+      <DependentUpon>MainWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorStyle.cs" />
+    <Compile Include="KimonoInspectorStyle.designer.cs">
+      <DependentUpon>KimonoInspectorStyle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorAttachedStyle.cs" />
+    <Compile Include="KimonoInspectorAttachedStyle.designer.cs">
+      <DependentUpon>KimonoInspectorAttachedStyle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorArrow.cs" />
+    <Compile Include="KimonoInspectorArrow.designer.cs">
+      <DependentUpon>KimonoInspectorArrow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorFont.cs" />
+    <Compile Include="KimonoInspectorFont.designer.cs">
+      <DependentUpon>KimonoInspectorFont.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorText.cs" />
+    <Compile Include="KimonoInspectorText.designer.cs">
+      <DependentUpon>KimonoInspectorText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\KimonoTextView.cs" />
+    <Compile Include="Classes\CenteringClipView.cs" />
+    <Compile Include="KimonoInspectorSketch.cs" />
+    <Compile Include="KimonoInspectorSketch.designer.cs">
+      <DependentUpon>KimonoInspectorSketch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\ActivatableItem.cs" />
+    <Compile Include="KimonoInspectorPaleteColor.cs" />
+    <Compile Include="KimonoInspectorPaleteColor.designer.cs">
+      <DependentUpon>KimonoInspectorPaleteColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorGradient.cs" />
+    <Compile Include="KimonoInspectorGradient.designer.cs">
+      <DependentUpon>KimonoInspectorGradient.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="Main.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KimonoCore.Mac\KimonoCore.Mac.csproj">
+      <Project>{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}</Project>
+      <Name>KimonoCore.Mac</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="..\packages\SkiaSharp.1.56.0\build\XamarinMac\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.56.0\build\XamarinMac\SkiaSharp.targets')" />
+</Project>

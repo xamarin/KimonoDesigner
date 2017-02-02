@@ -1,0 +1,38 @@
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/Xamarin.Mac,Version=v2.0.AssemblyAttribute.cs
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/partial-info.plist
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/asset-manifest.plist
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/AppIcon.icns
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/Assets.car
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-manifests/Main.storyboardc
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-manifests/link
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/Info.plist
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/MainMenu.nib
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/Kimono Designer.exe.mdb
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/Kimono Designer.exe
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/Kimono Designer.exe
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/obj/x86/Debug/Kimono Designer.exe.mdb
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/SkiaSharp.dll
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/KimonoCore.Mac.dll
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/KimonoCore.Mac.dll.mdb
+/Users/kmullins/Projects/KimonoDesigner/KimonoMac/bin/Debug/KimonoCore.Mac.xml
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/Xamarin.Mac,Version=v2.0.AssemblyAttribute.cs
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/partial-info.plist
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/asset-manifest.plist
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/AppIcon.icns
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/Assets.car
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-manifests/Main.storyboardc
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-manifests/link
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/Info.plist
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/MainMenu.nib
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/ibtool-link/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/bin/Debug/Kimono Designer.exe.mdb
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/bin/Debug/Kimono Designer.exe
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/Kimono Designer.exe
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/Kimono Designer.exe.mdb
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/bin/Debug/SkiaSharp.dll
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/bin/Debug/KimonoCore.Mac.dll
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/bin/Debug/KimonoCore.Mac.dll.mdb
+/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/bin/Debug/KimonoCore.Mac.xml
