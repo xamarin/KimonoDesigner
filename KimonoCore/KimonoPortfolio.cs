@@ -570,6 +570,8 @@ namespace KimonoCore
 			if (style.FrameColor != null) style.FrameColor = FindColor(style.FrameColor.UniqueID);
 			if (style.FillGradient != null) style.FillGradient = FindGradient(style.FillGradient.UniqueID);
 			if (style.FrameGradient != null) style.FrameGradient = FindGradient(style.FrameGradient.UniqueID);
+			if (style.FrameShadow.LinkedColor != null) style.FrameShadow.LinkedColor = FindColor(style.FrameShadow.LinkedColor.UniqueID);
+			if (style.FillShadow.LinkedColor != null) style.FillShadow.LinkedColor = FindColor(style.FillShadow.LinkedColor.UniqueID);
 		}
 
 		/// <summary>

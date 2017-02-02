@@ -6,9 +6,9 @@
 	<dict>
 		<key>output-files</key>
 		<array>
-			<string>/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/AppIcon.icns</string>
-			<string>/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/Assets.car</string>
-			<string>/Users/kmullins/Xamarin Corp/GITHub/private-samples/edu/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/partial-info.plist</string>
+			<string>/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/AppIcon.icns</string>
+			<string>/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/bundle/Assets.car</string>
+			<string>/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoMac/obj/x86/Debug/actool/partial-info.plist</string>
 		</array>
 	</dict>
 </dict>

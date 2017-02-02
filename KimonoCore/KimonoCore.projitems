@@ -38,5 +38,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)KimonoGradient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoHandleType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoBlur.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShadow.cs" />
   </ItemGroup>
 </Project>

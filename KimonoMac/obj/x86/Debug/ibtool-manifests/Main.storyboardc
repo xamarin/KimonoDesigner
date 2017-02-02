@@ -21,6 +21,21 @@
 				<integer>13</integer>
 			</dict>
 		</array>
+		<key>VUW-dk-F1c</key>
+		<array>
+			<dict>
+				<key>affected-objects</key>
+				<array>
+					<string>VUW-dk-F1c</string>
+				</array>
+				<key>message</key>
+				<string>View is clipping its content</string>
+				<key>type</key>
+				<string>IBClippedContent</string>
+				<key>type-value</key>
+				<integer>13</integer>
+			</dict>
+		</array>
 		<key>ZEn-5T-4Vw</key>
 		<array>
 			<dict>
@@ -57,6 +72,21 @@
 				<key>affected-objects</key>
 				<array>
 					<string>mLU-dO-uGj</string>
+				</array>
+				<key>message</key>
+				<string>View is clipping its content</string>
+				<key>type</key>
+				<string>IBClippedContent</string>
+				<key>type-value</key>
+				<integer>13</integer>
+			</dict>
+		</array>
+		<key>ycH-6j-8IX</key>
+		<array>
+			<dict>
+				<key>affected-objects</key>
+				<array>
+					<string>ycH-6j-8IX</string>
 				</array>
 				<key>message</key>
 				<string>View is clipping its content</string>

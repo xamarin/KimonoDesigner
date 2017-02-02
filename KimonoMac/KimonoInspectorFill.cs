@@ -78,8 +78,33 @@ namespace KimonoMac
 
 			AddColorButton.Hidden = (SelectedStyle.FillColor != null);
 			FillColor.Enabled = (SelectedStyle.HasFill && SelectedStyle.FillColor == null);
-			OpacitySlider.Enabled = (SelectedStyle.HasFill && SelectedStyle.FillColor == null);
-			OpacityValue.Enabled = (SelectedStyle.HasFill && SelectedStyle.FillColor == null);
+			OpacitySlider.Enabled = FillColor.Enabled;
+			OpacityValue.Enabled = FillColor.Enabled;
+		}
+
+		/// <summary>
+		/// Shows the color of the current shadow.
+		/// </summary>
+		private void ShowCurrentShadowColor()
+		{
+			// Update color selector
+			ShadowColor.Color = NSColor.FromRgba(SelectedStyle.FillShadow.ShadowColor.Red / 255f,
+											   SelectedStyle.FillShadow.ShadowColor.Green / 255f,
+											   SelectedStyle.FillShadow.ShadowColor.Blue / 255f,
+											   SelectedStyle.FillShadow.ShadowColor.Alpha / 255f);
+
+			ShadowOpacitySlider.IntValue = SelectedStyle.FillShadow.ShadowColor.Alpha;
+			ShadowOpacityValue.StringValue = $"{(int)((ShadowOpacitySlider.IntValue / 255f) * 100f)}%";
+
+			ShadowCheckbox.IntValue = (SelectedStyle.HasFillShadow) ? 1 : 0;
+			LinkedShadowColor.Enabled = SelectedStyle.HasFillShadow;
+			ShadowColor.Enabled = (SelectedStyle.HasFillShadow && SelectedStyle.FillShadow.LinkedColor == null);
+			ShadowOpacitySlider.Enabled = ShadowColor.Enabled;
+			ShadowOpacityValue.Enabled = ShadowColor.Enabled;
+			HorizontalShadowOffsetSlider.Enabled = SelectedStyle.HasFillShadow;
+			VerticalShadowOffsetSlider.Enabled = SelectedStyle.HasFillShadow;
+			HorizontalShadowBlurSlider.Enabled = SelectedStyle.HasFillShadow;
+			VerticalShadowBlurSlider.Enabled = SelectedStyle.HasFillShadow;
 		}
 		#endregion
 
@@ -114,6 +139,15 @@ namespace KimonoMac
 			VerticalBlurSlider.FloatValue = SelectedStyle.FillBlur.VerticalBlurAmount;
 			VerticalBlurSlider.Enabled = SelectedStyle.HasFillBlur;
 			VerticalBlurValue.StringValue = VerticalBlurSlider.IntValue.ToString();
+			ShowCurrentShadowColor();
+			HorizontalShadowOffsetSlider.FloatValue = SelectedStyle.FillShadow.HorizontalOffset;
+			HorizontalShadowOffsetValue.StringValue = HorizontalShadowOffsetSlider.IntValue.ToString();
+			VerticalShadowOffsetSlider.FloatValue = SelectedStyle.FillShadow.VerticalOffset;
+			VerticalShadowOffsetValue.StringValue = VerticalShadowOffsetSlider.IntValue.ToString();
+			HorizontalShadowBlurSlider.FloatValue = SelectedStyle.FillShadow.HorizontalBlurAmount;
+			HorizontalShadowBlurValue.StringValue = HorizontalShadowBlurSlider.IntValue.ToString();
+			VerticalShadowBlurSlider.FloatValue = SelectedStyle.FillShadow.VerticalBlurAmount;
+			VerticalShadowBlurValue.StringValue = VerticalShadowBlurSlider.IntValue.ToString();
 
 			// Populate the list of colors
 			LinkedColorSelector.RemoveAllItems();
@@ -130,6 +164,24 @@ namespace KimonoMac
 				{
 					// Yes, highlight it
 					LinkedColorSelector.SelectItem(n);
+				}
+			}
+
+			// Populate the list of shadow colors
+			LinkedShadowColor.RemoveAllItems();
+			LinkedShadowColor.AddItem("None");
+			n = 0;
+			foreach (KimonoColor color in Portfolio.Colors)
+			{
+				// Add color
+				LinkedShadowColor.AddItem(color.Name);
+				++n;
+
+				// Currently selected color?
+				if (SelectedStyle.FillShadow.LinkedColor == color)
+				{
+					// Yes, highlight it
+					LinkedShadowColor.SelectItem(n);
 				}
 			}
 
@@ -267,6 +319,165 @@ namespace KimonoMac
 		#endregion
 
 		#region Custom Actions
+		/// <summary>
+		/// Handles the shadow changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ShadowChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedStyle.HasFillShadow = (ShadowCheckbox.IntValue == 1);
+
+			// Update UI
+			ShowCurrentShadowColor();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the shadow color chainging.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ShadowColorChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Get color components
+			nfloat red, green, blue, alpha;
+			ShadowColor.Color.GetRgba(out red, out green, out blue, out alpha);
+
+			// Set new color and inform caller
+			SelectedStyle.FillShadow.Color = new SKColor((byte)(red * 255),
+														 (byte)(green * 255),
+														 (byte)(blue * 255),
+														 (byte)(OpacitySlider.IntValue));
+
+			// Update UI
+			ShowCurrentShadowColor();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the linked shadow color changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void LinkedShadowColorChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Take action based on the item selected
+			if (LinkedShadowColor.IndexOfSelectedItem == 0)
+			{
+				// None selected
+				SelectedStyle.FillShadow.LinkedColor = null;
+			}
+			else
+			{
+				// Base this color off of another color
+				SelectedStyle.FillShadow.LinkedColor = Portfolio.Colors[(int)LinkedShadowColor.IndexOfSelectedItem - 1];
+			}
+
+			// Update UI
+			ShowCurrentShadowColor();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the shadow's opacity changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ShadowOpacityChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Get color components
+			nfloat red, green, blue, alpha;
+			ShadowColor.Color.GetRgba(out red, out green, out blue, out alpha);
+
+			// Set new color and inform caller
+			SelectedStyle.FillShadow.Color = new SKColor((byte)(red * 255),
+														 (byte)(green * 255),
+														 (byte)(blue * 255),
+														 (byte)(OpacitySlider.IntValue));
+
+			// Update UI
+			ShowCurrentShadowColor();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the horizontal shadow blur changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void HorizontalShadowBlurChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedStyle.FillShadow.HorizontalBlurAmount = HorizontalShadowBlurSlider.FloatValue;
+
+			// Update UI
+			HorizontalShadowBlurValue.StringValue = HorizontalShadowBlurSlider.IntValue.ToString();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the horizontal shadow offset changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void HorizontalShadowOffsetChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedStyle.FillShadow.HorizontalOffset = HorizontalShadowOffsetSlider.FloatValue;
+
+			// Update UI
+			HorizontalShadowOffsetValue.StringValue = HorizontalShadowOffsetSlider.IntValue.ToString();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the vertical shadow blur changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void VerticalShadowBlurChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedStyle.FillShadow.VerticalBlurAmount = VerticalShadowBlurSlider.FloatValue;
+
+			// Update UI
+			VerticalShadowBlurValue.StringValue = VerticalShadowBlurSlider.IntValue.ToString();
+			RaiseShapeModified();
+		}
+
+		/// <summary>
+		/// Handles the vertical shadow offset changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void VerticalShadowOffsetChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedStyle.FillShadow.VerticalOffset = VerticalShadowOffsetSlider.FloatValue;
+
+			// Update UI
+			VerticalShadowOffsetValue.StringValue = VerticalShadowOffsetSlider.IntValue.ToString();
+			RaiseShapeModified();
+		}
+
 		/// <summary>
 		/// Handles the blur effect changing.
 		/// </summary>

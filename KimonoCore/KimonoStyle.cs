@@ -136,6 +136,26 @@ namespace KimonoCore
 		/// The frame blur.
 		/// </summary>
 		private KimonoBlur _frameBlur = null;
+
+		/// <summary>
+		/// The has fill shadow.
+		/// </summary>
+		private bool _hasFillShadow = false;
+
+		/// <summary>
+		/// The fill shadow.
+		/// </summary>
+		private KimonoShadow _fillShadow = null;
+
+		/// <summary>
+		/// The has frame shadow.
+		/// </summary>
+		private bool _hasFrameShadow = false;
+
+		/// <summary>
+		/// The frame shadow.
+		/// </summary>
+		private KimonoShadow _frameShadow = null;
 		#endregion
 
 		#region Computed Properties
@@ -173,7 +193,7 @@ namespace KimonoCore
 			set
 			{
 				_hasFrameBlur = value;
-				HandleFrameBlurChange();
+				HandleFrameBlurOrShadowChange();
 			}
 		}
 
@@ -189,17 +209,58 @@ namespace KimonoCore
 				// Unwire previous blur
 				if (_frameBlur != null)
 				{
-					_frameBlur.BlurModified -= HandleFrameBlurChange;
+					_frameBlur.BlurModified -= HandleFrameBlurOrShadowChange;
 				}
 
 				// Save new value and apply
 				_frameBlur = value;
-				HandleFrameBlurChange();
+				HandleFrameBlurOrShadowChange();
 
 				// Wire up new blur
 				if (_frameBlur != null)
 				{
-					_frameBlur.BlurModified += HandleFrameBlurChange;
+					_frameBlur.BlurModified += HandleFrameBlurOrShadowChange;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> has frame shadow.
+		/// </summary>
+		/// <value><c>true</c> if has frame shadow; otherwise, <c>false</c>.</value>
+		public bool HasFrameShadow
+		{
+			get { return _hasFrameShadow; }
+			set
+			{
+				_hasFrameShadow = value;
+				HandleFrameBlurOrShadowChange();
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the frame shadow.
+		/// </summary>
+		/// <value>The frame shadow as a <c>KimonoShadow</c>.</value>
+		public KimonoShadow FrameShadow
+		{
+			get { return _frameShadow; }
+			set
+			{
+				// Unwire previous shadow
+				if (_frameShadow != null)
+				{
+					_frameShadow.ShadowModified -= HandleFrameBlurOrShadowChange;
+				}
+
+				// Save new value and apply
+				_frameShadow = value;
+				HandleFrameBlurOrShadowChange();
+
+				// Wire up new shadow
+				if (_frameShadow != null)
+				{
+					_frameShadow.ShadowModified += HandleFrameBlurOrShadowChange;
 				}
 			}
 		}
@@ -214,7 +275,7 @@ namespace KimonoCore
 			set
 			{
 				_hasFillBlur = value;
-				HandleFillBlurChange();
+				HandleFillBlurOrShadowChange();
 			}
 		}
 
@@ -230,17 +291,58 @@ namespace KimonoCore
 				// Unwire previous blur
 				if (_fillBlur != null)
 				{
-					_fillBlur.BlurModified -= HandleFillBlurChange;
+					_fillBlur.BlurModified -= HandleFillBlurOrShadowChange;
 				}
 
 				// Save new value and apply
 				_fillBlur = value;
-				HandleFillBlurChange();
+				HandleFillBlurOrShadowChange();
 
 				// Wire up new blur
 				if (_fillBlur != null)
 				{
-					_fillBlur.BlurModified += HandleFillBlurChange;
+					_fillBlur.BlurModified += HandleFillBlurOrShadowChange;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> has fill shadow.
+		/// </summary>
+		/// <value><c>true</c> if has fill shadow; otherwise, <c>false</c>.</value>
+		public bool HasFillShadow
+		{
+			get { return _hasFillShadow; }
+			set
+			{
+				_hasFillShadow = value;
+				HandleFillBlurOrShadowChange();
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the fill shadow.
+		/// </summary>
+		/// <value>The fill shadow.</value>
+		public KimonoShadow FillShadow
+		{
+			get { return _fillShadow; }
+			set
+			{
+				// Unwire previous shadow
+				if (_fillShadow != null)
+				{
+					_fillShadow.ShadowModified -= HandleFillBlurOrShadowChange;
+				}
+
+				// Save new value and apply
+				_fillShadow = value;
+				HandleFillBlurOrShadowChange();
+
+				// Wire up new shadow
+				if (_fillShadow != null)
+				{
+					_fillShadow.ShadowModified += HandleFillBlurOrShadowChange;
 				}
 			}
 		}
@@ -679,11 +781,13 @@ namespace KimonoCore
 			Frame.Color = KimonoColor.Black;
 			Frame.IsAntialias = true;
 			FrameBlur = new KimonoBlur();
+			FrameShadow = new KimonoShadow();
 
 			Fill.Style = SKPaintStyle.Fill;
 			Fill.Color = KimonoColor.Mercury;
 			Fill.IsAntialias = true;
 			FillBlur = new KimonoBlur();
+			FillShadow = new KimonoShadow();
 		}
 		#endregion
 
@@ -691,36 +795,110 @@ namespace KimonoCore
 		/// <summary>
 		/// Handles the frame blur change.
 		/// </summary>
-		private void HandleFrameBlurChange()
+		private void HandleFrameBlurOrShadowChange()
 		{
+			SKImageFilter blur;
+			SKImageFilter shadow;
+
 			// Is there an active filter?
 			if (FrameBlur == null || !HasFrameBlur)
 			{
 				// No, remove
-				Frame.ImageFilter = null;
+				blur = null;
 			}
 			else
 			{
 				// Yes, include the filter
-				Frame.ImageFilter = FrameBlur.BlurFilter;
+				blur = FrameBlur.BlurFilter;
+			}
+
+			// Is there an active shadow filter?
+			if (FrameShadow == null || !HasFrameShadow)
+			{
+				// No, remove
+				shadow = null;
+			}
+			else
+			{
+				// Yes, include filter
+				shadow = FrameShadow.ShadowFilter;
+			}
+
+			// Apply filters
+			if (blur != null && shadow != null)
+			{
+				// Combine both filters
+				Frame.ImageFilter = SKImageFilter.CreateCompose(shadow, blur);
+			}
+			else if (blur != null)
+			{
+				// Apply blur
+				Frame.ImageFilter = blur;
+			}
+			else if (shadow != null)
+			{
+				// Apply shadow
+				Frame.ImageFilter = shadow;
+			}
+			else
+			{
+				// Clear all filters
+				Frame.ImageFilter = null;
 			}
 		}
 
 		/// <summary>
 		/// Handles the fill blur change.
 		/// </summary>
-		private void HandleFillBlurChange()
+		private void HandleFillBlurOrShadowChange()
 		{
-			// Is there an active filter?
+			SKImageFilter blur;
+			SKImageFilter shadow;
+
+			// Is there an active blur filter?
 			if (FillBlur == null || !HasFillBlur)
 			{
 				// No, remove
-				Fill.ImageFilter = null;
+				blur = null;
 			}
 			else
 			{
 				// Yes, include the filter
-				Fill.ImageFilter = FillBlur.BlurFilter;
+				blur = FillBlur.BlurFilter;
+			}
+
+			// Is there an active shadow filter?
+			if (FillShadow == null || !HasFillShadow)
+			{
+				// No, remove
+				shadow = null;
+			}
+			else
+			{
+				// Yes, include filter
+				shadow = FillShadow.ShadowFilter;
+			}
+
+			// Apply filters
+			if (blur != null && shadow != null)
+			{
+				// Combine both filters
+				Fill.ImageFilter = SKImageFilter.CreateCompose(shadow, blur);
+			}
+			else if (blur != null)
+			{
+				// Apply blur
+				Fill.ImageFilter = blur;
+			}
+			else if (shadow != null)
+			{
+				// Apply shadow
+				Fill.ImageFilter = shadow;
+			}
+			else
+			{
+				// Clear all filters
+				Fill.ImageFilter = null;
 			}
 		}
 
@@ -918,7 +1096,11 @@ namespace KimonoCore
 				HasFillBlur = this.HasFillBlur,
 				FillBlur = this.FillBlur?.Clone(),
 				HasFrameBlur = this.HasFillBlur,
-				FrameBlur = this.FrameBlur?.Clone()
+				FrameBlur = this.FrameBlur?.Clone(),
+				HasFillShadow = this.HasFillShadow,
+				FillShadow = this.FillShadow?.Clone(),
+				HasFrameShadow = this.HasFrameShadow,
+				FrameShadow = this.FrameShadow?.Clone()
 			};
 
 			// Are we deep cloning a default style?

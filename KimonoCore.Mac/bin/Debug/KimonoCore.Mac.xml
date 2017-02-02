@@ -1442,6 +1442,26 @@
              The frame blur.
              </summary>
             </member>
+        <member name="F:KimonoCore.KimonoStyle._hasFillShadow">
+             <summary>
+             The has fill shadow.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoStyle._fillShadow">
+             <summary>
+             The fill shadow.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoStyle._hasFrameShadow">
+             <summary>
+             The has frame shadow.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoStyle._frameShadow">
+             <summary>
+             The frame shadow.
+             </summary>
+            </member>
         <member name="P:KimonoCore.KimonoStyle.UniqueID">
              <summary>
              Gets or sets the unique identifier.
@@ -1478,6 +1498,18 @@
              </summary>
              <value>The <c>KimonoBlur</c> applied to the frame.</value>
             </member>
+        <member name="P:KimonoCore.KimonoStyle.HasFrameShadow">
+             <summary>
+             Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle" /> has frame shadow.
+             </summary>
+             <value><c>true</c> if has frame shadow; otherwise, <c>false</c>.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoStyle.FrameShadow">
+             <summary>
+             Gets or sets the frame shadow.
+             </summary>
+             <value>The frame shadow as a <c>KimonoShadow</c>.</value>
+            </member>
         <member name="P:KimonoCore.KimonoStyle.HasFillBlur">
              <summary>
              Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle" /> has fill blur.
@@ -1489,6 +1521,18 @@
              Gets or sets the fill blur.
              </summary>
              <value>The <c>KimonoBlur</c> applied to the fill.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoStyle.HasFillShadow">
+             <summary>
+             Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle" /> has fill shadow.
+             </summary>
+             <value><c>true</c> if has fill shadow; otherwise, <c>false</c>.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoStyle.FillShadow">
+             <summary>
+             Gets or sets the fill shadow.
+             </summary>
+             <value>The fill shadow.</value>
             </member>
         <member name="P:KimonoCore.KimonoStyle.FrameColor">
              <summary>
@@ -1668,12 +1712,12 @@
              Initialize this instance.
              </summary>
             </member>
-        <member name="M:KimonoCore.KimonoStyle.HandleFrameBlurChange">
+        <member name="M:KimonoCore.KimonoStyle.HandleFrameBlurOrShadowChange">
              <summary>
              Handles the frame blur change.
              </summary>
             </member>
-        <member name="M:KimonoCore.KimonoStyle.HandleFillBlurChange">
+        <member name="M:KimonoCore.KimonoStyle.HandleFillBlurOrShadowChange">
              <summary>
              Handles the fill blur change.
              </summary>
@@ -4231,6 +4275,127 @@
         <member name="M:KimonoCore.KimonoBlur.RaiseBlurModified">
              <summary>
              Raises the blur modified event.
+             </summary>
+            </member>
+        <member name="T:KimonoCore.KimonoShadow">
+             <summary>
+             Defines a shadow effect that can be attached to the fill or the frame of a
+             <c>KimonoShape</c>.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoShadow._horizontalOffset">
+             <summary>
+             The horizontal offset.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoShadow._verticalOffset">
+             <summary>
+             The vertical offset.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoShadow._horizontalBlurAmount">
+             <summary>
+             The horizontal blur amount.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoShadow._verticalBlurAmount">
+             <summary>
+             The vertical blur amount.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoShadow._color">
+             <summary>
+             The color of the shadow.
+             </summary>
+            </member>
+        <member name="F:KimonoCore.KimonoShadow._linkedColor">
+             <summary>
+             A linked <c>KimonoColor</c> to use as the shadow color.
+             </summary>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.HorizontalOffset">
+             <summary>
+             Gets or sets the horizontal offset.
+             </summary>
+             <value>The horizontal offset.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.VerticalOffset">
+             <summary>
+             Gets or sets the vertical offset.
+             </summary>
+             <value>The vertical offset.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.HorizontalBlurAmount">
+             <summary>
+             Gets or sets the horizontal blur amount.
+             </summary>
+             <value>The horizontal blur amount.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.VerticalBlurAmount">
+             <summary>
+             Gets or sets the vertical blur amount.
+             </summary>
+             <value>The vertical blur amount.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.Color">
+             <summary>
+             Gets or sets the color of the shadow.
+             </summary>
+             <value>The color.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.LinkedColor">
+             <summary>
+             Gets or sets the color of the linked.
+             </summary>
+             <value>The color of the linked.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.ShadowColor">
+             <summary>
+             Gets the color of the shadow.
+             </summary>
+             <remarks>Returns either the custom color attached to this shadow or a linked color
+             if it is being used.</remarks>
+             <value>The color of the shadow as a <c>SKColor</c>.</value>
+            </member>
+        <member name="P:KimonoCore.KimonoShadow.ShadowFilter">
+             <summary>
+             Gets the shadoe filter represented by this shadow effect.
+             </summary>
+             <value>The <c>SKImageFilter</c> for the blur filter.</value>
+            </member>
+        <member name="M:KimonoCore.KimonoShadow.#ctor">
+             <summary>
+             Initializes a new instance of the <see cref="T:KimonoCore.KimonoShadow" /> class.
+             </summary>
+            </member>
+        <member name="M:KimonoCore.KimonoShadow.#ctor(System.Single,System.Single,System.Single,System.Single)">
+             <summary>
+             Initializes a new instance of the <see cref="T:KimonoCore.KimonoShadow" /> class.
+             </summary>
+             <param name="horizontalOffset">Horizontal offset.</param>
+             <param name="horizontalBlurAmount">Horizontal blur amount.</param>
+             <param name="verticalOffset">Vertical offset.</param>
+             <param name="verticalBlurAmount">Vertical blur amount.</param>
+            </member>
+        <member name="M:KimonoCore.KimonoShadow.HandleLinkedColorChanged">
+             <summary>
+             Handles the linked color changed.
+             </summary>
+            </member>
+        <member name="M:KimonoCore.KimonoShadow.Clone">
+             <summary>
+             Clone this instance.
+             </summary>
+             <returns>The clone.</returns>
+            </member>
+        <member name="E:KimonoCore.KimonoShadow.ShadowModified">
+             <summary>
+             Occurs when the shadow is modified.
+             </summary>
+            </member>
+        <member name="M:KimonoCore.KimonoShadow.RaiseShadowModified">
+             <summary>
+             Raises the shadow modified event.
              </summary>
             </member>
     </members>

@@ -1166,6 +1166,11 @@
              Shows the values for the current color selected.
              </summary>
             </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.ShowCurrentShadowColor">
+             <summary>
+             Shows the color of the current shadow.
+             </summary>
+            </member>
         <member name="M:KimonoMac.KimonoInspectorFill.Initialize">
              <summary>
              Initialize this instance.
@@ -1182,6 +1187,54 @@
              </summary>
              <returns>The next location based on the inspector's size.</returns>
              <param name="y">The y coordinate.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.ShadowChanged(Foundation.NSObject)">
+             <summary>
+             Handles the shadow changing.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.ShadowColorChanged(Foundation.NSObject)">
+             <summary>
+             Handles the shadow color chainging.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.LinkedShadowColorChanged(Foundation.NSObject)">
+             <summary>
+             Handles the linked shadow color changing.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.ShadowOpacityChanged(Foundation.NSObject)">
+             <summary>
+             Handles the shadow's opacity changing.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.HorizontalShadowBlurChanged(Foundation.NSObject)">
+             <summary>
+             Handles the horizontal shadow blur changing.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.HorizontalShadowOffsetChanged(Foundation.NSObject)">
+             <summary>
+             Handles the horizontal shadow offset changing.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.VerticalShadowBlurChanged(Foundation.NSObject)">
+             <summary>
+             Handles the vertical shadow blur changing.
+             </summary>
+             <param name="sender">Sender.</param>
+            </member>
+        <member name="M:KimonoMac.KimonoInspectorFill.VerticalShadowOffsetChanged(Foundation.NSObject)">
+             <summary>
+             Handles the vertical shadow offset changing.
+             </summary>
+             <param name="sender">Sender.</param>
             </member>
         <member name="M:KimonoMac.KimonoInspectorFill.BlurChanged(Foundation.NSObject)">
              <summary>
