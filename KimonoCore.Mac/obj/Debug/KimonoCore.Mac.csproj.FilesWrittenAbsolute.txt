@@ -1,6 +1,0 @@
-/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore.Mac/obj/Debug/Xamarin.Mac,Version=v2.0.AssemblyAttribute.cs
-/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore.Mac/bin/Debug/KimonoCore.Mac.dll.mdb
-/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore.Mac/bin/Debug/KimonoCore.Mac.dll
-/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore.Mac/obj/Debug/KimonoCore.Mac.dll
-/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore.Mac/obj/Debug/KimonoCore.Mac.dll.mdb
-/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore.Mac/bin/Debug/SkiaSharp.dll
