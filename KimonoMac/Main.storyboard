@@ -1032,6 +1032,7 @@ CA
                         <outlet property="InspectorScrollView" destination="rWI-tv-DIL" id="ONt-nE-Tg3"/>
                         <outlet property="InspectorView" destination="IdR-Ga-LdV" id="hnz-jD-gRV"/>
                         <outlet property="PolygonInspector" destination="dP7-W3-I2Q" id="dPs-l2-K7e"/>
+                        <outlet property="RoundRectInspector" destination="kKL-KR-JcB" id="pk4-HX-Iy1"/>
                         <outlet property="SketchInspector" destination="1ec-AS-7vw" id="DdH-Lz-B7P"/>
                         <outlet property="SketchPath" destination="ogD-v0-5gp" id="ywG-hb-heR"/>
                         <outlet property="SourceList" destination="0yc-xJ-xPt" id="pIz-9w-8UM"/>
@@ -1553,6 +1554,46 @@ CA
                         <outlet property="SketchWidth" destination="YTl-3Y-7aH" id="DUc-dz-AnC"/>
                     </connections>
                 </customView>
+                <customView id="kKL-KR-JcB" customClass="KimonoInspectorRoundRect">
+                    <rect key="frame" x="0.0" y="0.0" width="251" height="39"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2M-6e-4oR">
+                            <rect key="frame" x="5" y="14" width="49" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Radius" id="EcS-gy-lxL">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67C-jv-SUd">
+                            <rect key="frame" x="206" y="11" width="38" height="22"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="7I0-uj-ze8">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20T-q0-TmO">
+                            <rect key="frame" x="58" y="12" width="142" height="19"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="100" doubleValue="5" tickMarkPosition="above" sliderType="linear" id="lbm-C4-WhB"/>
+                            <connections>
+                                <action selector="RadiusChanged:" target="kKL-KR-JcB" id="NmM-Tm-y5m"/>
+                            </connections>
+                        </slider>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="sWM-dr-d7F">
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
+                    </subviews>
+                    <connections>
+                        <outlet property="RadiusSlider" destination="20T-q0-TmO" id="hkn-oe-f5y"/>
+                        <outlet property="RadiusValue" destination="67C-jv-SUd" id="5vb-fP-jxe"/>
+                    </connections>
+                </customView>
                 <customView id="2nf-6x-i3o" customClass="KimonoInspectorGroup">
                     <rect key="frame" x="0.0" y="0.0" width="251" height="63"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1754,7 +1795,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-lo-tRM">
-                            <rect key="frame" x="0.0" y="159" width="251" height="190"/>
+                            <rect key="frame" x="0.0" y="159" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L62-Oq-4jU">
@@ -1795,7 +1836,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mii-uG-pih">
-                            <rect key="frame" x="0.0" y="81" width="251" height="88"/>
+                            <rect key="frame" x="0.0" y="81" width="251" height="179"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQd-fs-mha">
@@ -2086,7 +2127,7 @@ CA
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Jot-6P-EuA">
-                            <rect key="frame" x="1" y="145" width="251" height="5"/>
+                            <rect key="frame" x="1" y="145" width="251" height="98"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zyJ-3C-9bf" customClass="KimonoGradientDesignBar">

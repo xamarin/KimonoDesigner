@@ -353,6 +353,10 @@
     <Compile Include="KimonoInspectorGroup.designer.cs">
       <DependentUpon>KimonoInspectorGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="KimonoInspectorRoundRect.cs" />
+    <Compile Include="KimonoInspectorRoundRect.designer.cs">
+      <DependentUpon>KimonoInspectorRoundRect.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

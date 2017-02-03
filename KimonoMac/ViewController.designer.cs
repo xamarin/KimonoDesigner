@@ -67,6 +67,9 @@ namespace KimonoMac
 		KimonoMac.KimonoInspectorPolygon PolygonInspector { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorRoundRect RoundRectInspector { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorSketch SketchInspector { get; set; }
 
 		[Outlet]
@@ -161,9 +164,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (GroupInspector != null) {
-				GroupInspector.Dispose ();
-				GroupInspector = null;
+			if (RoundRectInspector != null) {
+				RoundRectInspector.Dispose ();
+				RoundRectInspector = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -234,6 +237,11 @@ namespace KimonoMac
 			if (GradientInspector != null) {
 				GradientInspector.Dispose ();
 				GradientInspector = null;
+			}
+
+			if (GroupInspector != null) {
+				GroupInspector.Dispose ();
+				GroupInspector = null;
 			}
 
 			if (InspectorScrollView != null) {

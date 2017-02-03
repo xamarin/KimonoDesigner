@@ -545,6 +545,7 @@ namespace KimonoMac
 			ColorPaletteInspector.Initialize();
 			GradientInspector.Initialize();
 			GroupInspector.Initialize();
+			RoundRectInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -561,6 +562,7 @@ namespace KimonoMac
 			ColorPaletteInspector.DesignSurface = DesignSurface;
 			GradientInspector.DesignSurface = DesignSurface;
 			GroupInspector.DesignSurface = DesignSurface;
+			RoundRectInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -620,6 +622,13 @@ namespace KimonoMac
 
 			// -- Star Inspector -----------------------------------------
 			StarInspector.ShapeModified += () =>
+			{
+				// Update design surface
+				DesignSurface.RefreshView();
+			};
+
+			// -- Round Rectangle Inspector -----------------------------------------
+			RoundRectInspector.ShapeModified += () =>
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
@@ -843,6 +852,7 @@ namespace KimonoMac
 			ColorPaletteInspector.RemoveFromSuperview();
 			GradientInspector.RemoveFromSuperview();
 			GroupInspector.RemoveFromSuperview();
+			RoundRectInspector.RemoveFromSuperview();
 		}
 
 		/// <summary>
@@ -873,6 +883,15 @@ namespace KimonoMac
 			GeneralInfoInspector.SelectedShape = shape;
 			offset = GeneralInfoInspector.MoveTo(offset);
 			InspectorView.AddSubview(GeneralInfoInspector);
+
+			// Is this a round rectangle?
+			if (shape is KimonoShapeRoundRect)
+			{
+				// Show the round rectangle inspector
+				RoundRectInspector.SelectedRoundRect = shape as KimonoShapeRoundRect;
+				offset = RoundRectInspector.MoveTo(offset);
+				InspectorView.AddSubview(RoundRectInspector);
+			}
 
 			// Is this a star?
 			if (shape is KimonoShapeStar)
