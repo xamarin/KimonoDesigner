@@ -17,7 +17,10 @@ This known issues will all be solved in the finished apps (editors are planned o
 
 The code has been fully commented and, where available, links have be provided from key technologies or methods to relevant information in the [Xamarin.Mac Guides Documentation](https://developer.xamarin.com/guides/#mac).
 
-The **APIDocs** folder include full API documentation for the different parts of the Kimono Designer.
+The **APIDocs** folder include full API documentation for the different parts of the Kimono Designer as follows:
+
+[KimonoCore.Mac](https://github.com/xamarin/KimonoDesigner/blob/master/APIDocs/Kimono.Mac/ReadMe.md) - Provides the core Kimono classes that provides a high-level wrapper to the SkiaSharp objects for a Xamarin.Mac project.
+
 
 ## Icon Resources
 
