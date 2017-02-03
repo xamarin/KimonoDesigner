@@ -15,11 +15,14 @@ This known issues will all be solved in the finished apps (editors are planned o
 
 ## About this Project
 
+Kimono Designer, KimonoCore and KimonoCore.Mac were created by Kevin Mullins for Microsoft, Inc.
+
 The code has been fully commented and, where available, links have be provided from key technologies or methods to relevant information in the [Xamarin.Mac Guides Documentation](https://developer.xamarin.com/guides/#mac).
 
-The **APIDocs** folder include full API documentation for the different parts of the Kimono Designer as follows:
+The **APIDocs** folder includes full API documentation for the different parts of the Kimono Designer as follows:
 
-[KimonoCore.Mac](https://github.com/xamarin/KimonoDesigner/blob/master/APIDocs/Kimono.Mac/ReadMe.md) - Provides the core Kimono classes that provides a high-level wrapper to the SkiaSharp objects for a Xamarin.Mac project.
+- [KimonoCore.Mac](https://github.com/xamarin/KimonoDesigner/blob/master/APIDocs/Kimono.Mac/ReadMe.md) - Provides the core Kimono classes that provides a high-level wrapper to the SkiaSharp objects for a Xamarin.Mac project.
+- [Kimono Designer Mac](https://github.com/xamarin/KimonoDesigner/blob/master/APIDocs/KimonoDesigner.mac/ReadMe.md) - The Xamarin.Mac versions of the Kimono Designer interface.
 
 
 ## Icon Resources
