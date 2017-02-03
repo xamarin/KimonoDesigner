@@ -87,10 +87,10 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
-		/// Draws the arrow into the specified Skia canvas.
+		/// Converts the arrow to a path.
 		/// </summary>
-		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
-		public override void Draw(SKCanvas canvas)
+		/// <returns>The the arrow as a <c>SKPath</c>.</returns>
+		public override SKPath ToPath()
 		{
 			// Define path
 			var path = new SKPath();
@@ -183,6 +183,19 @@ namespace KimonoCore
 					path.LineTo(new SKPoint(Left, VerticalCenter + bodyThickness));
 				}
 			}
+
+			// Return new path
+			return path;
+		}
+
+		/// <summary>
+		/// Draws the arrow into the specified Skia canvas.
+		/// </summary>
+		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
+		public override void Draw(SKCanvas canvas)
+		{
+			// Define path
+			var path = ToPath();
 
 			// Rotated?
 			if (RotationDegrees > 0)

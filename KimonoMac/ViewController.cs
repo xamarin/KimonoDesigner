@@ -544,6 +544,7 @@ namespace KimonoMac
 			SketchInspector.Initialize();
 			ColorPaletteInspector.Initialize();
 			GradientInspector.Initialize();
+			GroupInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -559,6 +560,7 @@ namespace KimonoMac
 			SketchInspector.DesignSurface = DesignSurface;
 			ColorPaletteInspector.DesignSurface = DesignSurface;
 			GradientInspector.DesignSurface = DesignSurface;
+			GroupInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -602,6 +604,18 @@ namespace KimonoMac
 					// Show the required inspectors
 					ShowGeneralInspectors(selected);
 				}
+			};
+
+			// -- Group Inspector -----------------------------------------
+			GroupInspector.GroupModified += (group) =>
+			{
+
+				// Show the required inspectors
+				ShowGeneralInspectors(group);
+
+				// Update design surface
+				DesignSurface.RefreshView();
+
 			};
 
 			// -- Star Inspector -----------------------------------------
@@ -828,6 +842,7 @@ namespace KimonoMac
 			SketchInspector.RemoveFromSuperview();
 			ColorPaletteInspector.RemoveFromSuperview();
 			GradientInspector.RemoveFromSuperview();
+			GroupInspector.RemoveFromSuperview();
 		}
 
 		/// <summary>
@@ -845,6 +860,8 @@ namespace KimonoMac
 		/// <param name="shape">The <c>KimonoShape</c> to show the inspectors for.</param>
 		private void ShowGeneralInspectors(KimonoShape shape)
 		{
+			var showFillFrame = true;
+
 			// Close any open inspectors
 			CloseAllInspectors();
 
@@ -894,10 +911,24 @@ namespace KimonoMac
 			// Is this a group?
 			if (shape is KimonoShapeGroup)
 			{
-				// Ignore for now
+				// Grab group
+				var group = shape as KimonoShapeGroup;
+
+				// Is this group a collection?
+				if (group.GroupType == KimonoShapeGroupType.Collection)
+				{
+					// Yes, show the group inspector
+					GroupInspector.SelectedGroup = group;
+					offset = GroupInspector.MoveTo(offset);
+					InspectorView.AddSubview(GroupInspector);
+				}
+
+				// Show style tools?
+				showFillFrame = (group.IsBooleanConstruct && group.State != KimonoShapeState.Editing);
 			}
-			else
-			{
+
+			// Display the style editors?
+			if (showFillFrame) {
 				// Display attached style
 				AttachedStyleInspector.SelectedStyle = shape.Style;
 				AttachedStyleInspector.SelectedShape = shape;

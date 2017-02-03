@@ -54,6 +54,23 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
+		/// Converts the current shape to a path.
+		/// </summary>
+		/// <returns>The shape as a <c>SKPath</c>.</returns>
+		public override SKPath ToPath()
+		{
+			// Construct new path
+			var path = new SKPath();
+
+			// Draw line to path
+			path.MoveTo(Left, Top);
+			path.LineTo(Right, Bottom);
+
+			// Return path
+			return path;
+		}
+
+		/// <summary>
 		/// Draws the line into the given Skia canvas.
 		/// </summary>
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>

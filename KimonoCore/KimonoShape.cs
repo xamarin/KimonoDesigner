@@ -246,12 +246,25 @@ namespace KimonoCore
 		}
 
 		/// <summary>
-		/// Converts the given shape to a vector.
+		/// Converts the current shape to a vector.
 		/// </summary>
 		/// <returns>The shape as a <c>KimonoVector</c>.</returns>
 		public virtual KimonoShapeVector ToVector()
 		{
 			return null;
+		}
+
+		/// <summary>
+		/// Converts the current shape to a path.
+		/// </summary>
+		/// <returns>The shape as a <c>SKPath</c>.</returns>
+		public virtual SKPath ToPath()
+		{
+			// Construct new path
+			var path = new SKPath();
+
+			// Return path
+			return path;
 		}
 		#endregion
 

@@ -349,6 +349,10 @@
     <Compile Include="KimonoInspectorGradient.designer.cs">
       <DependentUpon>KimonoInspectorGradient.cs</DependentUpon>
     </Compile>
+    <Compile Include="KimonoInspectorGroup.cs" />
+    <Compile Include="KimonoInspectorGroup.designer.cs">
+      <DependentUpon>KimonoInspectorGroup.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

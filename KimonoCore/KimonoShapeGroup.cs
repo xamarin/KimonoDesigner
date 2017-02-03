@@ -231,6 +231,18 @@ namespace KimonoCore
 		{
 			get { return (SelectedShape?.LayerDepth == Shapes.Count - 1); }
 		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoShapeGroup"/> is a boolean construct.
+		/// </summary>
+		/// <value><c>true</c> if is boolean construct; otherwise, <c>false</c>.</value>
+		public bool IsBooleanConstruct { get; set; } = false;
+
+		/// <summary>
+		/// Gets or sets the boolean operation that will be applied to this group of objects.
+		/// </summary>
+		/// <value>The boolean operation as a <c>SKPathOp</c>.</value>
+		public SKPathOp BooleanOperation { get; set; } = SKPathOp.Union;
 		#endregion
 
 		#region Constructors
@@ -1280,6 +1292,24 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
+		/// Converts the group of shapes to a path.
+		/// </summary>
+		/// <returns>The group of shapes as a <c>SKPath</c>.</returns>
+		public override SKPath ToPath()
+		{
+			var path = new SKPath();
+
+			// Add all of the child paths
+			foreach (KimonoShape shape in Shapes)
+			{
+				path.AddPath(shape.ToPath(), SKPath.AddMode.Append);
+			}
+
+			// Return path
+			return path;
+		}
+
+		/// <summary>
 		/// Draw all the <c>KimonoShapes</c> that are part of this group into the given
 		/// Skia canvas.
 		/// </summary>
@@ -1297,9 +1327,47 @@ namespace KimonoCore
 			// Draw all child shapes
 			if (Visible)
 			{
-				foreach (KimonoShape shape in Shapes)
+				// Is this a boolean construct?
+				if (IsBooleanConstruct && State != KimonoShapeState.Editing)
 				{
-					shape.Draw(canvas);
+					// Apple the boolean operation to the group of
+					// shapes
+					SKPath path = null;
+					foreach (KimonoShape shape in Shapes)
+					{
+						// First shape in the group?
+						if (path == null)
+						{
+							// Yes, set initial path
+							path = shape.ToPath();
+						}
+						else
+						{
+							// No, apply boolean operation on the set of
+							// paths
+							path = path.Op(shape.ToPath(), BooleanOperation);
+						}
+					}
+
+					// Draw resulting boolean group
+					if (Style.HasFill)
+					{
+						ConformGradientToShape(Style.FillGradient, Style.Fill);
+						canvas.DrawPath(path, Style.Fill);
+					}
+					if (Style.HasFrame)
+					{
+						ConformGradientToShape(Style.FrameGradient, Style.Frame);
+						canvas.DrawPath(path, Style.Frame);
+					}
+				}
+				else
+				{
+					// Draw each shape in the group
+					foreach (KimonoShape shape in Shapes)
+					{
+						shape.Draw(canvas);
+					}
 				}
 			}
 
@@ -1478,7 +1546,9 @@ namespace KimonoCore
 				Parent = this.Parent,
 				Style = CloneAttachedStyle(),
 				Visible = this.Visible,
-				LayerDepth = this.LayerDepth
+				LayerDepth = this.LayerDepth,
+				IsBooleanConstruct = this.IsBooleanConstruct,
+				BooleanOperation = this.BooleanOperation
 			};
 
 			// Clone all child shapes

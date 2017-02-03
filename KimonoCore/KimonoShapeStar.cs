@@ -256,22 +256,37 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
-		/// Draws the star into the given Skia Canvas.
+		/// Converts the current shape to a path.
 		/// </summary>
-		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
-		public override void Draw(SKCanvas canvas)
+		/// <returns>The shape as a <c>SKPath</c>.</returns>
+		public override SKPath ToPath()
 		{
+			// Construct new path
+			var path = new SKPath();
+
 			// Define star points
 			var points = MakeStarPoints(-Math.PI / 2, NumberOfPoints, SkipPoints, Rect, DepthOffset * .01f);
 
 			// Define path
-			var path = new SKPath();
 			path.MoveTo(points[0]);
 			for (int n = 1; n < points.Length; n++)
 			{
 				path.LineTo(points[n]);
 			}
 			path.LineTo(points[0]);
+
+			// Return path
+			return path;
+		}
+
+		/// <summary>
+		/// Draws the star into the given Skia Canvas.
+		/// </summary>
+		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
+		public override void Draw(SKCanvas canvas)
+		{
+			// Define path
+			var path = ToPath();
 
 			// Rotated?
 			if (RotationDegrees > 0)

@@ -1028,6 +1028,7 @@ CA
                         <outlet property="FrameInspector" destination="MbT-Uk-x0l" id="oIr-Am-QHi"/>
                         <outlet property="GeneralInfoInspector" destination="rgT-Ax-TTx" id="iK0-0h-MTx"/>
                         <outlet property="GradientInspector" destination="rLH-xp-byH" id="Vc2-1H-voR"/>
+                        <outlet property="GroupInspector" destination="2nf-6x-i3o" id="hze-RM-VXA"/>
                         <outlet property="InspectorScrollView" destination="rWI-tv-DIL" id="ONt-nE-Tg3"/>
                         <outlet property="InspectorView" destination="IdR-Ga-LdV" id="hnz-jD-gRV"/>
                         <outlet property="PolygonInspector" destination="dP7-W3-I2Q" id="dPs-l2-K7e"/>
@@ -1552,6 +1553,59 @@ CA
                         <outlet property="SketchWidth" destination="YTl-3Y-7aH" id="DUc-dz-AnC"/>
                     </connections>
                 </customView>
+                <customView id="2nf-6x-i3o" customClass="KimonoInspectorGroup">
+                    <rect key="frame" x="0.0" y="0.0" width="251" height="63"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Djh-wU-SFo">
+                            <rect key="frame" x="3" y="41" width="214" height="18"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="check" title="Boolean Operation" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jsK-q0-fCb">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="systemBold"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="BooleanChanged:" target="2nf-6x-i3o" id="zJc-L4-vIB"/>
+                            </connections>
+                        </button>
+                        <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r9U-2B-I1D">
+                            <rect key="frame" x="3" y="11" width="240" height="26"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="push" title="Union" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="hUQ-S5-D8U" id="HQN-kV-iZn">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="PKV-dg-AZE">
+                                    <items>
+                                        <menuItem title="Union" state="on" id="hUQ-S5-D8U"/>
+                                        <menuItem title="Intersection" id="YSS-ke-L0Y">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Difference" id="cIe-NW-R8L">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Reverse Difference" id="w00-Mn-6Q4">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Xor" id="90E-hd-Vkg">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="OperationChanged:" target="2nf-6x-i3o" id="SP2-Jc-Ctj"/>
+                            </connections>
+                        </popUpButton>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="qpm-yc-Bkb">
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
+                    </subviews>
+                    <connections>
+                        <outlet property="BooleanCheckbox" destination="Djh-wU-SFo" id="gmO-xY-IjI"/>
+                        <outlet property="Operation" destination="r9U-2B-I1D" id="OBn-dZ-G3c"/>
+                    </connections>
+                </customView>
                 <customView id="G5J-If-2Uz" customClass="KimonoInspectorPaleteColor">
                     <rect key="frame" x="0.0" y="0.0" width="251" height="465"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1700,7 +1754,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-lo-tRM">
-                            <rect key="frame" x="0.0" y="159" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="159" width="251" height="190"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L62-Oq-4jU">
@@ -1741,7 +1795,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mii-uG-pih">
-                            <rect key="frame" x="0.0" y="81" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="81" width="251" height="88"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQd-fs-mha">
@@ -3180,10 +3234,6 @@ CA
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="YLy-sg-6xv">
-                            <rect key="frame" x="0.0" y="4" width="251" height="5"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        </box>
                         <button toolTip="Create new style" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WiS-mB-2eg">
                             <rect key="frame" x="221" y="12" width="24" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -3211,6 +3261,10 @@ CA
                                 <action selector="StyleChanged:" target="IOD-wd-APB" id="waU-kS-jbu"/>
                             </connections>
                         </popUpButton>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="yK4-2g-eKs">
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
                     </subviews>
                     <connections>
                         <outlet property="EditButton" destination="WiS-mB-2eg" id="WO5-Mt-DSt"/>

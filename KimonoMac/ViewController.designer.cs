@@ -55,6 +55,9 @@ namespace KimonoMac
 		KimonoMac.KimonoInspectorGradient GradientInspector { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorGroup GroupInspector { get; set; }
+
+		[Outlet]
 		AppKit.NSScrollView InspectorScrollView { get; set; }
 
 		[Outlet]
@@ -158,9 +161,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (GradientInspector != null) {
-				GradientInspector.Dispose ();
-				GradientInspector = null;
+			if (GroupInspector != null) {
+				GroupInspector.Dispose ();
+				GroupInspector = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -226,6 +229,11 @@ namespace KimonoMac
 			if (GeneralInfoInspector != null) {
 				GeneralInfoInspector.Dispose ();
 				GeneralInfoInspector = null;
+			}
+
+			if (GradientInspector != null) {
+				GradientInspector.Dispose ();
+				GradientInspector = null;
 			}
 
 			if (InspectorScrollView != null) {

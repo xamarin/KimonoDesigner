@@ -240,6 +240,21 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
+		/// Converts the current shape to a path.
+		/// </summary>
+		/// <returns>The shape as a <c>SKPath</c>.</returns>
+		public override SKPath ToPath()
+		{
+			// Construct new path
+			var path = new SKPath();
+
+			// TODO: Convert text block to a set of paths
+
+			// Return path
+			return path;
+		}
+
+		/// <summary>
 		/// Draws the text block into the given Skia Canvas.
 		/// </summary>
 		/// <remarks>TODO: This routine currently breaks line on characters and it needs
