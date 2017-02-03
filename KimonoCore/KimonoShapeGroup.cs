@@ -41,6 +41,12 @@ namespace KimonoCore
 		/// Surface.
 		/// </summary>
 		private SKPoint ToolDownAt = new SKPoint();
+
+		/// <summary>
+		/// If <c>true</c>, the top most shape in the group will act as a mask for the
+		/// shapes below it.
+		/// </summary>
+		private bool _isMaskedGroup = false;
 		#endregion
 
 		#region Computed Properties
@@ -243,6 +249,43 @@ namespace KimonoCore
 		/// </summary>
 		/// <value>The boolean operation as a <c>SKPathOp</c>.</value>
 		public SKPathOp BooleanOperation { get; set; } = SKPathOp.Union;
+
+		/// <summary>
+		/// Gets or sets the <c>KimonoShape</c> that is acting as a mask for this group.
+		/// </summary>
+		/// <value>The mask as a <c>KimonoShape</c>.</value>
+		public KimonoShape Mask { get; set; } = null;
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoShapeGroup"/> is masked group.
+		/// </summary>
+		/// <value><c>true</c> if is masked group; otherwise, <c>false</c>.</value>
+		public bool IsMaskedGroup
+		{
+			get { return _isMaskedGroup; }
+			set
+			{
+				// Masking or unmasking?
+				if (value)
+				{
+					// Perform mask
+					_isMaskedGroup = true;
+
+					// Grab the top most shape
+					Mask = Shapes[Shapes.Count - 1];
+					Mask.Visible = false;
+				}
+				else
+				{
+					// Perform unmask
+					_isMaskedGroup = false;
+
+					// Release mask
+					if (Mask != null) Mask.Visible = true;
+					Mask = null;
+				}
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -1324,6 +1367,14 @@ namespace KimonoCore
 				canvas.RotateDegrees(RotationDegrees, HorizontalCenter, VerticalCenter);
 			}
 
+			// Is masked?
+			if (IsMaskedGroup && (State == KimonoShapeState.Selected || State == KimonoShapeState.Unselected))
+			{
+				// Apply a clipping path
+				canvas.Save();
+				if (Mask !=null) canvas.ClipPath(Mask.ToPath(), SKClipOperation.Intersect, true);
+			}
+
 			// Draw all child shapes
 			if (Visible)
 			{
@@ -1375,6 +1426,13 @@ namespace KimonoCore
 			// draw it as well
 			ShapeUnderConstruction?.Draw(canvas);
 
+			// Is masked?
+			if (IsMaskedGroup && (State == KimonoShapeState.Selected || State == KimonoShapeState.Unselected))
+			{
+				// Release clipping path
+				canvas.Restore();
+			}
+
 			// Draw a bounding box when in the editing mode
 			if (State == KimonoShapeState.Editing)
 			{
@@ -1408,6 +1466,9 @@ namespace KimonoCore
 		{
 			base.StartEditing();
 
+			// If a mask is in place, make it visible
+			if (Mask != null) Mask.Visible = true;
+
 			// Inform caller
 			ParentSketch.RaiseSketchModified();
 			ParentSketch.RaiseSelectionChanged(null);
@@ -1421,6 +1482,9 @@ namespace KimonoCore
 		{
 			DeselectAll();
 			base.EndEditing();
+
+			// If a mask is in place, make it invisible
+			if (Mask != null) Mask.Visible = false;
 
 			// Inform caller
 			ParentSketch.RaiseSketchModified();

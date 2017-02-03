@@ -1,9 +1,11 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/KimonoInspectorRoundRect.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore.Mac/Classes/KimonoDesignSurface.cs">
     <Files>
       <File FileName="KimonoMac/MainWindowController.cs" Line="10" Column="2" />
-      <File FileName="KimonoMac/ViewController.cs" Line="918" Column="60" />
-      <File FileName="KimonoMac/KimonoInspectorRoundRect.cs" Line="98" Column="9" />
+      <File FileName="KimonoMac/ViewController.cs" Line="866" Column="3" />
+      <File FileName="KimonoCore/KimonoShapeGroup.cs" Line="1472" Column="20" />
+      <File FileName="KimonoCore/KimonoSketch.cs" Line="785" Column="3" />
+      <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="344" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

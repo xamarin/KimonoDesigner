@@ -16,10 +16,16 @@ namespace KimonoMac
 		AppKit.NSButton BooleanCheckbox { get; set; }
 
 		[Outlet]
+		AppKit.NSButton MaskCheckbox { get; set; }
+
+		[Outlet]
 		AppKit.NSPopUpButton Operation { get; set; }
 
 		[Action ("BooleanChanged:")]
 		partial void BooleanChanged (Foundation.NSObject sender);
+
+		[Action ("MaskChanged:")]
+		partial void MaskChanged (Foundation.NSObject sender);
 
 		[Action ("OperationChanged:")]
 		partial void OperationChanged (Foundation.NSObject sender);
@@ -34,6 +40,11 @@ namespace KimonoMac
 			if (Operation != null) {
 				Operation.Dispose ();
 				Operation = null;
+			}
+
+			if (MaskCheckbox != null) {
+				MaskCheckbox.Dispose ();
+				MaskCheckbox = null;
 			}
 		}
 	}

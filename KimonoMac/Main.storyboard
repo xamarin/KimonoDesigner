@@ -1579,7 +1579,7 @@ CA
                         <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20T-q0-TmO">
                             <rect key="frame" x="58" y="12" width="142" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="100" doubleValue="5" tickMarkPosition="above" sliderType="linear" id="lbm-C4-WhB"/>
+                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="255" doubleValue="5" tickMarkPosition="above" sliderType="linear" id="lbm-C4-WhB"/>
                             <connections>
                                 <action selector="RadiusChanged:" target="kKL-KR-JcB" id="NmM-Tm-y5m"/>
                             </connections>
@@ -1595,11 +1595,11 @@ CA
                     </connections>
                 </customView>
                 <customView id="2nf-6x-i3o" customClass="KimonoInspectorGroup">
-                    <rect key="frame" x="0.0" y="0.0" width="251" height="63"/>
+                    <rect key="frame" x="0.0" y="0.0" width="251" height="115"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Djh-wU-SFo">
-                            <rect key="frame" x="3" y="41" width="214" height="18"/>
+                            <rect key="frame" x="3" y="93" width="214" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="check" title="Boolean Operation" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jsK-q0-fCb">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1609,8 +1609,19 @@ CA
                                 <action selector="BooleanChanged:" target="2nf-6x-i3o" id="zJc-L4-vIB"/>
                             </connections>
                         </button>
+                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sdU-0j-pFP">
+                            <rect key="frame" x="3" y="33" width="214" height="18"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="check" title="Apply Mask" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="qdl-bT-PDI">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="systemBold"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="MaskChanged:" target="2nf-6x-i3o" id="leW-9Y-tBj"/>
+                            </connections>
+                        </button>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r9U-2B-I1D">
-                            <rect key="frame" x="3" y="11" width="240" height="26"/>
+                            <rect key="frame" x="3" y="63" width="240" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <popUpButtonCell key="cell" type="push" title="Union" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="hUQ-S5-D8U" id="HQN-kV-iZn">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1638,12 +1649,26 @@ CA
                             </connections>
                         </popUpButton>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="qpm-yc-Bkb">
-                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="55" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3gx-0M-KaY">
+                            <rect key="frame" x="18" y="12" width="224" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Convert the top-most shape to a mask" id="j7T-xW-Azo">
+                                <font key="font" metaFont="system" size="10"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="lOj-f8-gUK">
+                            <rect key="frame" x="0.0" y="4" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                     </subviews>
                     <connections>
                         <outlet property="BooleanCheckbox" destination="Djh-wU-SFo" id="gmO-xY-IjI"/>
+                        <outlet property="MaskCheckbox" destination="sdU-0j-pFP" id="zrM-Na-wt3"/>
                         <outlet property="Operation" destination="r9U-2B-I1D" id="OBn-dZ-G3c"/>
                     </connections>
                 </customView>

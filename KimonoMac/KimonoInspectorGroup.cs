@@ -65,6 +65,7 @@ namespace KimonoMac
 			// Update UI
 			BooleanCheckbox.IntValue = (SelectedGroup.IsBooleanConstruct) ? 1 : 0;
 			Operation.Enabled = SelectedGroup.IsBooleanConstruct;
+			MaskCheckbox.IntValue = (SelectedGroup.IsMaskedGroup) ? 1 : 0;
 
 			// Set current operation value
 			switch (SelectedGroup.BooleanOperation)
@@ -102,6 +103,22 @@ namespace KimonoMac
 		#endregion
 
 		#region Custom Actions
+		/// <summary>
+		/// Handles the mask changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void MaskChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save the new value
+			SelectedGroup.IsMaskedGroup = (MaskCheckbox.IntValue == 1);
+
+			// Update UI
+			RaiseGroupModified(SelectedGroup);
+		}
+
 		/// <summary>
 		/// Handles the boolean operation being changed.
 		/// </summary>
