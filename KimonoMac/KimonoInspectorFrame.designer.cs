@@ -100,6 +100,18 @@ namespace KimonoMac
 		AppKit.NSTextField HorizontalBlurValue { get; set; }
 
 		[Outlet]
+		AppKit.NSSlider HorizontalShadowBlurSlider { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField HorizontalShadowBlurValue { get; set; }
+
+		[Outlet]
+		AppKit.NSSlider HorizontalShadowOffsetSlider { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField HorizontalShadowOffsetValue { get; set; }
+
+		[Outlet]
 		AppKit.NSButton JitterCheckbox { get; set; }
 
 		[Outlet]
@@ -115,6 +127,9 @@ namespace KimonoMac
 		AppKit.NSPopUpButton LinkedColorSelector { get; set; }
 
 		[Outlet]
+		AppKit.NSPopUpButton LinkedShadowColor { get; set; }
+
+		[Outlet]
 		AppKit.NSSlider MiterSlider { get; set; }
 
 		[Outlet]
@@ -127,10 +142,34 @@ namespace KimonoMac
 		AppKit.NSTextField OpacityValue { get; set; }
 
 		[Outlet]
+		AppKit.NSButton ShadowCheckbox { get; set; }
+
+		[Outlet]
+		AppKit.NSColorWell ShadowColor { get; set; }
+
+		[Outlet]
+		AppKit.NSSlider ShadowOpacitySlider { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField ShadowOpacityValue { get; set; }
+
+		[Outlet]
 		AppKit.NSSlider VerticalBlurSlider { get; set; }
 
 		[Outlet]
 		AppKit.NSTextField VerticalBlurValue { get; set; }
+
+		[Outlet]
+		AppKit.NSSlider VerticalShadowBlurSlider { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField VerticalShadowBlurValue { get; set; }
+
+		[Outlet]
+		AppKit.NSSlider VerticalShadowOffsetSlider { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField VerticalShadowOffsetValue { get; set; }
 
 		[Outlet]
 		AppKit.NSSlider WidthSlider { get; set; }
@@ -219,6 +258,12 @@ namespace KimonoMac
 		[Action ("HorizontalBlurChanged:")]
 		partial void HorizontalBlurChanged (Foundation.NSObject sender);
 
+		[Action ("HorizontalShadowBlurChanged:")]
+		partial void HorizontalShadowBlurChanged (Foundation.NSObject sender);
+
+		[Action ("HorizontalShadowOffsetChanged:")]
+		partial void HorizontalShadowOffsetChanged (Foundation.NSObject sender);
+
 		[Action ("JitterChanged:")]
 		partial void JitterChanged (Foundation.NSObject sender);
 
@@ -231,20 +276,103 @@ namespace KimonoMac
 		[Action ("LinkedColorChanged:")]
 		partial void LinkedColorChanged (Foundation.NSObject sender);
 
+		[Action ("LinkedShadowColorChanged:")]
+		partial void LinkedShadowColorChanged (Foundation.NSObject sender);
+
 		[Action ("MiterChanged:")]
 		partial void MiterChanged (Foundation.NSObject sender);
 
 		[Action ("OpacityChanged:")]
 		partial void OpacityChanged (Foundation.NSObject sender);
 
+		[Action ("ShadowChanged:")]
+		partial void ShadowChanged (Foundation.NSObject sender);
+
+		[Action ("ShadowColorChanged:")]
+		partial void ShadowColorChanged (Foundation.NSObject sender);
+
+		[Action ("ShadowOpacityChanged:")]
+		partial void ShadowOpacityChanged (Foundation.NSObject sender);
+
 		[Action ("VerticalBlurChanged:")]
 		partial void VerticalBlurChanged (Foundation.NSObject sender);
+
+		[Action ("VerticalShadowBlurChanged:")]
+		partial void VerticalShadowBlurChanged (Foundation.NSObject sender);
+
+		[Action ("VerticalShadowOffsetChanged:")]
+		partial void VerticalShadowOffsetChanged (Foundation.NSObject sender);
 
 		[Action ("WidthChanged:")]
 		partial void WidthChanged (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ShadowCheckbox != null) {
+				ShadowCheckbox.Dispose ();
+				ShadowCheckbox = null;
+			}
+
+			if (ShadowColor != null) {
+				ShadowColor.Dispose ();
+				ShadowColor = null;
+			}
+
+			if (LinkedShadowColor != null) {
+				LinkedShadowColor.Dispose ();
+				LinkedShadowColor = null;
+			}
+
+			if (ShadowOpacitySlider != null) {
+				ShadowOpacitySlider.Dispose ();
+				ShadowOpacitySlider = null;
+			}
+
+			if (ShadowOpacityValue != null) {
+				ShadowOpacityValue.Dispose ();
+				ShadowOpacityValue = null;
+			}
+
+			if (HorizontalShadowOffsetSlider != null) {
+				HorizontalShadowOffsetSlider.Dispose ();
+				HorizontalShadowOffsetSlider = null;
+			}
+
+			if (HorizontalShadowOffsetValue != null) {
+				HorizontalShadowOffsetValue.Dispose ();
+				HorizontalShadowOffsetValue = null;
+			}
+
+			if (VerticalShadowOffsetSlider != null) {
+				VerticalShadowOffsetSlider.Dispose ();
+				VerticalShadowOffsetSlider = null;
+			}
+
+			if (VerticalShadowOffsetValue != null) {
+				VerticalShadowOffsetValue.Dispose ();
+				VerticalShadowOffsetValue = null;
+			}
+
+			if (HorizontalShadowBlurSlider != null) {
+				HorizontalShadowBlurSlider.Dispose ();
+				HorizontalShadowBlurSlider = null;
+			}
+
+			if (HorizontalShadowBlurValue != null) {
+				HorizontalShadowBlurValue.Dispose ();
+				HorizontalShadowBlurValue = null;
+			}
+
+			if (VerticalShadowBlurSlider != null) {
+				VerticalShadowBlurSlider.Dispose ();
+				VerticalShadowBlurSlider = null;
+			}
+
+			if (VerticalShadowBlurValue != null) {
+				VerticalShadowBlurValue.Dispose ();
+				VerticalShadowBlurValue = null;
+			}
+
 			if (AddColorButton != null) {
 				AddColorButton.Dispose ();
 				AddColorButton = null;
@@ -258,6 +386,11 @@ namespace KimonoMac
 			if (BlendMode != null) {
 				BlendMode.Dispose ();
 				BlendMode = null;
+			}
+
+			if (BlurCheckbox != null) {
+				BlurCheckbox.Dispose ();
+				BlurCheckbox = null;
 			}
 
 			if (Dash1 != null) {
@@ -375,6 +508,16 @@ namespace KimonoMac
 				GradientDropdown = null;
 			}
 
+			if (HorizontalBlurSlider != null) {
+				HorizontalBlurSlider.Dispose ();
+				HorizontalBlurSlider = null;
+			}
+
+			if (HorizontalBlurValue != null) {
+				HorizontalBlurValue.Dispose ();
+				HorizontalBlurValue = null;
+			}
+
 			if (JitterCheckbox != null) {
 				JitterCheckbox.Dispose ();
 				JitterCheckbox = null;
@@ -420,31 +563,6 @@ namespace KimonoMac
 				OpacityValue = null;
 			}
 
-			if (WidthSlider != null) {
-				WidthSlider.Dispose ();
-				WidthSlider = null;
-			}
-
-			if (WidthValue != null) {
-				WidthValue.Dispose ();
-				WidthValue = null;
-			}
-
-			if (BlurCheckbox != null) {
-				BlurCheckbox.Dispose ();
-				BlurCheckbox = null;
-			}
-
-			if (HorizontalBlurSlider != null) {
-				HorizontalBlurSlider.Dispose ();
-				HorizontalBlurSlider = null;
-			}
-
-			if (HorizontalBlurValue != null) {
-				HorizontalBlurValue.Dispose ();
-				HorizontalBlurValue = null;
-			}
-
 			if (VerticalBlurSlider != null) {
 				VerticalBlurSlider.Dispose ();
 				VerticalBlurSlider = null;
@@ -453,6 +571,16 @@ namespace KimonoMac
 			if (VerticalBlurValue != null) {
 				VerticalBlurValue.Dispose ();
 				VerticalBlurValue = null;
+			}
+
+			if (WidthSlider != null) {
+				WidthSlider.Dispose ();
+				WidthSlider = null;
+			}
+
+			if (WidthValue != null) {
+				WidthValue.Dispose ();
+				WidthValue = null;
 			}
 		}
 	}

@@ -1,10 +1,10 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/KimonoShadow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/KimonoInspectorFill.cs">
     <Files>
-      <File FileName="KimonoMac/MainWindowController.cs" Line="1" Column="1" />
+      <File FileName="KimonoMac/MainWindowController.cs" Line="41" Column="17" />
       <File FileName="KimonoMac/ViewController.cs" Line="1258" Column="4" />
-      <File FileName="KimonoCore/KimonoShadow.cs" Line="142" Column="3" />
       <File FileName="KimonoMac/KimonoInspectorFill.cs" Line="437" Column="34" />
+      <File FileName="KimonoMac/KimonoInspectorFrame.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
