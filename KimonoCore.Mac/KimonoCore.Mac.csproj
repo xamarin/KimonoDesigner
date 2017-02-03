@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="License.txt" />
   </ItemGroup>
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" Condition="Exists('..\KimonoCore\KimonoCore.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />

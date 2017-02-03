@@ -40,4 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)KimonoBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoShadow.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)License.txt" />
+  </ItemGroup>
 </Project>

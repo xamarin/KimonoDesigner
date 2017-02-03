@@ -110,11 +110,6 @@ namespace KimonoMac
 			return (_position < _items.Count);
 		}
 
-		/// <Docs>The collection was modified after the enumerator was instantiated.</Docs>
-		/// <attribution license="cc4" from="Microsoft" modified="false"></attribution>
-		/// <see cref="M:System.Collections.IEnumerator.MoveNext"></see>
-		/// <see cref="M:System.Collections.IEnumerator.Reset"></see>
-		/// <see cref="T:System.InvalidOperationException"></see>
 		/// <summary>
 		/// Reset this instance.
 		/// </summary>
