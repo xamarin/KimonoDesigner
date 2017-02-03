@@ -5,7 +5,7 @@
       <File FileName="KimonoMac/ViewController.cs" Line="866" Column="3" />
       <File FileName="KimonoCore/KimonoShapeGroup.cs" Line="1472" Column="20" />
       <File FileName="KimonoCore/KimonoSketch.cs" Line="785" Column="3" />
-      <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="344" Column="13" />
+      <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="419" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
