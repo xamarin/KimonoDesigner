@@ -1670,6 +1670,12 @@ namespace KimonoCore
 		#endregion
 
 		#region Tool Events
+		// -----------------------------------------------------------------------------------------------------
+		// NOTICE:
+		// Changes to the code in the <c>KimonoShapeGroup<c> Tool Events will also need to be made to the 
+		// <c>KimonoSketch<c>'s Tool Events section as well.
+		// -----------------------------------------------------------------------------------------------------
+
 		/// <summary>
 		/// Handles the user placing the current <c>KimonoTool</c> down on the group's
 		/// Design Surface.
@@ -1860,6 +1866,29 @@ namespace KimonoCore
 					IgnoreDrag = true;
 					break;
 				case KimonoTool.Bezier:
+					// Save undo point
+					ParentSketch.RaiseRequestNewUndoPoint();
+
+					if (ShapeUnderConstruction == null)
+					{
+						var bezier = new KimonoShapeBezier(point.X, point.Y, point.X, point.Y, KimonoShapeState.Editing);
+						bezier.AddPoint(point);
+						ShapeUnderConstruction = bezier;
+					}
+					else
+					{
+						var bezier = ShapeUnderConstruction as KimonoShapeBezier;
+						if (clicks == 2)
+						{
+							// Closing vector shape
+							bezier.State = KimonoShapeState.Finalizing;
+						}
+						else
+						{
+							bezier.AddPoint(point);
+						}
+					}
+					IgnoreDrag = true;
 					break;
 				case KimonoTool.Text:
 					ShapeUnderConstruction = new KimonoShapeText(point.X, point.Y, point.X, point.Y, KimonoShapeState.Selected);
@@ -1931,6 +1960,13 @@ namespace KimonoCore
 				case KimonoTool.Cursor:
 					break;
 				case KimonoTool.Vector:
+					if (ShapeUnderConstruction.State == KimonoShapeState.Finalizing)
+					{
+						ShapeUnderConstruction.EndEditing();
+						addShape = true;
+					}
+					break;
+				case KimonoTool.Bezier:
 					if (ShapeUnderConstruction.State == KimonoShapeState.Finalizing)
 					{
 						ShapeUnderConstruction.EndEditing();

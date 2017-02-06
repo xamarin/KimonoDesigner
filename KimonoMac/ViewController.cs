@@ -251,6 +251,10 @@ namespace KimonoMac
 				else if (shape is KimonoShapeGroup)
 				{
 					ShapesList.AddItem(shape.Name, "IconGroup", () => { DesignSurface.SelectedSketch.SelectShape(shape); });
+				} 
+				else if (shape is KimonoShapeBezier)
+				{
+					ShapesList.AddItem(shape.Name, "IconBezier", () => { DesignSurface.SelectedSketch.SelectShape(shape); });
 				}
 			}
 		}
@@ -314,6 +318,10 @@ namespace KimonoMac
 				else if (shape is KimonoShapeGroup)
 				{
 					ShapesList.AddItem(shape.Name, "IconGroup", () => { group.SelectShape(shape); });
+				}
+				else if (shape is KimonoShapeBezier)
+				{
+					ShapesList.AddItem(shape.Name, "IconBezier", () => { group.SelectShape(shape); });
 				}
 			}
 		}

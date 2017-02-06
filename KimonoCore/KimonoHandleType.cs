@@ -22,6 +22,12 @@ namespace KimonoCore
 		/// <summary>
 		/// Defines the position of a gradient in a shape object.
 		/// </summary>
-		GradientPosition
+		GradientPosition,
+
+		/// <summary>
+		/// Defines the control point for a <c>KimonoShapeBezier</c> end point
+		/// used to adjust the curve of a bezier quad section.
+		/// </summary>
+		BezierControlPoint
 	}
 }

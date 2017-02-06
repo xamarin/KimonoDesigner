@@ -11,7 +11,7 @@ This app is very much a work-in-progress and still has several rough areas and m
 
 As a result, it is quite easy to make the running app crash. For example, shift-drag and deleting all of the sketches from a Portfolio. Other features are "broadly" implemented and will behave oddly based on what the user does while running the app. For example, setting names to "" (empty string) or given **Colors** or **Gradients** the same, non-unique name.
 
-This known issues will all be solved in the finished apps (editors are planned on all Xamarin/Windows platforms). For now the app is definitely use at your own risk!
+These known issues will all be solved in the finished apps (editors are planned on all Xamarin/Windows platforms). For now the app is definitely use at your own risk!
 
 ## About this Project
 

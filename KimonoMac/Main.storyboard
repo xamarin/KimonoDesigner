@@ -235,6 +235,9 @@ CA
                                         </menuItem>
                                         <menuItem title="Bezier" keyEquivalent="b" id="CrM-14-2VM">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="ToolBezierSelected:" target="Ady-hI-5gd" id="eNN-sU-5pA"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Text" keyEquivalent="t" id="Est-ZY-X14">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -730,7 +733,7 @@ CA
                                         <button toolTip="Bezier Tool" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JkN-m4-G9L">
                                             <rect key="frame" x="2" y="124" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="IconBezier" imagePosition="overlaps" alignment="center" enabled="NO" imageScaling="proportionallyUpOrDown" inset="2" id="C5l-oz-vLV">
+                                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="IconBezier" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="C5l-oz-vLV">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -1861,7 +1864,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mii-uG-pih">
-                            <rect key="frame" x="0.0" y="81" width="251" height="179"/>
+                            <rect key="frame" x="0.0" y="81" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQd-fs-mha">
@@ -2152,7 +2155,7 @@ CA
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Jot-6P-EuA">
-                            <rect key="frame" x="1" y="145" width="251" height="98"/>
+                            <rect key="frame" x="1" y="145" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zyJ-3C-9bf" customClass="KimonoGradientDesignBar">
@@ -2266,7 +2269,7 @@ CA
                             </connections>
                         </popUpButton>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="hZg-UT-K54">
-                            <rect key="frame" x="1" y="110" width="251" height="5"/>
+                            <rect key="frame" x="1" y="110" width="251" height="4"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PKW-Y9-egv">
@@ -3085,7 +3088,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="tn3-SL-EKX">
-                            <rect key="frame" x="0.0" y="258" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="258" width="251" height="4"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="DpU-Y6-d6K">

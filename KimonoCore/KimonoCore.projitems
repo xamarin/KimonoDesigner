@@ -39,6 +39,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)KimonoHandleType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoShadow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoBezierPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeBezier.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

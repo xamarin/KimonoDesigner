@@ -208,7 +208,14 @@ namespace KimonoCore
 			}
 
 			// Draw inside of handle
-			canvas.DrawRect(rect, paint);
+			if (HandleType == KimonoHandleType.BezierControlPoint)
+			{
+				canvas.DrawOval(rect, paint);
+			}
+			else
+			{
+				canvas.DrawRect(rect, paint);
+			}
 
 			// Draw handle frame
 			paint.Style = SKPaintStyle.Stroke;
@@ -227,7 +234,16 @@ namespace KimonoCore
 					paint.Color = KimonoColor.Aqua;
 					break;
 			}
-			canvas.DrawRect(rect, paint);
+
+			// Draw frame of handle
+			if (HandleType == KimonoHandleType.BezierControlPoint)
+			{
+				canvas.DrawOval(rect, paint);
+			}
+			else
+			{
+				canvas.DrawRect(rect, paint);
+			}
 		}
 
 		/// <summary>
