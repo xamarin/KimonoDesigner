@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/KimonoShapeBezier.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/KimonoShapeGroup.cs">
     <Files>
-      <File FileName="KimonoMac/MainWindowController.cs" Line="21" Column="39" />
-      <File FileName="KimonoMac/ViewController.cs" Line="1582" Column="16" />
-      <File FileName="KimonoCore/KimonoShapeBezier.cs" Line="554" Column="1" />
+      <File FileName="KimonoMac/MainWindowController.cs" Line="5" Column="17" />
+      <File FileName="KimonoMac/ViewController.cs" Line="23" Column="16" />
+      <File FileName="KimonoCore/KimonoShapeGroup.cs" Line="1977" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

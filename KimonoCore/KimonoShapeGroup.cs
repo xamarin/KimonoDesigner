@@ -938,6 +938,14 @@ namespace KimonoCore
 			{
 				// Remove the shape from the sketch
 				sketch.Shapes.Remove(shape);
+
+				// Is this shape a group?
+				if (shape is KimonoShapeGroup)
+				{
+					// Yes, adjust its parent to be this group
+					var group = shape as KimonoShapeGroup;
+					group.Parent = this;
+				}
 			}
 
 			// Convert group to a collection and add
@@ -974,6 +982,14 @@ namespace KimonoCore
 			{
 				// Remove the shape from the group
 				group.Shapes.Remove(shape);
+
+				// Is this shape a group?
+				if (shape is KimonoShapeGroup)
+				{
+					// Yes, adjust its parent to be this group
+					var subGroup = shape as KimonoShapeGroup;
+					subGroup.Parent = this;
+				}
 			}
 
 			// Convert group to a collection and add
