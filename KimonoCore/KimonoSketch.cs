@@ -389,6 +389,54 @@ namespace KimonoCore
 
 		#region Public Methods
 		/// <summary>
+		/// Removes the property connection.
+		/// </summary>
+		/// <param name="connection">The `KimonoPropertyConnection` to remove.</param>
+		public void RemovePropertyConnection(KimonoPropertyConnection connection)
+		{
+			// Process all shapes
+			foreach (KimonoShape shape in Shapes)
+			{
+				// Is this a sub group?
+				if (shape is KimonoShapeGroup)
+				{
+					// Yes, remove from sub group
+					var group = shape as KimonoShapeGroup;
+					group.RemovePropertyConnection(connection);
+				}
+				else
+				{
+					// No, remove directly from shape
+					shape.RemovePropertyConnection(connection);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Removes any connection using this property.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to remove.</param>
+		public void RemoveProperty(KimonoProperty property)
+		{
+			// Process all shapes
+			foreach (KimonoShape shape in Shapes)
+			{
+				// Is this a sub group?
+				if (shape is KimonoShapeGroup)
+				{
+					// Yes, remove from sub group
+					var group = shape as KimonoShapeGroup;
+					group.RemoveProperty(property);
+				}
+				else
+				{
+					// No, remove directly from shape
+					shape.RemoveProperty(property);
+				}
+			}
+		}
+
+		/// <summary>
 		/// Finds the shape specified by its unique ID.
 		/// </summary>
 		/// <returns>If found, the <c>KimonoShape</c> will be returned, else <c>null</c>.</returns>

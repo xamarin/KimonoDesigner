@@ -39,6 +39,36 @@ namespace KimonoCore
 		/// <remarks>A Streamlined Arrow, is drawn as a single line.</remarks>
 		/// <value><c>true</c> if is streamlined; otherwise, <c>false</c>.</value>
 		public bool IsStreamlined { get; set; } = false;
+
+		/// <summary>
+		/// Gets the possible connection points that a `KimonoProperty` can be connected to this
+		/// `KimonoShape`.
+		/// </summary>
+		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		public override KimonoPropertyConnectionPoint[] ConnectionPoints
+		{
+			get
+			{
+				// Return available connection points
+				return new KimonoPropertyConnectionPoint[] {
+					KimonoPropertyConnectionPoint.Rect,
+					KimonoPropertyConnectionPoint.Top,
+					KimonoPropertyConnectionPoint.Left,
+					KimonoPropertyConnectionPoint.Bottom,
+					KimonoPropertyConnectionPoint.Right,
+					KimonoPropertyConnectionPoint.Width,
+					KimonoPropertyConnectionPoint.Height,
+					KimonoPropertyConnectionPoint.RotationDegrees,
+					KimonoPropertyConnectionPoint.Style,
+					KimonoPropertyConnectionPoint.Visible,
+					KimonoPropertyConnectionPoint.HasStartHead,
+					KimonoPropertyConnectionPoint.HasEndHead,
+					KimonoPropertyConnectionPoint.HeadInnerRatio,
+					KimonoPropertyConnectionPoint.HeadOuterRatio,
+					KimonoPropertyConnectionPoint.IsStreamlined
+				};
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -87,11 +117,46 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
+		/// Updates a `KimonoPropertyConnectionPoint` on this `KimonoShape` with the results
+		/// of a Obi Script run on an attached `KimonoProperty`.
+		/// </summary>
+		/// <param name="connection">Connection.</param>
+		public override void UpdatePropertyConnectionPoint(KimonoPropertyConnection connection)
+		{
+
+			// Take action based on the connection point
+			switch (connection.ConnectionPoint)
+			{
+				case KimonoPropertyConnectionPoint.HasStartHead:
+					HasStartHead = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.HasEndHead:
+					HasEndHead = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.HeadInnerRatio:
+					HeadInnerRatio = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.HeadOuterRatio:
+					HeadOuterRatio = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.IsStreamlined:
+					IsStreamlined = connection.ConnectedProperty.ToBool();
+					break;
+				default:
+					base.UpdatePropertyConnectionPoint(connection);
+					break;
+			}
+		}
+
+		/// <summary>
 		/// Converts the arrow to a path.
 		/// </summary>
 		/// <returns>The the arrow as a <c>SKPath</c>.</returns>
 		public override SKPath ToPath()
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Define path
 			var path = new SKPath();
 			var innerSize = Width * (HeadInnerRatio * .01f);

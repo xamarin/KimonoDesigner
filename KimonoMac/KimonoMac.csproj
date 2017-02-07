@@ -205,6 +205,12 @@
     <ImageAsset Include="Assets.xcassets\KimonoLogo.imageset\Kimono Icon.png" />
     <ImageAsset Include="Assets.xcassets\Icons8Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Icons8Logo.imageset\Icons8.png" />
+    <ImageAsset Include="Assets.xcassets\IconProperty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconProperty.imageset\Price Tag Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconAddProperty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAddProperty.imageset\Add Tag Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconDeleteProperty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDeleteProperty.imageset\Remove Tag Filled-50.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -279,6 +285,9 @@
     <Folder Include="Assets.xcassets\IconAddGradient.imageset\" />
     <Folder Include="Assets.xcassets\KimonoLogo.imageset\" />
     <Folder Include="Assets.xcassets\Icons8Logo.imageset\" />
+    <Folder Include="Assets.xcassets\IconProperty.imageset\" />
+    <Folder Include="Assets.xcassets\IconAddProperty.imageset\" />
+    <Folder Include="Assets.xcassets\IconDeleteProperty.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

@@ -55,6 +55,12 @@ namespace KimonoCore
 		public List<KimonoGradient> Gradients { get; set; } = new List<KimonoGradient>();
 
 		/// <summary>
+		/// Gets or sets the properties.
+		/// </summary>
+		/// <value>The properties.</value>
+		public List<KimonoProperty> Properties { get; set; } = new List<KimonoProperty>();
+
+		/// <summary>
 		/// Gets or sets the selected sketch.
 		/// </summary>
 		/// <value>The selected sketch.</value>
@@ -131,6 +137,24 @@ namespace KimonoCore
 			{
 				// Found?
 				if (color.UniqueID == uniqueID) return color;
+			}
+
+			// Not found
+			return null;
+		}
+
+		/// <summary>
+		/// Finds the given `KimonoProperty` by its unique ID.
+		/// </summary>
+		/// <returns>The `KimonoProperty` if founs, else `null`.</returns>
+		/// <param name="uniqueID">Unique identifier.</param>
+		public KimonoProperty FindProperty(string uniqueID)
+		{
+			// Scan all properties
+			foreach (KimonoProperty property in Properties)
+			{
+				// Found?
+				if (property.UniqueID == uniqueID) return property;
 			}
 
 			// Not found
@@ -297,6 +321,120 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Adds a new boolean property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyBoolean`.</returns>
+		public KimonoPropertyBoolean AddPropertyBoolean()
+		{
+			// Add property
+			var property = new KimonoPropertyBoolean();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds a new color property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyColor`.</returns>
+		public KimonoPropertyColor AddPropertyColor()
+		{
+			// Add property
+			var property = new KimonoPropertyColor();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds a new gradient property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyGradient`.</returns>
+		public KimonoPropertyGradient AddPropertyGradient()
+		{
+			// Add property
+			var property = new KimonoPropertyGradient();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds a new number property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyNumber`.</returns>
+		public KimonoPropertyNumber AddPropertyNumber()
+		{
+			// Add property
+			var property = new KimonoPropertyNumber();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds a new rect property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyRect`.</returns>
+		public KimonoPropertyRect AddPropertyRect()
+		{
+			// Add property
+			var property = new KimonoPropertyRect();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds a new style property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyStyle`.</returns>
+		public KimonoPropertyStyle AddPropertyStyle()
+		{
+			// Add property
+			var property = new KimonoPropertyStyle();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds a new text property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyText`.</returns>
+		public KimonoPropertyText AddPropertyText()
+		{
+			// Add property
+			var property = new KimonoPropertyText();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
+		/// Adds the given `KimonoProperty` to this portfolio
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to add.</param>
+		public void AddNewProperty(KimonoProperty property)
+		{
+			// Save undo point
+			RaiseRequestNewUndoPoint();
+
+			// And new property
+			Properties.Add(property);
+
+			// Update UI
+			RaisePropertyModified(property);
+		}
+
+		/// <summary>
 		/// Duplicates the given <c>KimonoColor</c> and adds it to the portfolio's collection
 		/// of colors.
 		/// </summary>
@@ -315,6 +453,21 @@ namespace KimonoCore
 			RaiseColorsModified(newColor);
 		}
 
+		/// <summary>
+		/// Duplicates the given property.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to duplicate.</param>
+		public void DuplicateProperty(KimonoProperty property)
+		{
+			// Make clone
+			var newProperty = property.Clone();
+			AddNewProperty(newProperty);
+		}
+
+		/// <summary>
+		/// Duplicates the gradient.
+		/// </summary>
+		/// <param name="gradient">The `KimonoGradient` to duplicate.</param>
 		public void DuplicateGradient(KimonoGradient gradient)
 		{
 			// Save undo point
@@ -441,6 +594,43 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Deletes the given property.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to delete.</param>
+		public void DeleteProperty(KimonoProperty property)
+		{
+			// Save undo point
+			RaiseRequestNewUndoPoint();
+
+			// Remove property
+			Properties.Remove(property);
+			RaisePropertyModified(null);
+
+			// Unlink property from any color that might have been
+			// using it
+			foreach (KimonoColor color in Colors)
+			{
+				color.RemoveProperty(property);
+			}
+
+			// Unlink gradient from any style that might have been
+			// using it
+			foreach (KimonoStyle style in Styles)
+			{
+				style.RemoveProperty(property);
+			}
+
+			// Scan all objects for the style being removed
+			foreach (KimonoSketch sketch in Sketches)
+			{
+				sketch.RemoveProperty(property);
+			}
+
+			// Update UI
+			RaiseSelectedShapeChanged(SelectedSketch.SelectedShape);
+		}
+
+		/// <summary>
 		/// Adds the a new <c>KimonoStyle</c> to the portfolio.
 		/// </summary>
 		public void AddNewStyle()
@@ -543,6 +733,12 @@ namespace KimonoCore
 			{
 				// Relink if needed
 				if (color.BaseColor != null) color.BaseColor = FindColor(color.UniqueID);
+
+				// Relink properties
+				foreach (KimonoPropertyConnection connection in color.PropertyConnections)
+				{
+					if (connection.ConnectedProperty != null) connection.ConnectedProperty = FindProperty(connection.ConnectedProperty.UniqueID);
+				}
 			}
 		}
 
@@ -572,6 +768,12 @@ namespace KimonoCore
 			if (style.FrameGradient != null) style.FrameGradient = FindGradient(style.FrameGradient.UniqueID);
 			if (style.FrameShadow.LinkedColor != null) style.FrameShadow.LinkedColor = FindColor(style.FrameShadow.LinkedColor.UniqueID);
 			if (style.FillShadow.LinkedColor != null) style.FillShadow.LinkedColor = FindColor(style.FillShadow.LinkedColor.UniqueID);
+		
+			// Relink properties
+			foreach (KimonoPropertyConnection connection in style.PropertyConnections)
+			{
+				if (connection.ConnectedProperty != null) connection.ConnectedProperty = FindProperty(connection.ConnectedProperty.UniqueID);
+			}
 		}
 
 		/// <summary>
@@ -591,6 +793,12 @@ namespace KimonoCore
 				shape.Style = FindStyle(shape.Style.UniqueID);
 			}
 
+			// Relink properties
+			foreach (KimonoPropertyConnection connection in shape.PropertyConnections)
+			{
+				if (connection.ConnectedProperty != null) connection.ConnectedProperty = FindProperty(connection.ConnectedProperty.UniqueID);
+			}
+
 			// Is the shape a group
 			if (shape is KimonoShapeGroup)
 			{
@@ -599,6 +807,7 @@ namespace KimonoCore
 				// Process all child shapes in the group
 				foreach (KimonoShape subshape in group.Shapes)
 				{
+					// Link subshape
 					RelinkShape(subshape);
 				}
 			}
@@ -639,6 +848,12 @@ namespace KimonoCore
 				NewSketchNumber = this.NewSketchNumber,
 				SelectedSketch = this.SelectedSketch
 			};
+
+			// Clone properties
+			foreach (KimonoProperty property in Properties)
+			{
+				newPortfolio.Properties.Add(property.Clone());
+			}
 
 			// Clone colors
 			foreach (KimonoColor color in Colors)
@@ -716,6 +931,21 @@ namespace KimonoCore
 		/// Occurs when gradients collection is modified.
 		/// </summary>
 		public event Kimono.GradientEventDelegate GradientsModified;
+
+		/// <summary>
+		/// Occurs when property collection is modified.
+		/// </summary>
+		public event Kimono.PropertyEventDelegate PropertyModified;
+
+		/// <summary>
+		/// Raises the property modified event.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` that was modified.</param>
+		internal void RaisePropertyModified(KimonoProperty property)
+		{
+			// Inform caller of event
+			if (PropertyModified != null) PropertyModified(property);
+		}
 
 		/// <summary>
 		/// Raises the gradients modified event.

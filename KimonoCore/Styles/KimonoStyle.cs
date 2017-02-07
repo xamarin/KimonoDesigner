@@ -759,6 +759,67 @@ namespace KimonoCore
 		/// </summary>
 		/// <value>The dash pattern.</value>
 		public bool[] DashPattern { get; set; } = { true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false };
+
+		/// <summary>
+		/// Gets the possible connection points that a `KimonoProperty` can be connected to this
+		/// `KimonoStyle`.
+		/// </summary>
+		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		public virtual KimonoPropertyConnectionPoint[] ConnectionPoints
+		{
+			get
+			{
+				// Return available connection points
+				return new KimonoPropertyConnectionPoint[] {
+					KimonoPropertyConnectionPoint.HasFrame,
+					KimonoPropertyConnectionPoint.HasFrameBlur,
+					KimonoPropertyConnectionPoint.FrameHorizontalBlurAmount,
+					KimonoPropertyConnectionPoint.FrameVerticalBlurAmount,
+					KimonoPropertyConnectionPoint.HasFrameShadow,
+					KimonoPropertyConnectionPoint.FrameShadowHorizontalOffset,
+					KimonoPropertyConnectionPoint.FrameShadowVerticalOffset,
+					KimonoPropertyConnectionPoint.FrameShadowHorizontalBlurAmount,
+					KimonoPropertyConnectionPoint.FrameShadowVerticalBlurAmount,
+					KimonoPropertyConnectionPoint.FrameShadowLinkedColor,
+					KimonoPropertyConnectionPoint.HasFill,
+					KimonoPropertyConnectionPoint.HasFillBlur,
+					KimonoPropertyConnectionPoint.FillHorizontalBlurAmount,
+					KimonoPropertyConnectionPoint.FillVerticalBlurAmount,
+					KimonoPropertyConnectionPoint.HasFillShadow,
+					KimonoPropertyConnectionPoint.FillShadowHorizontalOffset,
+					KimonoPropertyConnectionPoint.FillShadowVerticalOffset,
+					KimonoPropertyConnectionPoint.FillShadowHorizontalBlurAmount,
+					KimonoPropertyConnectionPoint.FillShadowVerticalBlurAmount,
+					KimonoPropertyConnectionPoint.FillShadowLinkedColor,
+					KimonoPropertyConnectionPoint.FrameColor,
+					KimonoPropertyConnectionPoint.FrameGradient,
+					KimonoPropertyConnectionPoint.FillColor,
+					KimonoPropertyConnectionPoint.FillGradient,
+					KimonoPropertyConnectionPoint.IsVerticalText,
+					KimonoPropertyConnectionPoint.StrikeThruText,
+					KimonoPropertyConnectionPoint.TextScaleX,
+					KimonoPropertyConnectionPoint.TextSize,
+					KimonoPropertyConnectionPoint.TextSkewX,
+					KimonoPropertyConnectionPoint.FontFamilyName,
+					KimonoPropertyConnectionPoint.UnderlineText,
+					KimonoPropertyConnectionPoint.HasFrameJitter,
+					KimonoPropertyConnectionPoint.FrameJitterLength,
+					KimonoPropertyConnectionPoint.FrameJitterDeviation,
+					KimonoPropertyConnectionPoint.HasFillJitter,
+					KimonoPropertyConnectionPoint.FillJitterLength,
+					KimonoPropertyConnectionPoint.FillJitterDeviation,
+					KimonoPropertyConnectionPoint.HasFrameDash
+				};
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the list of `KimonoProperty` objects connected to the various 
+		/// `KimonoPropertyConnectionPoint`s that will need to be evaulated before drawing
+		/// this `KimonoShape`.
+		/// </summary>
+		/// <value>The property connections.</value>
+		public List<KimonoPropertyConnection> PropertyConnections { get; set; } = new List<KimonoPropertyConnection>();
 		#endregion
 
 		#region Constructors
@@ -992,6 +1053,214 @@ namespace KimonoCore
 
 		#region Public Methods
 		/// <summary>
+		/// Connects the given `KimonoProperty` to the given `KimonoPropertyConnectionPoint` on
+		/// this `KimonoStyle`.
+		/// </summary>
+		/// <param name="connectionPoint">The `KimonoPropertyConnectionPoint` to connect to.</param>
+		/// <param name="property">The `KimonoProperty` to connect.</param>
+		public virtual void AddPropertyConnection(KimonoPropertyConnectionPoint connectionPoint, KimonoProperty property)
+		{
+			// Is this connection point already used?
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Found?
+				if (connection.ConnectionPoint == connectionPoint)
+				{
+					// Yes, replace the connected property
+					connection.ConnectedProperty = property;
+					return;
+				}
+			}
+
+			// Not found, add
+			PropertyConnections.Add(new KimonoPropertyConnection(connectionPoint, property));
+		}
+
+		/// <summary>
+		/// Removes the property connection.
+		/// </summary>
+		/// <param name="connection">The `KimonoPropertyConnection` to remove.</param>
+		public virtual void RemovePropertyConnection(KimonoPropertyConnection connection)
+		{
+			// Remove the connection from the collection
+			PropertyConnections.Remove(connection);
+		}
+
+		/// <summary>
+		/// Removes any connection using this property.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to remove.</param>
+		public virtual void RemoveProperty(KimonoProperty property)
+		{
+			// Remove any connection that is using this property
+			for (int n = PropertyConnections.Count - 1; n >= 0; --n)
+			{
+				// Grab the connection
+				var connection = PropertyConnections[n];
+
+				// Found match?
+				if (connection.ConnectedProperty == property)
+				{
+					// Yes, break this connection
+					PropertyConnections.RemoveAt(n);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Evaluates all of the `KimonoProperty` objects attached to this `KimonoStyle` by
+		/// executling their Obi Scripts and updating the values with the results.
+		/// </summary>
+		public virtual void EvaluateConnectedProperties()
+		{
+			// Process all property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Evaluate the connection by executing any Obi Script
+				// attached to it
+				var result = connection.ConnectedProperty.Evaluate();
+
+				// Did the script run successfully?
+				if (result.Successful)
+				{
+					// Update the connected item on this shape
+					UpdatePropertyConnectionPoint(connection);
+				}
+			}
+
+			// Evaluate colors too
+			FillColor?.EvaluateConnectedProperties();
+			FrameColor?.EvaluateConnectedProperties();
+		}
+
+		/// <summary>
+		/// Updates a `KimonoPropertyConnectionPoint` on this `KimonoStyle` with the results
+		/// of a Obi Script run on an attached `KimonoProperty`.
+		/// </summary>
+		/// <param name="connection">Connection.</param>
+		public virtual void UpdatePropertyConnectionPoint(KimonoPropertyConnection connection)
+		{
+			// Take action based on the connection point
+			switch (connection.ConnectionPoint)
+			{
+				case KimonoPropertyConnectionPoint.HasFrame:
+					HasFrame = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.HasFrameBlur:
+					HasFrameBlur = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.FrameHorizontalBlurAmount:
+					FrameBlur.HorizontalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FrameVerticalBlurAmount:
+					FrameBlur.VerticalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.HasFrameShadow:
+					HasFrameShadow = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.FrameShadowHorizontalOffset:
+					FrameShadow.HorizontalOffset = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FrameShadowVerticalOffset:
+					FrameShadow.VerticalOffset = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FrameShadowHorizontalBlurAmount:
+					FrameShadow.HorizontalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FrameShadowVerticalBlurAmount:
+					FrameShadow.VerticalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FrameShadowLinkedColor:
+					FrameShadow.LinkedColor = connection.ConnectedProperty.ToColor();
+					break;
+				case KimonoPropertyConnectionPoint.HasFill:
+					HasFill = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.HasFillBlur:
+					HasFillBlur = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.FillHorizontalBlurAmount:
+					FillBlur.HorizontalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FillVerticalBlurAmount:
+					FillBlur.VerticalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.HasFillShadow:
+					HasFillShadow = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.FillShadowHorizontalOffset:
+					FillShadow.HorizontalOffset = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FillShadowVerticalOffset:
+					FillShadow.VerticalOffset = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FillShadowHorizontalBlurAmount:
+					FillShadow.HorizontalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FillShadowVerticalBlurAmount:
+					FillShadow.VerticalBlurAmount = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FillShadowLinkedColor:
+					FillShadow.LinkedColor = connection.ConnectedProperty.ToColor();
+					break;
+				case KimonoPropertyConnectionPoint.FrameColor:
+					FrameColor = connection.ConnectedProperty.ToColor();
+					break;
+				case KimonoPropertyConnectionPoint.FrameGradient:
+					FrameGradient = connection.ConnectedProperty.ToGradient();
+					break;
+				case KimonoPropertyConnectionPoint.FillColor:
+					FillColor = connection.ConnectedProperty.ToColor();
+					break;
+				case KimonoPropertyConnectionPoint.FillGradient:
+					FillGradient = connection.ConnectedProperty.ToGradient();
+					break;
+				case KimonoPropertyConnectionPoint.IsVerticalText:
+					IsVerticalText = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.StrikeThruText:
+					StrikeThruText = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.TextScaleX:
+					TextScaleX = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.TextSize:
+					TextSize = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.TextSkewX:
+					TextSkewX = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FontFamilyName:
+					FontFamilyName = connection.ConnectedProperty.ToString();
+					break;
+				case KimonoPropertyConnectionPoint.UnderlineText:
+					UnderlineText = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.HasFrameJitter:
+					HasFrameJitter = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.FrameJitterLength:
+					FrameJitterLength = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FrameJitterDeviation:
+					FrameJitterDeviation = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.HasFillJitter:
+					HasFillJitter = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.FillJitterLength:
+					FillJitterLength = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.FillJitterDeviation:
+					FillJitterDeviation = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.HasFrameDash:
+					HasFrameDash = connection.ConnectedProperty.ToBool();
+					break;
+			}
+		}
+
+		/// <summary>
 		/// Applies the frame effects based on the style settings.
 		/// </summary>
 		public void ApplyFrameEffects()
@@ -1108,6 +1377,13 @@ namespace KimonoCore
 			{
 				// No, make this copy a standard style
 				newStyle.StyleType = KimonoStyleType.Standard;
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newStyle.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return duplicate style

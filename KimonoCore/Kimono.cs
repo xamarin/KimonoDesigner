@@ -141,6 +141,11 @@ namespace KimonoCore
 		/// Handle event delegate.
 		/// </summary>
 		public delegate void HandleEventDelegate(KimonoHandle handle);
+
+		/// <summary>
+		/// Property event delegate.
+		/// </summary>
+		public delegate void PropertyEventDelegate(KimonoProperty property);
 		#endregion
 	}
 }

@@ -9,40 +9,60 @@
     <Import_RootNamespace>KimonoCore</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoBounds.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoHandle.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoHandleConstraint.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeState.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoColor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShape.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoStyle.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeRect.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeRoundRect.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeOval.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeLine.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeTriangle.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeStar.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapePolygon.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoSketch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoTool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoStyleType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kimono.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeArrow.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoPortfolio.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeGroup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeGroupType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoUndoHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoGradientType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoGradient.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoHandleType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoBlur.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShadow.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoBezierPoint.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoShapeBezier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShape.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeArrow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeBezier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeGroupType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeLine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeOval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapePolygon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeRoundRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeStar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeTriangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes\KimonoShapeVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyUsage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyConnectionPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObiScript\ObiScriptResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bounds\KimonoBezierPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bounds\KimonoBounds.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bounds\KimonoHandle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bounds\KimonoHandleConstraint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bounds\KimonoHandleType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\KimonoBlur.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\KimonoShadow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\KimonoColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\KimonoGradient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\KimonoGradientType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\KimonoStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\KimonoStyleType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyRect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyNumber.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyBoolean.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyGradient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Shapes\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Properties\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ObiScript\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Bounds\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Effects\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Styles\" />
   </ItemGroup>
 </Project>

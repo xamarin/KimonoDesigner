@@ -1351,11 +1351,68 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
+		/// Removes the property connection.
+		/// </summary>
+		/// <param name="connection">The `KimonoPropertyConnection` to remove.</param>
+		public override void RemovePropertyConnection(KimonoPropertyConnection connection)
+		{
+			// Remove connection
+			base.RemovePropertyConnection(connection);
+
+			// Process all shapes
+			foreach (KimonoShape shape in Shapes)
+			{
+				// Is this a sub group?
+				if (shape is KimonoShapeGroup)
+				{
+					// Yes, remove from sub group
+					var group = shape as KimonoShapeGroup;
+					group.RemovePropertyConnection(connection);
+				}
+				else
+				{
+					// No, remove directly from shape
+					shape.RemovePropertyConnection(connection);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Removes any connection using this property.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to remove.</param>
+		public override void RemoveProperty(KimonoProperty property)
+		{
+			// Remove any connection that is using this property
+			base.RemoveProperty(property);
+
+			// Process all shapes
+			foreach (KimonoShape shape in Shapes)
+			{
+				// Is this a sub group?
+				if (shape is KimonoShapeGroup)
+				{
+					// Yes, remove from sub group
+					var group = shape as KimonoShapeGroup;
+					group.RemoveProperty(property);
+				}
+				else
+				{
+					// No, remove directly from shape
+					shape.RemoveProperty(property);
+				}
+			}
+		}
+
+		/// <summary>
 		/// Converts the group of shapes to a path.
 		/// </summary>
 		/// <returns>The group of shapes as a <c>SKPath</c>.</returns>
 		public override SKPath ToPath()
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			var path = new SKPath();
 
 			// Add all of the child paths
@@ -1397,6 +1454,9 @@ namespace KimonoCore
 				// Is this a boolean construct?
 				if (IsBooleanConstruct && State != KimonoShapeState.Editing)
 				{
+					// Update any attached properties
+					EvaluateConnectedProperties();
+
 					// Apple the boolean operation to the group of
 					// shapes
 					SKPath path = null;
@@ -1430,6 +1490,9 @@ namespace KimonoCore
 				}
 				else
 				{
+					// Update any attached properties
+					EvaluateConnectedProperties();
+
 					// Draw each shape in the group
 					foreach (KimonoShape shape in Shapes)
 					{

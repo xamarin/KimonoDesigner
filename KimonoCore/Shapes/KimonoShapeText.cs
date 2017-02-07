@@ -189,6 +189,32 @@ namespace KimonoCore
 				Style.Frame.UnderlineText = value;
 			}
 		}
+
+		/// <summary>
+		/// Gets the possible connection points that a `KimonoProperty` can be connected to this
+		/// `KimonoShape`.
+		/// </summary>
+		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		public override KimonoPropertyConnectionPoint[] ConnectionPoints
+		{
+			get
+			{
+				// Return available connection points
+				return new KimonoPropertyConnectionPoint[] {
+					KimonoPropertyConnectionPoint.Rect,
+					KimonoPropertyConnectionPoint.Top,
+					KimonoPropertyConnectionPoint.Left,
+					KimonoPropertyConnectionPoint.Bottom,
+					KimonoPropertyConnectionPoint.Right,
+					KimonoPropertyConnectionPoint.Width,
+					KimonoPropertyConnectionPoint.Height,
+					KimonoPropertyConnectionPoint.RotationDegrees,
+					KimonoPropertyConnectionPoint.Style,
+					KimonoPropertyConnectionPoint.Visible,
+					KimonoPropertyConnectionPoint.Text
+				};
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -240,11 +266,34 @@ namespace KimonoCore
 
 		#region Override Methods
 		/// <summary>
+		/// Updates a `KimonoPropertyConnectionPoint` on this `KimonoShape` with the results
+		/// of a Obi Script run on an attached `KimonoProperty`.
+		/// </summary>
+		/// <param name="connection">Connection.</param>
+		public override void UpdatePropertyConnectionPoint(KimonoPropertyConnection connection)
+		{
+
+			// Take action based on the connection point
+			switch (connection.ConnectionPoint)
+			{
+				case KimonoPropertyConnectionPoint.Text:
+					Text = connection.ConnectedProperty.ToString();
+					break;
+				default:
+					base.UpdatePropertyConnectionPoint(connection);
+					break;
+			}
+		}
+
+		/// <summary>
 		/// Converts the current shape to a path.
 		/// </summary>
 		/// <returns>The shape as a <c>SKPath</c>.</returns>
 		public override SKPath ToPath()
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Construct new path
 			var path = new SKPath();
 
@@ -277,6 +326,9 @@ namespace KimonoCore
 			// Draw shape
 			if (Visible)
 			{
+				// Update any attached properties
+				EvaluateConnectedProperties();
+
 				// Vertical text?
 				if (IsVerticalText)
 				{

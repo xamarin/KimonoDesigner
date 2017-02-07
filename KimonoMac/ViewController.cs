@@ -49,6 +49,12 @@ namespace KimonoMac
 		/// </summary>
 		/// <value>The gradient list.</value>
 		public SourceListItem GradientList { get; set; }
+
+		/// <summary>
+		/// Gets or sets the property list.
+		/// </summary>
+		/// <value>The property list.</value>
+		public SourceListItem PropertyList { get; set; }
 		#endregion
 
 		#region Constructors
@@ -464,6 +470,35 @@ namespace KimonoMac
 			if (GradientList.Count == 0)
 			{
 				GradientList.AddItem("(empty)", "IconDocFolder");
+			}
+
+			// Refresh source list?
+			if (refreshList) SourceList.ReloadData();
+		}
+
+		/// <summary>
+		/// Updates the property list.
+		/// </summary>
+		/// <param name="refreshList">If set to <c>true</c> refresh list.</param>
+		private void UpdatePropertyList(bool refreshList)
+		{
+			// Clear 
+			PropertyList.Clear();
+
+			// Repopulate
+			foreach (KimonoProperty property in DesignSurface.Portfolio.Properties)
+			{
+				PropertyList.AddItem(property.Name, "IconProperty", () =>
+				 {
+					 // Display editor for the given style
+					 ShowPropertyInspectors(property);
+				 });
+			}
+
+			// Empty list?
+			if (PropertyList.Count == 0)
+			{
+				PropertyList.AddItem("(empty)", "IconDocFolder");
 			}
 
 			// Refresh source list?
@@ -1099,6 +1134,32 @@ namespace KimonoMac
 		}
 
 		/// <summary>
+		/// Shows the property inspectors.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to show the inspectors for.</param>
+		private void ShowPropertyInspectors(KimonoProperty property)
+		{
+			// Close any open inspectors
+			CloseAllInspectors();
+
+			// Get initial offset
+			var offset = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
+
+			// TODO: Add required inspector panels
+			// GradientInspector.SelectedGradient = gradient;
+			// GradientInspector.SelectedShape = DesignSurface.SelectedShape;
+			// offset = GradientInspector.MoveTo(offset);
+			// InspectorView.AddSubview(GradientInspector);
+
+			// Adjust Side content size
+			var height = View.Frame.Height - offset;
+			if (height < View.Frame.Height) height = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
+			ScrollInspectorsToTop();
+		}
+
+		/// <summary>
 		/// Shows the sketch inspectors for the given sketch.
 		/// </summary>
 		/// <param name="sketch">The <c>KimonoSketch</c> to show the inspectors for.</param>
@@ -1184,6 +1245,11 @@ namespace KimonoMac
 			UpdateColorList(false);
 			SourceList.AddItem(ColorList);
 
+			// Add Properties
+			PropertyList = new SourceListItem("Properties");
+			UpdatePropertyList(false);
+			SourceList.AddItem(PropertyList);
+
 			// Display side list
 			SourceList.ReloadData();
 			SourceList.ExpandItem(null, true);
@@ -1213,6 +1279,7 @@ namespace KimonoMac
 				UpdateStyleList(false);
 				UpdateGradientList(false);
 				UpdateColorList(false);
+				UpdatePropertyList(false);
 				SourceList.ReloadData();
 
 				// Anything selected
@@ -1281,6 +1348,21 @@ namespace KimonoMac
 				{
 					// Yes, display that gradient
 					ShowGradientInspectors(gradient);
+				}
+
+			};
+
+			DesignSurface.PropertyModified += (property) =>
+			{
+
+				// Refresh properties list
+				UpdatePropertyList(true);
+
+				// Was a specific property modified?
+				if (property != null)
+				{
+					// Yes, display that gradient
+					ShowPropertyInspectors(property);
 				}
 
 			};
@@ -1358,6 +1440,76 @@ namespace KimonoMac
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Adds the property boolean.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyBoolean:")]
+		public void AddPropertyBoolean(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyBoolean();
+		}
+
+		/// <summary>
+		/// Adds the color of the property.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyColor:")]
+		public void AddPropertyColor(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyColor();
+		}
+
+		/// <summary>
+		/// Adds the property gradient.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyGradient:")]
+		public void AddPropertyGradient(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyGradient();
+		}
+
+		/// <summary>
+		/// Adds the property number.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyNumber:")]
+		public void AddPropertyNumber(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyNumber();
+		}
+
+		/// <summary>
+		/// Adds the property rect.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyRect:")]
+		public void AddPropertyRect(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyRect();
+		}
+
+		/// <summary>
+		/// Adds the property style.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyStyle:")]
+		public void AddPropertyStyle(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyStyle();
+		}
+
+		/// <summary>
+		/// Adds the property text.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("addPropertyText:")]
+		public void AddPropertyText(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyText();
 		}
 
 		/// <summary>

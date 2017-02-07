@@ -263,6 +263,9 @@ namespace KimonoCore
 		/// <returns>The shape as a <c>SKPath</c>.</returns>
 		public override SKPath ToPath()
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Construct new path
 			var path = new SKPath();
 

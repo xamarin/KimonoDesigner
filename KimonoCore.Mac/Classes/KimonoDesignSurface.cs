@@ -242,6 +242,7 @@ namespace KimonoCore.Mac
 			Portfolio.ColorsModified += RaiseColorsModified;
 			Portfolio.SelectedSketchDidChange += HandleSketchChanging;
 			Portfolio.GradientsModified += RaiseGradientsModified;
+			Portfolio.PropertyModified += RaisePropertyModified;
 		}
 
 		/// <summary>
@@ -258,6 +259,7 @@ namespace KimonoCore.Mac
 			Portfolio.ColorsModified -= RaiseColorsModified;
 			Portfolio.SelectedSketchDidChange -= HandleSketchChanging;
 			Portfolio.GradientsModified -= RaiseGradientsModified;
+			Portfolio.PropertyModified -= RaisePropertyModified;
 		}
 		#endregion
 
@@ -529,6 +531,21 @@ namespace KimonoCore.Mac
 		/// Occurs when gradients collection is modified.
 		/// </summary>
 		public event Kimono.GradientEventDelegate GradientsModified;
+
+		/// <summary>
+		/// Occurs when property collection is modified.
+		/// </summary>
+		public event Kimono.PropertyEventDelegate PropertyModified;
+
+		/// <summary>
+		/// Raises the property modified event.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` that was modified.</param>
+		internal void RaisePropertyModified(KimonoProperty property)
+		{
+			// Inform caller of event
+			if (PropertyModified != null) PropertyModified(property);
+		}
 
 		/// <summary>
 		/// Raises the gradients modified event.

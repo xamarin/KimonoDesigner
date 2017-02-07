@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SkiaSharp;
 
 namespace KimonoCore
@@ -337,6 +338,38 @@ namespace KimonoCore
 				MixColor();
 			}
 		}
+
+		/// <summary>
+		/// Gets the possible connection points that a `KimonoProperty` can be connected to this
+		/// `KimonoColor`.
+		/// </summary>
+		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		public virtual KimonoPropertyConnectionPoint[] ConnectionPoints
+		{
+			get
+			{
+				// Return available connection points
+				return new KimonoPropertyConnectionPoint[] {
+					KimonoPropertyConnectionPoint.BaseColor,
+					KimonoPropertyConnectionPoint.AdjustsHue,
+					KimonoPropertyConnectionPoint.HueAdjustment,
+					KimonoPropertyConnectionPoint.AdjustsSaturation,
+					KimonoPropertyConnectionPoint.SaturationAdjustment,
+					KimonoPropertyConnectionPoint.AdjustsBrightness,
+					KimonoPropertyConnectionPoint.BrightnessAdjustment,
+					KimonoPropertyConnectionPoint.AdjustsAlpha,
+					KimonoPropertyConnectionPoint.AlphaAdjustment
+				};
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the list of `KimonoProperty` objects connected to the various 
+		/// `KimonoPropertyConnectionPoint`s that will need to be evaulated before drawing
+		/// this `KimonoColor`.
+		/// </summary>
+		/// <value>The property connections.</value>
+		public List<KimonoPropertyConnection> PropertyConnections { get; set; } = new List<KimonoPropertyConnection>();
 		#endregion
 
 		#region Constructors
@@ -369,6 +402,126 @@ namespace KimonoCore
 		}
 		#endregion
 
+		#region Public Methods
+		/// <summary>
+		/// Connects the given `KimonoProperty` to the given `KimonoPropertyConnectionPoint` on
+		/// this `KimonoColor`.
+		/// </summary>
+		/// <param name="connectionPoint">The `KimonoPropertyConnectionPoint` to connect to.</param>
+		/// <param name="property">The `KimonoProperty` to connect.</param>
+		public virtual void AddPropertyConnection(KimonoPropertyConnectionPoint connectionPoint, KimonoProperty property)
+		{
+			// Is this connection point already used?
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Found?
+				if (connection.ConnectionPoint == connectionPoint)
+				{
+					// Yes, replace the connected property
+					connection.ConnectedProperty = property;
+					return;
+				}
+			}
+
+			// Not found, add
+			PropertyConnections.Add(new KimonoPropertyConnection(connectionPoint, property));
+		}
+
+		/// <summary>
+		/// Removes the property connection.
+		/// </summary>
+		/// <param name="connection">The `KimonoPropertyConnection` to remove.</param>
+		public virtual void RemovePropertyConnection(KimonoPropertyConnection connection)
+		{
+			// Remove the connection from the collection
+			PropertyConnections.Remove(connection);
+		}
+
+		/// <summary>
+		/// Removes any connection using this property.
+		/// </summary>
+		/// <param name="property">The `KimonoProperty` to remove.</param>
+		public virtual void RemoveProperty(KimonoProperty property)
+		{
+			// Remove any connection that is using this property
+			for (int n = PropertyConnections.Count - 1; n >= 0; --n)
+			{
+				// Grab the connection
+				var connection = PropertyConnections[n];
+
+				// Found match?
+				if (connection.ConnectedProperty == property)
+				{
+					// Yes, break this connection
+					PropertyConnections.RemoveAt(n);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Evaluates all of the `KimonoProperty` objects attached to this `KimonoColor` by
+		/// executling their Obi Scripts and updating the values with the results.
+		/// </summary>
+		public virtual void EvaluateConnectedProperties()
+		{
+			// Process all property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Evaluate the connection by executing any Obi Script
+				// attached to it
+				var result = connection.ConnectedProperty.Evaluate();
+
+				// Did the script run successfully?
+				if (result.Successful)
+				{
+					// Update the connected item on this shape
+					UpdatePropertyConnectionPoint(connection);
+				}
+
+			}
+		}
+
+		/// <summary>
+		/// Updates a `KimonoPropertyConnectionPoint` on this `KimonoColor` with the results
+		/// of a Obi Script run on an attached `KimonoProperty`.
+		/// </summary>
+		/// <param name="connection">Connection.</param>
+		public virtual void UpdatePropertyConnectionPoint(KimonoPropertyConnection connection)
+		{
+			// Take action based on the connection point
+			switch (connection.ConnectionPoint)
+			{
+				case KimonoPropertyConnectionPoint.BaseColor:
+					BaseColor = connection.ConnectedProperty.ToColor();
+					break;
+				case KimonoPropertyConnectionPoint.AdjustsHue:
+					AdjustsHue = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.HueAdjustment:
+					HueAdjustment = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.AdjustsSaturation:
+					AdjustsSaturation = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.SaturationAdjustment:
+					SaturationAdjustment = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.AdjustsBrightness:
+					AdjustsBrightness = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.BrightnessAdjustment:
+					BrightnessAdjustment = connection.ConnectedProperty.ToFloat();
+					break;
+				case KimonoPropertyConnectionPoint.AdjustsAlpha:
+					AdjustsAlpha = connection.ConnectedProperty.ToBool();
+					break;
+				case KimonoPropertyConnectionPoint.AlphaAdjustment:
+					AlphaAdjustment = connection.ConnectedProperty.ToInt();
+					break;
+			}
+		}
+		#endregion
+
 		#region Private Methods
 		/// <summary>
 		/// Mixes the color based on the base values and any adjustment that
@@ -376,6 +529,9 @@ namespace KimonoCore
 		/// </summary>
 		private void MixColor()
 		{
+			// Update connected properties
+			EvaluateConnectedProperties();
+
 			// Get color values
 			var h = (AdjustsHue) ? HueAdjustment : Hue;
 			var s = (AdjustsSaturation) ? SaturationAdjustment : Saturation;
@@ -426,6 +582,13 @@ namespace KimonoCore
 				_alphaAdjustment = this._alphaAdjustment,
 				_color = CloneColor(this._color)
 			};
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newColor.PropertyConnections.Add(connection.Clone());
+			}
 
 			// Return new instance
 			return newColor;

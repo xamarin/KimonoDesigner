@@ -4,40 +4,40 @@ using SkiaSharp;
 namespace KimonoCore
 {
 	/// <summary>
-	/// Draws a rectangle into the Design Surface.
+	/// Draws a line on the design surface.
 	/// </summary>
-	public class KimonoShapeRect : KimonoShape
+	public class KimonoShapeLine : KimonoShape
 	{
 		#region Constructors
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeRect"/> class.
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeLine"/> class.
 		/// </summary>
-		public KimonoShapeRect()
+		public KimonoShapeLine()
 		{
 			Initialize();
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeRect"/> class.
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeLine"/> class.
 		/// </summary>
 		/// <param name="left">Left.</param>
 		/// <param name="top">Top.</param>
 		/// <param name="right">Right.</param>
 		/// <param name="bottom">Bottom.</param>
-		public KimonoShapeRect(float left, float top, float right, float bottom) : base(left, top, right, bottom)
+		public KimonoShapeLine(float left, float top, float right, float bottom) : base(left, top, right, bottom)
 		{
 			Initialize();
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeRect"/> class.
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeLine"/> class.
 		/// </summary>
 		/// <param name="left">Left.</param>
 		/// <param name="top">Top.</param>
 		/// <param name="right">Right.</param>
 		/// <param name="bottom">Bottom.</param>
 		/// <param name="state">State.</param>
-		public KimonoShapeRect(float left, float top, float right, float bottom, KimonoShapeState state) : base(left, top, right, bottom, state)
+		public KimonoShapeLine(float left, float top, float right, float bottom, KimonoShapeState state) : base(left, top, right, bottom, state)
 		{
 			Initialize();
 		}
@@ -48,8 +48,7 @@ namespace KimonoCore
 		private void Initialize()
 		{
 			// Set the default properties
-			Name = "Rectangle";
-
+			Name = "Line";
 		}
 		#endregion
 
@@ -60,18 +59,22 @@ namespace KimonoCore
 		/// <returns>The shape as a <c>SKPath</c>.</returns>
 		public override SKPath ToPath()
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Construct new path
 			var path = new SKPath();
 
-			// Define path
-			path.AddRect(Rect, SKPathDirection.Clockwise);
+			// Draw line to path
+			path.MoveTo(Left, Top);
+			path.LineTo(Right, Bottom);
 
 			// Return path
 			return path;
 		}
 
 		/// <summary>
-		/// Draws the rectangle into the given Skia Canvas.
+		/// Draws the line into the given Skia canvas.
 		/// </summary>
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
 		public override void Draw(SKCanvas canvas)
@@ -87,16 +90,10 @@ namespace KimonoCore
 			// Draw shape
 			if (Visible)
 			{
-				if (Style.HasFill)
-				{
-					ConformGradientToShape(Style.FillGradient, Style.Fill);
-					canvas.DrawRect(Rect, Style.Fill);
-				}
-				if (Style.HasFrame)
-				{
-					ConformGradientToShape(Style.FrameGradient, Style.Frame);
-					canvas.DrawRect(Rect, Style.Frame);
-				}
+				// Update any attached properties
+				EvaluateConnectedProperties();
+
+				if (Style.HasFrame) canvas.DrawLine(Rect.Left, Rect.Top, Rect.Right, Rect.Bottom, Style.Frame);
 			}
 
 			// Call base to draw bounds if required
@@ -115,11 +112,11 @@ namespace KimonoCore
 		/// <summary>
 		/// Clone this instance.
 		/// </summary>
-		/// <returns>The clone.</returns>
+		/// <returns>The clone of the <c>KimonoLine</c>.</returns>
 		public override KimonoBounds Clone()
 		{
 			// Duplicate shape
-			var newShape = new KimonoShapeRect(this.Left, this.Top, this.Right, this.Bottom, this.State)
+			var newShape = new KimonoShapeLine(this.Left, this.Top, this.Right, this.Bottom, this.State)
 			{
 				UniqueID = this.UniqueID,
 				Name = this.Name,

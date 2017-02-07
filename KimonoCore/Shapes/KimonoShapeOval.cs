@@ -4,40 +4,40 @@ using SkiaSharp;
 namespace KimonoCore
 {
 	/// <summary>
-	/// Draws a triangle into the Design Surface.
+	/// Draws an oval into the Design Surface.
 	/// </summary>
-	public class KimonoShapeTriangle : KimonoShape
+	public class KimonoShapeOval : KimonoShape
 	{
 		#region Constructors
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeTriangle"/> class.
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeOval"/> class.
 		/// </summary>
-		public KimonoShapeTriangle()
+		public KimonoShapeOval()
 		{
 			Initialize();
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeTriangle"/> class.
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeOval"/> class.
 		/// </summary>
 		/// <param name="left">Left.</param>
 		/// <param name="top">Top.</param>
 		/// <param name="right">Right.</param>
 		/// <param name="bottom">Bottom.</param>
-		public KimonoShapeTriangle(float left, float top, float right, float bottom) : base(left, top, right, bottom)
+		public KimonoShapeOval(float left, float top, float right, float bottom) : base(left, top, right, bottom)
 		{
 			Initialize();
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeTriangle"/> class.
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeOval"/> class.
 		/// </summary>
 		/// <param name="left">Left.</param>
 		/// <param name="top">Top.</param>
 		/// <param name="right">Right.</param>
 		/// <param name="bottom">Bottom.</param>
 		/// <param name="state">State.</param>
-		public KimonoShapeTriangle(float left, float top, float right, float bottom, KimonoShapeState state) : base(left, top, right, bottom, state)
+		public KimonoShapeOval(float left, float top, float right, float bottom, KimonoShapeState state) : base(left, top, right, bottom, state)
 		{
 			Initialize();
 		}
@@ -48,7 +48,7 @@ namespace KimonoCore
 		private void Initialize()
 		{
 			// Set the default properties
-			Name = "Triangle";
+			Name = "Oval";
 		}
 		#endregion
 
@@ -59,28 +59,25 @@ namespace KimonoCore
 		/// <returns>The shape as a <c>SKPath</c>.</returns>
 		public override SKPath ToPath()
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Construct new path
 			var path = new SKPath();
 
-			// Define path
-			path.MoveTo(new SKPoint(HorizontalCenter, Top));
-			path.LineTo(new SKPoint(Right, Bottom));
-			path.LineTo(new SKPoint(Left, Bottom));
-			path.LineTo(new SKPoint(HorizontalCenter, Top));
+			// Add oval to path
+			path.AddOval(Rect, SKPathDirection.Clockwise);
 
 			// Return path
 			return path;
 		}
 
 		/// <summary>
-		/// Draws the triangle into the given Skia Canvas.
+		/// Draw the oval into the given Skia Canvas.
 		/// </summary>
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
 		public override void Draw(SKCanvas canvas)
 		{
-			// Define path
-			var path = ToPath();
-
 			// Rotated?
 			if (RotationDegrees > 0)
 			{
@@ -92,15 +89,18 @@ namespace KimonoCore
 			// Draw shape
 			if (Visible)
 			{
+				// Update any attached properties
+				EvaluateConnectedProperties();
+
 				if (Style.HasFill)
 				{
 					ConformGradientToShape(Style.FillGradient, Style.Fill);
-					canvas.DrawPath(path, Style.Fill);
+					canvas.DrawOval(Rect, Style.Fill);
 				}
 				if (Style.HasFrame)
 				{
 					ConformGradientToShape(Style.FrameGradient, Style.Frame);
-					canvas.DrawPath(path, Style.Frame);
+					canvas.DrawOval(Rect, Style.Frame);
 				}
 			}
 
@@ -120,11 +120,11 @@ namespace KimonoCore
 		/// <summary>
 		/// Clone this instance.
 		/// </summary>
-		/// <returns>The clone <c>KimonoShapeTriangle</c>.</returns>
+		/// <returns>The clone <c>KimonoOval</c>.</returns>
 		public override KimonoBounds Clone()
 		{
 			// Duplicate shape
-			var newShape = new KimonoShapeTriangle(this.Left, this.Top, this.Right, this.Bottom, this.State)
+			var newShape = new KimonoShapeOval(this.Left, this.Top, this.Right, this.Bottom, this.State)
 			{
 				UniqueID = this.UniqueID,
 				Name = this.Name,

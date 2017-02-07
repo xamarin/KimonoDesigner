@@ -396,6 +396,49 @@ CA
                                                 <action selector="addColor:" target="Ady-hI-5gd" id="ig2-M2-6ku"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="Xwl-h6-S45"/>
+                                        <menuItem title="Add Boolean Property" id="tMd-AZ-2vk">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyBoolean:" target="Ady-hI-5gd" id="DCf-w4-h8V"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Add Color Property" id="H72-ni-sQz">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyColor:" target="Ady-hI-5gd" id="MR8-4E-kzp"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Add Gradient Property" id="RC8-mI-hdf">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyGradient:" target="Ady-hI-5gd" id="1Dm-xL-MuF"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Add Number Property" id="OQu-el-uQw">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyNumber:" target="Ady-hI-5gd" id="kDh-jl-4vh"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Add Rect Property" id="Kca-Fh-cb2">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyRect:" target="Ady-hI-5gd" id="WOT-4a-usw"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Add Style Property" id="tqm-8d-NHn">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyStyle:" target="Ady-hI-5gd" id="7FF-CY-ujk"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Add Text Property" id="86V-8P-SeA">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyText:" target="Ady-hI-5gd" id="HP1-Rf-yMg"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -1481,7 +1524,7 @@ CA
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="GeN-Mg-NZf">
-                            <rect key="frame" x="0.0" y="166" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="166" width="251" height="4"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button toolTip="Group Shapes" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0gX-J4-qcV">
@@ -1791,7 +1834,7 @@ CA
                             </connections>
                         </popUpButton>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="qpm-yc-Bkb">
-                            <rect key="frame" x="0.0" y="55" width="251" height="4"/>
+                            <rect key="frame" x="0.0" y="55" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3gx-0M-KaY">
@@ -2837,7 +2880,7 @@ CA
                             </textFieldCell>
                         </textField>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="2Kp-Xi-SWB">
-                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="100"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                     </subviews>
@@ -3231,7 +3274,7 @@ CA
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="DpU-Y6-d6K">
-                            <rect key="frame" x="0.0" y="156" width="251" height="140"/>
+                            <rect key="frame" x="0.0" y="156" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hK4-JD-r0K">
@@ -4031,7 +4074,7 @@ CA
                             </connections>
                         </popUpButton>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Eei-Ka-Izg">
-                            <rect key="frame" x="1" y="341" width="251" height="5"/>
+                            <rect key="frame" x="1" y="341" width="251" height="4"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLU-dO-uGj">
