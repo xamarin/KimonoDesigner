@@ -9,7 +9,7 @@ namespace KimonoCore
 	/// <c>KimonoColor</c>. A <c>KimonoColor</c> can be attached directly to a <c>KimonoShape</c>
 	/// or be used in a <c>KimonoStyle<c>.
 	/// </summary>
-	public class KimonoColor
+	public class KimonoColor : IKimonoCodeGeneration
 	{
 		#region Computed Static Properties
 		// Primary colors
@@ -394,6 +394,19 @@ namespace KimonoCore
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoColor"/> class.
 		/// </summary>
+		/// <param name="red">Red.</param>
+		/// <param name="green">Green.</param>
+		/// <param name="blue">Blue.</param>
+		/// <param name="alpha">Alpha.</param>
+		public KimonoColor(int red, int green, int blue, int alpha)
+		{
+			// Initialize
+			Color = new SKColor((byte)red, (byte)green, (byte)blue, (byte)alpha);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoColor"/> class.
+		/// </summary>
 		/// <param name="color">Color.</param>
 		public KimonoColor(SKColor color)
 		{
@@ -552,6 +565,34 @@ namespace KimonoCore
 		{
 			// Adjust this color off of base
 			Color = BaseColor.Color;
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = $"// Create new {Name}\n";
+
+			// Take action based on language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += $"var {KimonoCodeGenerator.MakeElementName(Name)} = {KimonoCodeGenerator.ColorToCode(outputLibrary,Color)};";
+					break;
+				case CodeOutputLanguage.ObiScript:
+					sourceCode += $"#Color({Color.Red}, {Color.Green}, {Color.Blue}, {Color.Alpha})";
+					break;
+			}
+
+			// Return resulting code
+			return sourceCode;
 		}
 		#endregion
 

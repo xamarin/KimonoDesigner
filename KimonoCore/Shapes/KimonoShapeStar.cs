@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a multi-sided star shape into the Design Surface.
 	/// </summary>
-	public class KimonoShapeStar : KimonoShape
+	public class KimonoShapeStar : KimonoShape, IKimonoCodeGeneration
 	{
 		#region Computed Properties
 		/// <summary>
@@ -398,6 +398,20 @@ namespace KimonoCore
 
 			// Return new vector
 			return vector;
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

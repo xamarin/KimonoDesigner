@@ -34,7 +34,7 @@ namespace KimonoCore
 		/// the result of an Obi Script.
 		/// </summary>
 		/// <value><c>true</c> if is Obi Script value; otherwise, <c>false</c>.</value>
-		public bool IsObiScriptValue { get; set; } = false;
+		public virtual bool IsObiScriptValue { get; set; } = false;
 
 		/// <summary>
 		/// Gets or sets the obi script that will be used to calculate the value of this

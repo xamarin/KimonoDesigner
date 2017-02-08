@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// A Kimono Bezier is a collection of control and end points that define the quad sections of a
 	/// bezier shape to be drawn using SkiaSharp.
 	/// </summary>
-	public class KimonoShapeBezier : KimonoShape
+	public class KimonoShapeBezier : KimonoShape, IKimonoCodeGeneration
 	{
 		#region Computed Properties
 		/// <summary>
@@ -532,6 +532,20 @@ namespace KimonoCore
 			{
 				AddHandlesForPoint(n, Points[n]);
 			}
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

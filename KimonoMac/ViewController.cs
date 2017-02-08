@@ -5,6 +5,7 @@ using Foundation;
 using SkiaSharp;
 using KimonoCore;
 using KimonoCore.Mac;
+using AppKit.TextKit.Formatter;
 
 namespace KimonoMac
 {
@@ -13,7 +14,167 @@ namespace KimonoMac
 	/// </summary>
 	public partial class ViewController : NSViewController
 	{
+		#region Application Access
+		/// <summary>
+		/// A helper shortcut to the app delegate.
+		/// </summary>
+		/// <value>The app.</value>
+		public static AppDelegate App
+		{
+			get { return (AppDelegate)NSApplication.SharedApplication.Delegate; }
+		}
+		#endregion
+
+		#region Private Variables
+		/// <summary>
+		/// The information on the currently highlighted keyword.
+		/// </summary>
+		private KeywordDescriptor _keywordInfo = null;
+		#endregion
+
 		#region Computed Properties
+		/// <summary>
+		/// Gets or sets the OS that code will be generated for.
+		/// </summary>
+		/// <value>The OS code type.</value>
+		public CodeOutputOS GenerateOSCode { get; set; } = CodeOutputOS.macOS;
+
+		/// <summary>
+		/// Gets or sets the language code will be generated in.
+		/// </summary>
+		/// <value>The code language.</value>
+		public CodeOutputLanguage GenerateLanguageCode { get; set; } = CodeOutputLanguage.CSharp;
+
+		/// <summary>
+		/// Gets or sets the library the generated code will use.
+		/// </summary>
+		/// <value>The library to use in the generated code.</value>
+		public CodeOutputLibrary GenerateLibraryCode { get; set; } = CodeOutputLibrary.SkiaSharp;
+
+		/// <summary>
+		/// Gets or sets the Kimono object that preview code is currently being generated for.
+		/// </summary>
+		/// <value>The kimono preview element.</value>
+		public IKimonoCodeGeneration KimonoPreviewElement { get; set; } = null;
+
+		/// <summary>
+		/// Gets or sets the `KimonoProperty` currently being edited.
+		/// </summary>
+		/// <value>The editing property.</value>
+		public KimonoProperty EditingProperty { get; set; } = null;
+
+		/// <summary>
+		/// Gets or sets the default language that this `ViewController` will
+		/// be editing.
+		/// </summary>
+		/// <value>An integer representing the default language as: 0 - C#,
+		/// 1 - HTML, 2 - MarkDown, 3 - XML.</value>
+		public int DefaultLanguage { get; set; } = 0; //App.Preferences.DefaultLanguage;
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this `ViewController` document 
+		/// has been edited.
+		/// </summary>
+		/// <value><c>true</c> if document has been edited; otherwise, <c>false</c>.</value>
+		public bool DocumentEdited
+		{
+			get { return View.Window.DocumentEdited; }
+			set {
+				if (View.Window != null)
+				{
+					View.Window.DocumentEdited = value;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets the <see cref="AppKit.TextKit.Formatter.SourceTextView"/> attached to this view.
+		/// </summary>
+		/// <value>The <see cref="AppKit.TextKit.Formatter.SourceTextView"/> used to edit source.</value>
+		public SourceTextView Editor
+		{
+			get { return TextEditor; }
+		}
+
+		/// <summary>
+		/// Gets or sets the text for the <c>NSTextView</c> being used as a text editor
+		/// </summary>
+		/// <value>The string content of the <c>NSTextView</c>.</value>
+		public string Text
+		{
+			get { return TextEditor.TextStorage.Value; }
+			set
+			{
+				TextEditor.Value = value;
+				Formatter.Reformat();
+				DocumentEdited = false;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="AppKit.TextKit.Formatter.LanguageFormatter"/> used to perform
+		/// syntax highlighting on the <c>NSTextView</c> containing the contents of the document being
+		/// edited.
+		/// </summary>
+		/// <value>The <see cref="AppKit.TextKit.Formatter.LanguageFormatter"/> for the selected language.</value>
+		public LanguageFormatter Formatter
+		{
+			get { return TextEditor.Formatter; }
+			set { TextEditor.Formatter = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the full file path where this document was last loaded from
+		/// or saved to.
+		/// </summary>
+		/// <value>The file path.</value>
+		/// <remarks>>The path will be the empty string ("") if the document has never
+		/// been saved to a file.</remarks>
+		public string FilePath { get; set; } = "";
+
+		/// <summary>
+		/// Gets or sets the info about the currently selected keyword.
+		/// </summary>
+		/// <value>The keyword info.</value>
+		public KeywordDescriptor KeywordInfo
+		{
+			get { return _keywordInfo; }
+			set
+			{
+				_keywordInfo = value;
+				if (WindowController != null)
+				{
+					//WindowController.DefinitionItem.Disabled = (_keywordInfo == null);
+					//App.DefinitionItem.Enabled = (!WindowController.DefinitionItem.Disabled);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets the window controller.
+		/// </summary>
+		/// <value>The window controller.</value>
+		public MainWindowController WindowController
+		{
+			get
+			{
+				if (View.Window == null)
+				{
+					return null;
+				}
+				else
+				{
+					return View.Window.WindowController as MainWindowController;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the keyword that is currently selected.
+		/// </summary>
+		/// <value>The keyword.</value>
+		public string Keyword { get; set; } = "";
+
 		/// <summary>
 		/// Gets or sets the sidebar project list.
 		/// </summary>
@@ -68,6 +229,63 @@ namespace KimonoMac
 		#endregion
 
 		#region Public Methods
+		/// <summary>
+		/// Configures the editor with the current user preferences.
+		/// </summary>
+		public void ConfigureEditor()
+		{
+
+			// General Preferences
+			TextEditor.AutomaticLinkDetectionEnabled = true;
+			TextEditor.AutomaticQuoteSubstitutionEnabled = false;
+			TextEditor.AutomaticDashSubstitutionEnabled = false;
+			TextEditor.AutomaticDataDetectionEnabled = true;
+			TextEditor.AutomaticTextReplacementEnabled = true;
+			TextEditor.SmartInsertDeleteEnabled = true;
+			TextEditor.ContinuousSpellCheckingEnabled = false;
+			TextEditor.AutomaticSpellingCorrectionEnabled = false;
+			TextEditor.GrammarCheckingEnabled = false;
+
+			// Editor Preferences
+			TextEditor.RichText = true;
+			TextEditor.ImportsGraphics = false;
+			TextEditor.AllowsImageEditing = false;
+			TextEditor.AllowsDocumentBackgroundColorChange = false;
+			TextEditor.BackgroundColor = NSColor.White;
+			TextEditor.UsesFontPanel = false;
+			TextEditor.UsesRuler = false;
+			TextEditor.UsesInspectorBar = false;
+			TextEditor.CompleteClosures = true;
+			TextEditor.WrapClosures = true;
+			TextEditor.SelectAfterWrap = true;
+
+			// Search Preferences
+			switch (App.Preferences.SearchType)
+			{
+				case 0:
+					// None
+					TextEditor.UsesFindBar = false;
+					TextEditor.UsesFindPanel = false;
+					break;
+				case 1:
+					// Uses bar
+					TextEditor.UsesFindBar = true;
+					break;
+				case 2:
+					// Uses panel
+					TextEditor.UsesFindPanel = true;
+					break;
+			}
+			TextEditor.IsIncrementalSearchingEnabled = true;
+
+			// Auto Complete Preferences
+			TextEditor.AllowAutoComplete = true;
+			TextEditor.AutoCompleteKeywords = true;
+			TextEditor.AutoCompleteDefaultWords = true;
+			TextEditor.DefaultWordsOnlyIfKeywordsEmpty = true;
+
+		}
+
 		/// <summary>
 		/// Adds a new <c>KimonoSketch</c> to the <c>KimonoPortfolio</c>.
 		/// </summary>
@@ -589,6 +807,7 @@ namespace KimonoMac
 			GradientInspector.Initialize();
 			GroupInspector.Initialize();
 			RoundRectInspector.Initialize();
+			PropertyInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -606,6 +825,7 @@ namespace KimonoMac
 			GradientInspector.DesignSurface = DesignSurface;
 			GroupInspector.DesignSurface = DesignSurface;
 			RoundRectInspector.DesignSurface = DesignSurface;
+			PropertyInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -613,12 +833,14 @@ namespace KimonoMac
 			{
 				// Update the UI
 				UpdateShapesList(true);
+				UpdateTextEditor();
 			};
 
 			GeneralInfoInspector.ShapeModified += () =>
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			GeneralInfoInspector.MakeDuplicate += () =>
@@ -651,6 +873,36 @@ namespace KimonoMac
 				}
 			};
 
+			// -- Property Inspector -----------------------------------------
+			PropertyInspector.PropertyModified += (property) =>
+			{
+				// Update UI
+				UpdatePropertyList(true);
+				DesignSurface.RefreshView();
+				UpdateTextEditor();
+			};
+
+			PropertyInspector.RequestDeleteProperty += (property) =>
+			{
+				// Delete requested property
+				DesignSurface.Portfolio.DeleteProperty(property);
+
+				// Update UI
+				CloseAllInspectors();
+				UpdatePropertyList(true);
+				DesignSurface.RefreshView();
+			};
+
+			PropertyInspector.RequestDuplicateProperty += (property) =>
+			{
+				// Duplicate property
+				var newProperty = DesignSurface.Portfolio.DuplicateProperty(property);
+
+				// Update UI
+				UpdatePropertyList(true);
+				ShowPropertyInspectors(newProperty);
+			};
+
 			// -- Group Inspector -----------------------------------------
 			GroupInspector.GroupModified += (group) =>
 			{
@@ -668,6 +920,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			// -- Round Rectangle Inspector -----------------------------------------
@@ -675,6 +928,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			// -- Polygon Inspector -----------------------------------------
@@ -682,6 +936,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			// -- Fill Inspector -----------------------------------------
@@ -689,6 +944,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			FillInspector.MakeNewColor += (color) =>
@@ -701,6 +957,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			FrameInspector.MakeNewColor += (color) =>
@@ -720,6 +977,7 @@ namespace KimonoMac
 				// Update style and design surface
 				UpdateStyleList(true);
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			StyleInspector.MakeDuplicate += (style) =>
@@ -752,12 +1010,14 @@ namespace KimonoMac
 				// Update list and design view
 				UpdateGradientList(true);
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			GradientInspector.ShapeModified += () =>
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			GradientInspector.MakeDuplicate += (gradient) =>
@@ -784,6 +1044,7 @@ namespace KimonoMac
 				// Update UI
 				UpdateColorList(true);
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			ColorPaletteInspector.RemoveColor += (color) =>
@@ -825,6 +1086,7 @@ namespace KimonoMac
 				// Update design surface
 				ShowGeneralInspectors(shape);
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			// -- Arrow Inspector -----------------------------------------
@@ -832,6 +1094,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			// -- Text Inspector -----------------------------------------
@@ -839,6 +1102,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			// -- Font Inspector -----------------------------------------
@@ -846,6 +1110,7 @@ namespace KimonoMac
 			{
 				// Update design surface
 				DesignSurface.RefreshView();
+				UpdateTextEditor();
 			};
 
 			FontInspector.StyleModified += () =>
@@ -860,6 +1125,7 @@ namespace KimonoMac
 			{
 				// Update sketch list
 				UpdateSketchesList(true);
+				UpdateTextEditor();
 			};
 
 			SketchInspector.MakeDuplicate += () =>
@@ -896,6 +1162,116 @@ namespace KimonoMac
 			GradientInspector.RemoveFromSuperview();
 			GroupInspector.RemoveFromSuperview();
 			RoundRectInspector.RemoveFromSuperview();
+			PropertyInspector.RemoveFromSuperview();
+		}
+
+		/// <summary>
+		/// Shows the property obi script.
+		/// </summary>
+		private void ShowPropertyObiScript(KimonoProperty property)
+		{
+			// Set UI state
+			KimonoPreviewElement = null;
+			EditingProperty = property;
+
+			// Configure Editor
+			Formatter = new LanguageFormatter(TextEditor, new ObiScriptDescriptor());
+			TextEditorMode.StringValue = (EditingProperty.IsObiScriptValue) ? "Editing" : "Showing";
+			TextEditorTitle.StringValue = $"{EditingProperty.Name} Script";
+			TextEditor.Editable = EditingProperty.IsObiScriptValue;
+			Text = EditingProperty.ObiScript;
+
+			// Update UI
+			OSSelector.SelectItem(4);
+			OSSelector.Enabled = false;
+			LanguageSelector.SelectItem(1);
+			LanguageSelector.Enabled = false;
+			LibrarySelector.SelectItem(1);
+			LibrarySelector.Enabled = false;
+		}
+
+		/// <summary>
+		/// Shows the code preview.
+		/// </summary>
+		/// <param name="kimonoElement">Kimono element.</param>
+		private void ShowCodePreview(IKimonoCodeGeneration kimonoElement)
+		{
+			// Set UI state
+			KimonoPreviewElement = kimonoElement;
+			EditingProperty = null;
+
+			// Configure Editor
+			TextEditorMode.StringValue = "Preview";
+			TextEditorTitle.StringValue = $"{KimonoPreviewElement.Name} Code";
+			TextEditor.Editable = false;
+
+			// Set OS
+			switch (GenerateOSCode)
+			{
+				case CodeOutputOS.Android:
+					OSSelector.SelectItem(1);
+					break;
+				case CodeOutputOS.CrossPlatform:
+					OSSelector.SelectItem(4);
+					break;
+				case CodeOutputOS.iOS:
+					OSSelector.SelectItem(2);
+					break;
+				case CodeOutputOS.macOS:
+					OSSelector.SelectItem(3);
+					break;
+				case CodeOutputOS.Windows:
+					OSSelector.SelectItem(0);
+					break;
+			}
+			OSSelector.Enabled = true;
+
+			// Set language
+			switch (GenerateLanguageCode)
+			{
+				case CodeOutputLanguage.CSharp:
+					Formatter = new LanguageFormatter(TextEditor, new CSharpDescriptor());
+					LanguageSelector.SelectItem(0);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					Formatter = new LanguageFormatter(TextEditor, new ObiScriptDescriptor());
+					LanguageSelector.SelectItem(1);
+					break;
+			}
+			LanguageSelector.Enabled = true;
+
+			// Set library
+			switch (GenerateLibraryCode)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					LibrarySelector.SelectItem(0);
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					LibrarySelector.SelectItem(1);
+					break;
+			}
+			LibrarySelector.Enabled = true;
+
+			// Show preview code
+			Text = KimonoPreviewElement.ToCode(GenerateOSCode, GenerateLanguageCode, GenerateLibraryCode);
+		}
+
+		/// <summary>
+		/// Updates the text editor.
+		/// </summary>
+		private void UpdateTextEditor()
+		{
+			// Take action based on the selected object
+			if (KimonoPreviewElement != null)
+			{
+				// Switch the editor to the code preview mode
+				ShowCodePreview(KimonoPreviewElement);
+			}
+			else if (EditingProperty != null)
+			{
+				// Switch to the property editor mode
+				ShowPropertyObiScript(EditingProperty);
+			}
 		}
 
 		/// <summary>
@@ -1032,6 +1408,9 @@ namespace KimonoMac
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
 			ScrollInspectorsToTop();
 
+			// Update code preview
+			ShowCodePreview(shape);
+
 			// Inform window of change
 			RaiseSketchModified(DesignSurface.SelectedSketch);
 		}
@@ -1079,6 +1458,9 @@ namespace KimonoMac
 			if (height < View.Frame.Height) height = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
 			ScrollInspectorsToTop();
+
+			// Update code preview
+			ShowCodePreview(style);
 		}
 
 		/// <summary>
@@ -1105,6 +1487,9 @@ namespace KimonoMac
 			if (height < View.Frame.Height) height = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
 			ScrollInspectorsToTop();
+
+			// Update code preview
+			ShowCodePreview(color);
 		}
 
 		/// <summary>
@@ -1131,6 +1516,9 @@ namespace KimonoMac
 			if (height < View.Frame.Height) height = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
 			ScrollInspectorsToTop();
+
+			// Update code preview
+			ShowCodePreview(gradient);
 		}
 
 		/// <summary>
@@ -1146,17 +1534,19 @@ namespace KimonoMac
 			var offset = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
 
-			// TODO: Add required inspector panels
-			// GradientInspector.SelectedGradient = gradient;
-			// GradientInspector.SelectedShape = DesignSurface.SelectedShape;
-			// offset = GradientInspector.MoveTo(offset);
-			// InspectorView.AddSubview(GradientInspector);
+			// Add required inspector panels
+			PropertyInspector.SelectedProperty = property;
+			offset = PropertyInspector.MoveTo(offset);
+			InspectorView.AddSubview(PropertyInspector);
 
 			// Adjust Side content size
 			var height = View.Frame.Height - offset;
 			if (height < View.Frame.Height) height = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
 			ScrollInspectorsToTop();
+
+			// Show Obi Script
+			ShowPropertyObiScript(property);
 		}
 
 		/// <summary>
@@ -1182,6 +1572,9 @@ namespace KimonoMac
 			if (height < View.Frame.Height) height = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
 			ScrollInspectorsToTop();
+
+			// Update code preview
+			ShowCodePreview(sketch);
 		}
 
 		/// <summary>
@@ -1209,11 +1602,70 @@ namespace KimonoMac
 		{
 			base.ViewDidLoad();
 
+			// Configure editor from user preferences
+			ConfigureEditor();
+
+			// Highligh the syntax of the text after an edit has been made
+			TextEditor.TextStorage.DidProcessEditing += (sender, e) =>
+			{
+				DocumentEdited = true;
+				Formatter.HighlightSyntaxRegion(TextEditor.TextStorage.Value, TextEditor.TextStorage.EditedRange);
+
+				// Editing an Obi Script?
+				if (EditingProperty != null)
+				{
+					// Yes, save script changes
+					EditingProperty.ObiScript = Text;
+				}
+			};
+
+			// If the text selection or cursor location changes, attempt to display the Tool Tip
+			// for any keyword defined in the current language being syntax highlighted
+			TextEditor.SourceSelectionChanged += (sender, e) =>
+			{
+				var range = Formatter.FindWordBoundries(TextEditor.TextStorage.Value, TextEditor.SelectedRange);
+				var word = TextEditor.TextStorage.Value.Substring((int)range.Location, (int)range.Length);
+
+				// Update UI
+				if (WindowController != null)
+				{
+					//WindowController.Indent.Disabled = (TextEditor.SelectedRange.Length == 0);
+					//App.IndentItem.Enabled = (!WindowController.Indent.Disabled);
+					//WindowController.Outdent.Disabled = WindowController.Indent.Disabled;
+					//App.OutdentItem.Enabled = (!WindowController.Outdent.Disabled);
+					//App.ReformatItem.Enabled = (Text.Length > 0);
+				}
+
+				// Found a keyword?
+				KeywordDescriptor info;
+				if (Formatter.Language.Keywords.TryGetValue(word, out info))
+				{
+					// Display the tool tip
+					//StatusText.StringValue = string.Format("{0}: {1}", info.Type, word);
+					//StatusText.TextColor = info.Color;
+					//StatusDesc.StringValue = info.Tooltip;
+					Keyword = word;
+					KeywordInfo = info;
+				}
+				else
+				{
+					// Display the currently selected text
+					//StatusText.StringValue = "Selection:";
+					//StatusText.TextColor = NSColor.Black;
+					//StatusDesc.StringValue = word;
+					Keyword = "";
+					KeywordInfo = null;
+				}
+			};
+
 			// Set document size
 			SetDocumentSize();
 
 			// Configure the source list
 			SourceList.Initialize();
+
+			// Set as first responder
+			DesignSurface.BecomeFirstResponder();
 
 			// Add projects
 			ProjectList = new SourceListItem("Project");
@@ -1396,6 +1848,44 @@ namespace KimonoMac
 			ShowSketchInspectors(DesignSurface.SelectedSketch);
 
 		}
+
+		/// <summary>
+		/// Called before the view is displayed
+		/// </summary>
+		public override void ViewWillAppear()
+		{
+			base.ViewWillAppear();
+
+			// Set intial formatter
+			Formatter = new LanguageFormatter(TextEditor, new CSharpDescriptor());
+		}
+
+		/// <summary>
+		/// This method is called after the View being handled by this View Controller has
+		/// been displayed on screen.
+		/// </summary>
+		public override void ViewDidAppear()
+		{
+			base.ViewDidAppear();
+
+			// Set Window Title
+			if (++App.NewWindowNumber == 0)
+			{
+				this.View.Window.Title = "untitled";
+			}
+			else
+			{
+				this.View.Window.Title = string.Format("untitled {0}", App.NewWindowNumber);
+			}
+
+			// Configure
+			Keyword = "";
+			KeywordInfo = null;
+
+			// Update UI
+			//App.ReformatItem.Enabled = (Text.Length > 0);
+			//WindowController.Print.Disabled = false;
+		}
 		#endregion
 
 		#region Custom Actions
@@ -1440,6 +1930,79 @@ namespace KimonoMac
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Handle the OS selection changing
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void OSSelectionChanged(Foundation.NSObject sender)
+		{
+			// Set OS
+			switch (OSSelector.IndexOfSelectedItem)
+			{
+				case 0:
+					GenerateOSCode = CodeOutputOS.Windows;
+					break;
+				case 1:
+					GenerateOSCode = CodeOutputOS.Android;
+					break;
+				case 2:
+					GenerateOSCode = CodeOutputOS.iOS;
+					break;
+				case 3:
+					GenerateOSCode = CodeOutputOS.macOS;
+					break;
+				case 4:
+					GenerateOSCode = CodeOutputOS.CrossPlatform;
+					break;
+
+			}
+
+			// Update UI
+			UpdateTextEditor();
+		}
+
+		/// <summary>
+		/// Handle the language selection changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void LanguageSelectionChanged(Foundation.NSObject sender)
+		{
+			// Set language
+			switch (LanguageSelector.IndexOfSelectedItem)
+			{
+				case 0:
+					GenerateLanguageCode = CodeOutputLanguage.CSharp;
+					break;
+				case 1:
+					GenerateLanguageCode = CodeOutputLanguage.ObiScript;
+					break;
+			}
+
+			// Update UI
+			UpdateTextEditor();
+		}
+
+		/// <summary>
+		/// Handles the library selection changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void LibrarySelectionChanged(Foundation.NSObject sender)
+		{
+			// Set language
+			switch (LibrarySelector.IndexOfSelectedItem)
+			{
+				case 0:
+					GenerateLibraryCode = CodeOutputLibrary.SkiaSharp;
+					break;
+				case 1:
+					GenerateLibraryCode = CodeOutputLibrary.KimonoCore;
+					break;
+			}
+
+			// Update UI
+			UpdateTextEditor();
 		}
 
 		/// <summary>

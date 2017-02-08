@@ -12,12 +12,23 @@ namespace KimonoCore
 		/// <summary>
 		/// Test to see if the given character is a number character.
 		/// </summary>
-		/// <returns><c>true</c>, if is number was chared, <c>false</c> otherwise.</returns>
+		/// <returns><c>true</c>, if is character is a number, <c>false</c> otherwise.</returns>
 		/// <param name="c">C.</param>
 		public static bool CharIsNumber(char c)
 		{
 			var numbers = "0123456789";
 			return numbers.Contains(c.ToString());
+		}
+
+		/// <summary>
+		/// Test to see if the given character is a letter character.
+		/// </summary>
+		/// <returns><c>true</c>, if is letter was chared, <c>false</c> otherwise.</returns>
+		/// <param name="c">C.</param>
+		public static bool CharIsLetter(char c)
+		{
+			var numbers = "abcdefghijklmnopqrstuvwxyz";
+			return numbers.Contains(c.ToString().ToLower());
 		}
 
 		/// <summary>

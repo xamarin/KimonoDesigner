@@ -7,7 +7,7 @@ namespace KimonoCore
 	/// Defines a blur effect that can be attached to the fill or the frame of a
 	/// <c>KimonoShape</c>.
 	/// </summary>
-	public class KimonoBlur
+	public class KimonoBlur : IKimonoCodeGeneration
 	{
 		#region Private Variables
 		/// <summary>
@@ -22,6 +22,12 @@ namespace KimonoCore
 		#endregion
 
 		#region Computed Properties
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		/// <value>The name.</value>
+		public string Name { get; set; } = "Blur";
+
 		/// <summary>
 		/// Gets or sets the horizontal blur amount.
 		/// </summary>
@@ -78,6 +84,20 @@ namespace KimonoCore
 			// Initialize
 			HorizontalBlurAmount = horizontalBlurAmount;
 			VerticalBlurAmount = verticalBlurAmount;
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

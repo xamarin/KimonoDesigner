@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// Holds a collection of <c>KimonoShapes</c> that are used to create a given
 	/// image using Skia.
 	/// </summary>
-	public class KimonoSketch
+	public class KimonoSketch : IKimonoCodeGeneration
 	{
 
 		#region Private Variables
@@ -748,6 +748,20 @@ namespace KimonoCore
 			// Update UI
 			RaiseSketchModified();
 			RaiseSelectionChanged(SelectedShape);
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

@@ -64,7 +64,19 @@ namespace KimonoMac
 		AppKit.NSView InspectorView { get; set; }
 
 		[Outlet]
+		AppKit.NSPopUpButton LanguageSelector { get; set; }
+
+		[Outlet]
+		AppKit.NSPopUpButton LibrarySelector { get; set; }
+
+		[Outlet]
+		AppKit.NSPopUpButton OSSelector { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorPolygon PolygonInspector { get; set; }
+
+		[Outlet]
+		KimonoMac.KimonoInspectorProperty PropertyInspector { get; set; }
 
 		[Outlet]
 		KimonoMac.KimonoInspectorRoundRect RoundRectInspector { get; set; }
@@ -83,6 +95,15 @@ namespace KimonoMac
 
 		[Outlet]
 		KimonoMac.KimonoInspectorStyle StyleInspector { get; set; }
+
+		[Outlet]
+		AppKit.TextKit.Formatter.SourceTextView TextEditor { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField TextEditorMode { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField TextEditorTitle { get; set; }
 
 		[Outlet]
 		KimonoMac.KimonoInspectorText TextInspector { get; set; }
@@ -126,6 +147,15 @@ namespace KimonoMac
 		[Action ("GoBackToSketch:")]
 		partial void GoBackToSketch (Foundation.NSObject sender);
 
+		[Action ("LanguageSelectionChanged:")]
+		partial void LanguageSelectionChanged (Foundation.NSObject sender);
+
+		[Action ("LibrarySelectionChanged:")]
+		partial void LibrarySelectionChanged (Foundation.NSObject sender);
+
+		[Action ("OSSelectionChanged:")]
+		partial void OSSelectionChanged (Foundation.NSObject sender);
+
 		[Action ("ToolArrowSelected:")]
 		partial void ToolArrowSelected (Foundation.NSObject sender);
 
@@ -164,9 +194,34 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (RoundRectInspector != null) {
-				RoundRectInspector.Dispose ();
-				RoundRectInspector = null;
+			if (TextEditorMode != null) {
+				TextEditorMode.Dispose ();
+				TextEditorMode = null;
+			}
+
+			if (TextEditorTitle != null) {
+				TextEditorTitle.Dispose ();
+				TextEditorTitle = null;
+			}
+
+			if (OSSelector != null) {
+				OSSelector.Dispose ();
+				OSSelector = null;
+			}
+
+			if (LanguageSelector != null) {
+				LanguageSelector.Dispose ();
+				LanguageSelector = null;
+			}
+
+			if (LibrarySelector != null) {
+				LibrarySelector.Dispose ();
+				LibrarySelector = null;
+			}
+
+			if (TextEditor != null) {
+				TextEditor.Dispose ();
+				TextEditor = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -257,6 +312,16 @@ namespace KimonoMac
 			if (PolygonInspector != null) {
 				PolygonInspector.Dispose ();
 				PolygonInspector = null;
+			}
+
+			if (PropertyInspector != null) {
+				PropertyInspector.Dispose ();
+				PropertyInspector = null;
+			}
+
+			if (RoundRectInspector != null) {
+				RoundRectInspector.Dispose ();
+				RoundRectInspector = null;
 			}
 
 			if (SketchInspector != null) {

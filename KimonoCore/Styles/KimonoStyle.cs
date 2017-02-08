@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// Defines as style that can be applied to a <c>KimonoShape</c> to control its
 	/// appearance.
 	/// </summary>
-	public class KimonoStyle
+	public class KimonoStyle : IKimonoCodeGeneration
 	{
 		#region Static Methods
 		/// <summary>
@@ -1329,6 +1329,20 @@ namespace KimonoCore
 			{
 				Fill.PathEffect = null;
 			}
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

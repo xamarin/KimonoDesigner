@@ -304,6 +304,17 @@ namespace KimonoCore
 		}
 		#endregion
 
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this `KimonoHandle` to a Skia Point.
+		/// </summary>
+		/// <returns>The `SKPoint`.</returns>
+		public SKPoint ToPoint()
+		{
+			return new SKPoint(X, Y);
+		}
+		#endregion
+
 		#region Cloning
 		/// <summary>
 		/// Clone this instance.

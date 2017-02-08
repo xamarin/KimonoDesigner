@@ -7,7 +7,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Defines the based shape that all other Kimono Shape types will inherit from.
 	/// </summary>
-	public class KimonoShape : KimonoBounds
+	public class KimonoShape : KimonoBounds, IKimonoCodeGeneration
 	{
 		#region Private Variables
 		/// <summary>
@@ -421,6 +421,20 @@ namespace KimonoCore
 
 			// Return path
 			return path;
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

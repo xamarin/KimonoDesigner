@@ -30,6 +30,18 @@ namespace KimonoCore.Mac
 
 		#region Computed Properties
 		/// <summary>
+		/// Gets a value indicating whether this <see cref="T:KimonoCore.Mac.KimonoDesignSurface"/> can become key view.
+		/// </summary>
+		/// <value><c>true</c> if can become key view; otherwise, <c>false</c>.</value>
+		public override bool CanBecomeKeyView
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether the user can undo their last action.
 		/// </summary>
 		/// <value><c>true</c> if can undo; otherwise, <c>false</c>.</value>
@@ -388,7 +400,7 @@ namespace KimonoCore.Mac
 
 		#region Override Methods
 		/// <summary>
-		/// Acceptses the first responder.
+		/// Accepts the first responder.
 		/// </summary>
 		/// <returns><c>true</c>, if first responder was accepted, <c>false</c> otherwise.</returns>
 		public override bool AcceptsFirstResponder()

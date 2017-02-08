@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// A Kimono Portfolio holds a collection of <c>KimonoSketches</c>, <c>KimonoStyles</c> and <c>KimonoColors</c>
 	/// that define a given Kimono Designer project.
 	/// </summary>
-	public class KimonoPortfolio
+	public class KimonoPortfolio : IKimonoCodeGeneration
 	{
 		#region Private Variables
 		/// <summary>
@@ -29,6 +29,12 @@ namespace KimonoCore
 		/// </summary>
 		/// <value>The unique identifier.</value>
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
+
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		/// <value>The name.</value>
+		public string Name { get; set; } = "Blur";
 
 		/// <summary>
 		/// Gets or sets the sketches.
@@ -454,14 +460,19 @@ namespace KimonoCore
 		}
 
 		/// <summary>
-		/// Duplicates the given property.
+		/// Duplicates the property.
 		/// </summary>
+		/// <returns>The new `KimonoProperty`.</returns>
 		/// <param name="property">The `KimonoProperty` to duplicate.</param>
-		public void DuplicateProperty(KimonoProperty property)
+		public KimonoProperty DuplicateProperty(KimonoProperty property)
 		{
 			// Make clone
 			var newProperty = property.Clone();
+			newProperty.Name = Kimono.IncrementName(newProperty.Name);
 			AddNewProperty(newProperty);
+
+			// Return new property
+			return newProperty;
 		}
 
 		/// <summary>
@@ -719,6 +730,20 @@ namespace KimonoCore
 
 			// Update UI
 			RaiseSelectedShapeChanged(SelectedSketch.SelectedShape);
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

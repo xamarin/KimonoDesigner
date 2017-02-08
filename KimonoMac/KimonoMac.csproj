@@ -288,6 +288,8 @@
     <Folder Include="Assets.xcassets\IconProperty.imageset\" />
     <Folder Include="Assets.xcassets\IconAddProperty.imageset\" />
     <Folder Include="Assets.xcassets\IconDeleteProperty.imageset\" />
+    <Folder Include="LanguageFormatter\" />
+    <Folder Include="LanguageFormats\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -377,6 +379,27 @@
     <Compile Include="AboutViewController.designer.cs">
       <DependentUpon>AboutViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="KimonoInspectorProperty.cs" />
+    <Compile Include="KimonoInspectorProperty.designer.cs">
+      <DependentUpon>KimonoInspectorProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LanguageFormatter\FormatDescriptor.cs" />
+    <Compile Include="LanguageFormatter\FormatDescriptorType.cs" />
+    <Compile Include="LanguageFormatter\KeywordDescriptor.cs" />
+    <Compile Include="LanguageFormatter\KeywordType.cs" />
+    <Compile Include="LanguageFormatter\LanguageClosure.cs" />
+    <Compile Include="LanguageFormatter\LanguageDescriptor.cs" />
+    <Compile Include="LanguageFormatter\LanguageFormatCommand.cs" />
+    <Compile Include="LanguageFormatter\LanguageFormatter.cs" />
+    <Compile Include="LanguageFormatter\SourceTextView.cs" />
+    <Compile Include="LanguageFormatter\SourceTextViewDelegate.cs" />
+    <Compile Include="LanguageFormats\CSharpDescriptor.cs" />
+    <Compile Include="LanguageFormats\HTMLDescriptor.cs" />
+    <Compile Include="LanguageFormats\MarkDownDescriptor.cs" />
+    <Compile Include="LanguageFormats\XMLDescriptor.cs" />
+    <Compile Include="Classes\Markdown.cs" />
+    <Compile Include="Classes\AppPreferences.cs" />
+    <Compile Include="LanguageFormats\ObiScriptDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

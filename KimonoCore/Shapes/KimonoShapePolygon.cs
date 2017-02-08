@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a multi-sided polygon into the Design Surface.
 	/// </summary>
-	public class KimonoShapePolygon : KimonoShape
+	public class KimonoShapePolygon : KimonoShape, IKimonoCodeGeneration
 	{
 		#region Computed Properties
 		/// <summary>
@@ -208,6 +208,20 @@ namespace KimonoCore
 				// Restore previous state
 				canvas.Restore();
 			}
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

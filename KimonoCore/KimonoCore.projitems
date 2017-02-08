@@ -53,6 +53,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyGradient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\CodeOutputOS.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\CodeOutputLanguage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\CodeOutputLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\KimonoCodeGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\IKimonoCodeGeneration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />
@@ -64,5 +69,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Bounds\" />
     <Folder Include="$(MSBuildThisFileDirectory)Effects\" />
     <Folder Include="$(MSBuildThisFileDirectory)Styles\" />
+    <Folder Include="$(MSBuildThisFileDirectory)CodeGeneration\" />
   </ItemGroup>
 </Project>

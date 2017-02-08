@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// A <c>KimonoShapeGroup</c> holds a collection of <c>KimonoShapes</c> that can be acted
 	/// upon as a group.
 	/// </summary>
-	public class KimonoShapeGroup : KimonoShape
+	public class KimonoShapeGroup : KimonoShape, IKimonoCodeGeneration
 	{
 		#region Private Variables
 		/// <summary>
@@ -1653,6 +1653,20 @@ namespace KimonoCore
 				// Allow base to handle bounds
 				base.BoundsChanged();
 			}
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

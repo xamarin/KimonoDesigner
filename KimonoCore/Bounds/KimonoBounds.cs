@@ -7,7 +7,7 @@ namespace KimonoCore
 	/// Defines the outter bounding box for a <c>KimonoShape</c> and contains the routines required
 	/// to draw the bounds and the control handles as the user edits and moves the shape.
 	/// </summary>
-	public class KimonoBounds
+	public class KimonoBounds : IKimonoCodeGeneration
 	{
 		#region Private Variables
 		/// <summary>
@@ -32,6 +32,12 @@ namespace KimonoCore
 		/// </summary>
 		/// <value>The state as a <c>KimonoShapeState</c>.</value>
 		public KimonoShapeState State { get; internal set; } = KimonoShapeState.Unselected;
+
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		/// <value>The name.</value>
+		public string Name { get; set; } = "Bounds";
 
 		/// <summary>
 		/// Gets or sets the unique identifier.
@@ -773,6 +779,20 @@ namespace KimonoCore
 			}
 
 			return inBounds;
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 

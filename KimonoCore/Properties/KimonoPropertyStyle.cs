@@ -14,6 +14,18 @@ namespace KimonoCore
 		/// </summary>
 		/// <value>The `KimonoStyle` value.</value>
 		public KimonoStyle Value { get; set; } = new KimonoStyle();
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoPropertyColor"/> is obi script value.
+		/// </summary>
+		/// <value><c>true</c> if is obi script value; otherwise, <c>false</c>.</value>
+		public override bool IsObiScriptValue
+		{
+			get
+			{
+				return true;
+			}
+		}
 		#endregion
 
 		#region Constructors

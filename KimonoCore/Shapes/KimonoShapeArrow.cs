@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws either an outlined or single line arrow with heads on one or both ends.
 	/// </summary>
-	public class KimonoShapeArrow : KimonoShape
+	public class KimonoShapeArrow : KimonoShape, IKimonoCodeGeneration
 	{
 		#region Computed Properties
 		/// <summary>
@@ -335,6 +335,20 @@ namespace KimonoCore
 				Rect.Bottom = Rect.Top + 1;
 				BoundsChanged();
 			}
+		}
+		#endregion
+
+		#region Conversion Routines
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 		#endregion
 
