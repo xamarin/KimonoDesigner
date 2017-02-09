@@ -76,6 +76,13 @@ namespace KimonoCore
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
+		/// Gets or sets the name of the element as it will be called in generated source
+		/// code.
+		/// </summary>
+		/// <value>The name of the element.</value>
+		internal string ElementName { get; set; } = "";
+
+		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
@@ -776,7 +783,7 @@ namespace KimonoCore
 		/// Converts this object to Obi Script represnetation.
 		/// </summary>
 		/// <returns>The obi script.</returns>
-		private string ToObiScript()
+		internal string ToObiScript()
 		{
 			var sourceCode = "";
 
@@ -792,16 +799,17 @@ namespace KimonoCore
 		/// Converts this graidents colors to Skia code.
 		/// </summary>
 		/// <returns>The color list as code.</returns>
-		/// <param name="elementName">Element name.</param>
-		private string ColorsToSkiaCode(string elementName)
+		internal string ColorsToCode(CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = $"// The {Name}'s Color List\n";
-			var colors = SortedColors();
 			var firstColor = true;
 
+			// Sort color list
+			var list = ControlPoints.OrderBy(n => n.X).ToList();
+
 			// Process all colors
-			sourceCode += $"SKColor[] {elementName}Colors = "+"{";
-			foreach (SKColor color in colors)
+			sourceCode += $"SKColor[] {ElementName}Colors = "+"{";
+			foreach (KimonoHandle handle in list)
 			{
 				// Is this the first color?
 				if (!firstColor)
@@ -809,8 +817,24 @@ namespace KimonoCore
 					sourceCode += ", ";
 				}
 
-				// Add color
-				sourceCode += KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, color);
+				// Linked color?
+				if (handle.LinkedColor == null)
+				{
+					// Add direct color
+					sourceCode += KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, handle.Color);
+				}
+				else
+				{
+					// Accumulate supporting color
+					sourceCode += KimonoCodeGenerator.AddSupportingColor(handle.LinkedColor);
+
+					// Using the KimonoCore library?
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						// Yes, the color must be converted to use
+						sourceCode += ".Color";
+					}
+				}
 
 				// Set state
 				firstColor = false;
@@ -825,15 +849,14 @@ namespace KimonoCore
 		/// Converts this gradients weights to Skia Code.
 		/// </summary>
 		/// <returns>The weight list as code.</returns>
-		/// <param name="elementName">Element name.</param>
-		private string WeightsToSkiaCode(string elementName)
+		internal string WeightsToSkiaCode()
 		{
 			var sourceCode = $"// The {Name}'s Weight List\n";
 			var weights = SortedWeights();
 			var firstWeight = true;
 
 			// Process all weights
-			sourceCode += $"float[] {elementName}Weights = " + "{";
+			sourceCode += $"float[] {ElementName}Weights = " + "{";
 			foreach (float weight in weights)
 			{
 				// Is this the first color?
@@ -858,20 +881,19 @@ namespace KimonoCore
 		/// Converts the gradient to C# Skia csource code.
 		/// </summary>
 		/// <returns>The gradient as code.</returns>
-		private string ToCSharpSkia()
+		internal string ToCSharpSkia()
 		{
 			var sourceCode = "";
-			var elementName = KimonoCodeGenerator.MakeElementName(Name);
 
 			// Add list of colors
-			sourceCode += ColorsToSkiaCode(elementName);
+			sourceCode += ColorsToCode(CodeOutputLibrary.SkiaSharp);
 
 			// Add list of weights
-			sourceCode += WeightsToSkiaCode(elementName);
+			sourceCode += WeightsToSkiaCode();
 
 			// Assemble gradient
 			sourceCode += $"// Create new {Name}\n" +
-				$"var {elementName} = SKShader.";
+				$"var {ElementName} = SKShader.";
 
 			// Take action based on the gradient type
 			switch (GradientType)
@@ -880,14 +902,14 @@ namespace KimonoCore
 					sourceCode += $"CreateLinearGradient(" +
 						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, StartPoint) + ", " +
 						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, EndPoint) + ", " +
-						$"{elementName}Colors, {elementName}Weights, " +
-						$"SKShaderTileMode.{TileMode});";
+						$"{ElementName}Colors, {ElementName}Weights, " +
+						$"SKShaderTileMode.{TileMode});\n";
 					break;
 				case KimonoGradientType.RadialGradient:
 					sourceCode += $"CreateRadialGradient(" +
 						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, StartPoint) + ", " +
-						$"{Radius}f, {elementName}Colors, {elementName}Weights, " +
-						$"SKShaderTileMode.{TileMode});";
+						$"{Radius}f, {ElementName}Colors, {ElementName}Weights, " +
+						$"SKShaderTileMode.{TileMode});\n";
 					break;
 				case KimonoGradientType.ConicalGradient:
 					sourceCode += $"CreateTwoPointConicalGradient(" +
@@ -895,13 +917,62 @@ namespace KimonoCore
 						$"{Radius}f, " +
 						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, EndPoint) + ", " +
 						$"{Radius / 2f}f, " +
-						$"{elementName}Colors, {elementName}Weights, " +
-						$"SKShaderTileMode.{TileMode});";
+						$"{ElementName}Colors, {ElementName}Weights, " +
+						$"SKShaderTileMode.{TileMode});\n";
 					break;
 				case KimonoGradientType.SweepGradient:
 					sourceCode += $"CreateSweepGradient(" +
 						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, StartPoint) + ", " +
-						$"{elementName}Colors, {elementName}Weights);";
+						$"{ElementName}Colors, {ElementName}Weights);\n";
+					break;
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the gradient to C# Skia csource code.
+		/// </summary>
+		/// <returns>The gradient as code.</returns>
+		/// <param name="startPoint">The starting `SKPoint`.</param>
+		/// <param name="endPoint">The ending `SKPoint`.</param>
+		internal string ToCSharpSkia(SKPoint startPoint, SKPoint endPoint)
+		{
+			var sourceCode = "";
+
+			// Assemble gradient
+			sourceCode += $"SKShader.";
+
+			// Take action based on the gradient type
+			switch (GradientType)
+			{
+				case KimonoGradientType.LinearGradient:
+					sourceCode += $"CreateLinearGradient(" +
+						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, startPoint) + ", " +
+						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, endPoint) + ", " +
+						$"{ElementName}Colors, {ElementName}Weights, " +
+						$"SKShaderTileMode.{TileMode});\n";
+					break;
+				case KimonoGradientType.RadialGradient:
+					sourceCode += $"CreateRadialGradient(" +
+						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, startPoint) + ", " +
+						$"{Radius}f, {ElementName}Colors, {ElementName}Weights, " +
+						$"SKShaderTileMode.{TileMode});\n";
+					break;
+				case KimonoGradientType.ConicalGradient:
+					sourceCode += $"CreateTwoPointConicalGradient(" +
+						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, startPoint) + ", " +
+						$"{Radius}f, " +
+						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, endPoint) + ", " +
+						$"{Radius / 2f}f, " +
+						$"{ElementName}Colors, {ElementName}Weights, " +
+						$"SKShaderTileMode.{TileMode});\n";
+					break;
+				case KimonoGradientType.SweepGradient:
+					sourceCode += $"CreateSweepGradient(" +
+						KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, startPoint) + ", " +
+						$"{ElementName}Colors, {ElementName}Weights);\n";
 					break;
 			}
 
@@ -913,24 +984,94 @@ namespace KimonoCore
 		/// Converts this gradient to code using the KimonoCore library.
 		/// </summary>
 		/// <returns>The gradient as code.</returns>
-		private string ToCSharpKimonoCore()
+		internal string ToCSharpKimonoCore()
 		{
 			var sourceCode = "";
-			var elementName = KimonoCodeGenerator.MakeElementName(Name);
 
 			// Add list of colors
-			sourceCode += ColorsToSkiaCode(elementName);
+			sourceCode += ColorsToCode(CodeOutputLibrary.KimonoCore);
 
 			// Add list of weights
-			sourceCode += WeightsToSkiaCode(elementName);
+			sourceCode += WeightsToSkiaCode();
 
 			// Assemble gradient
 			sourceCode += $"// Create new {Name}\n" +
-				$"var {elementName} = new KimonoGradient(KimonoGradientType.{GradientType}, " +
+				$"var {ElementName} = new KimonoGradient(KimonoGradientType.{GradientType}, " +
 				KimonoCodeGenerator.PointToCode(CodeOutputLibrary.KimonoCore, StartPoint) + ", " +
 				KimonoCodeGenerator.PointToCode(CodeOutputLibrary.KimonoCore, EndPoint) + ", " +
 			                       $"{Radius}f, SKShaderTileMode.{TileMode}, " +
-			                       $"{elementName}Colors, {elementName}Weights);";
+			                       $"{ElementName}Colors, {ElementName}Weights);\n";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this gradient to code using the KimonoCore library.
+		/// </summary>
+		/// <returns>The gradient as code.</returns>
+		/// <param name="startPoint">The starting `SKPoint`.</param>
+		/// <param name="endPoint">The ending `SKPoint`.</param>
+		internal string ToCSharpKimonoCore(SKPoint startPoint, SKPoint endPoint)
+		{
+			var sourceCode = "";
+
+			// Assemble gradient
+			sourceCode += $"new KimonoGradient(KimonoGradientType.{GradientType}, " +
+				KimonoCodeGenerator.PointToCode(CodeOutputLibrary.KimonoCore, startPoint) + ", " +
+				KimonoCodeGenerator.PointToCode(CodeOutputLibrary.KimonoCore, endPoint) + ", " +
+								   $"{Radius}f, SKShaderTileMode.{TileMode}, " +
+								   $"{ElementName}Colors, {ElementName}Weights);\n";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the object to C# source code for the given library.
+		/// </summary>
+		/// <returns>The C# source code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		internal string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode = ToCSharpSkia();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode = ToCSharpKimonoCore();
+					break;
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the object to C# source code for the given library.
+		/// </summary>
+		/// <returns>The C# source code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		/// <param name="startPoint">The starting `SKPoint`.</param>
+		/// <param name="endPoint">The ending `SKPoint`.</param>
+		internal string ToCSharp(CodeOutputLibrary outputLibrary, SKPoint startPoint, SKPoint endPoint)
+		{
+			var sourceCode = "";
+
+			// Take action based on library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode = ToCSharpSkia(startPoint, endPoint);
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode = ToCSharpKimonoCore(startPoint, endPoint);
+					break;
+			}
 
 			// Return results
 			return sourceCode;
@@ -947,25 +1088,22 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 
+			// Generate unique element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
 			// Take action based on language
 			switch (outputLanguage)
 			{
 				case CodeOutputLanguage.CSharp:
-					// Take action based on library
-					switch (outputLibrary)
-					{
-						case CodeOutputLibrary.SkiaSharp:
-							sourceCode = ToCSharpSkia();
-							break;
-						case CodeOutputLibrary.KimonoCore:
-							sourceCode = ToCSharpKimonoCore();
-							break;
-					}
+					sourceCode = ToCSharp(outputLibrary);
 					break;
 				case CodeOutputLanguage.ObiScript:
 					sourceCode = ToObiScript();
 					break;
 			}
+
+			// Include any supporting colors
+			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + sourceCode;
 
 			// Return results
 			return sourceCode;

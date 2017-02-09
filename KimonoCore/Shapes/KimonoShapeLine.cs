@@ -118,7 +118,15 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
 		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Include any supporting elements
+			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
+											KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
+											KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary) +
+											sourceCode;
+
+			return sourceCode;
 		}
 		#endregion
 

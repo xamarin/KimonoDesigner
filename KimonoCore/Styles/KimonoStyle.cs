@@ -166,6 +166,13 @@ namespace KimonoCore
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
+		/// Gets or sets the name of the element as it will be called in generated source
+		/// code.
+		/// </summary>
+		/// <value>The name of the element.</value>
+		internal string ElementName { get; set; } = "";
+
+		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
@@ -1334,6 +1341,535 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts this object to Obi Script represnetation.
+		/// </summary>
+		/// <returns>The obi script.</returns>
+		internal string ToObiScript()
+		{
+			var sourceCode = "";
+
+			// Generate code
+			sourceCode = "// Obi Script Selector for this style\n";
+			sourceCode += $"[style:{Name}]";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this style's Fill to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The Fill `SKPaint` as code.</returns>
+		internal string FillToSkiaCode()
+		{
+			var sourceCode = "";
+			var preCode = "";
+			var colorName = "";
+
+			// Using linked color?
+			if (FillColor == null)
+			{
+				// Save color name
+				colorName = $"{ElementName}FillColor";
+
+				// No, generate a one off color
+				sourceCode += $"// Fill color for {Name}\n" +
+					$"var {colorName} = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Fill.Color)};\n\n";
+			}
+			else
+			{
+				// Save linked color
+				colorName = KimonoCodeGenerator.AddSupportingColor(FillColor);
+			}
+
+			// Assemble paint
+			sourceCode += $"// Create {Name} fill paint\n" +
+				$"var {ElementName}FillPaint = new SKPaint()" + "{" +
+				$"\n\tStyle = SKPaintStyle.Fill" +
+				$",\n\tColor = {colorName}" +
+				$",\n\tBlendMode = SKBlendMode.{Fill.BlendMode}" +
+				$",\n\tIsAntialias = {Fill.IsAntialias.ToString().ToLower()}";
+
+			// Has gradient?
+			if (FillGradient != null)
+			{
+				// Yes, include
+				sourceCode += $",\n\tShader = {KimonoCodeGenerator.AddSupportingGradient(FillGradient)}";
+			}
+
+			// Has Jitter Effect?
+			if (HasFillJitter)
+			{
+				// Yes, include
+				sourceCode += $",\n\tPathEffect = SKPathEffect.CreateDiscrete({FillJitterLength}f, {FillJitterDeviation}f)";
+			}
+
+			// Prepare for image effects
+			var shadowEffect = "";
+			var blurEffect = "";
+
+			// Build Shadow if required
+			if (HasFillShadow)
+			{
+				// Assign the same element name
+				FillShadow.Name = $"{ElementName}Fill";
+
+				// Add elements
+				shadowEffect = $"{FillShadow.Name}Shadow";
+				preCode += FillShadow.ToSkiaSharp() + "\n";
+			}
+
+			// Build blur if required
+			if (HasFillBlur && (FillBlur.HorizontalBlurAmount > 0 || FillBlur.VerticalBlurAmount > 0))
+			{
+				// Assign the same element name
+				FillBlur.Name = $"{ElementName}Fill";
+
+				// Add elements
+				blurEffect = $"{FillBlur.Name}Blur";
+				preCode += FillBlur.ToSkiaSharp() + "\n";
+			}
+
+			// Apply blur and shadow
+			if (blurEffect != "" && shadowEffect != "")
+			{
+				sourceCode += $",\n\tImageFilter = SKImageFilter.CreateCompose({shadowEffect}, {blurEffect})";
+			} else if (blurEffect != "")
+			{
+				sourceCode += $",\n\tImageFilter = {blurEffect}";
+			}
+			else if (shadowEffect != "")
+			{
+				sourceCode += $",\n\tImageFilter = {shadowEffect}";
+			}
+
+			// Is text Style?
+			if (StyleType == KimonoStyleType.CustomText || StyleType == KimonoStyleType.Text)
+			{
+				// Yes, include text properties
+				sourceCode += $",\n\tTypeface = SKTypeface.FromFamilyName(\"{FontFamilyName}\", SKTypefaceStyle.{TypefaceStyle})" +
+					$",\n\tTextSize = {Fill.TextSize}f" +
+					$",\n\tTextAlign = SKTextAlign.{Fill.TextAlign}" +
+					$",\n\tStrikeThruText = {Fill.StrikeThruText.ToString().ToLower()}" +
+					$",\n\tUnderlineText = {Fill.UnderlineText.ToString().ToLower()}" +
+					$",\n\tIsVerticalText = {Fill.IsVerticalText.ToString().ToLower()}" +
+					$",\n\tTextScaleX = {Fill.TextScaleX}f" +
+					$",\n\tTextSkewX = {Fill.TextSkewX}f";
+			}
+
+			// Finalize paint
+			sourceCode += "};\n\n";
+
+			// Apply any precode
+			sourceCode = preCode + sourceCode;
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this style's Frame to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The Frame `SKPaint` as code.</returns>
+		internal string FrameToSkiaCode()
+		{
+			var sourceCode = "";
+			var preCode = "";
+			var colorName = "";
+
+			// Using linked color?
+			if (FrameColor == null)
+			{
+				// Save color name
+				colorName = $"{ElementName}FrameColor";
+
+				// No, generate a one off color
+				sourceCode += $"// Frame color for {Name}\n" +
+					$"var {colorName} = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Frame.Color)};\n\n";
+			}
+			else
+			{
+				// Save linked color
+				colorName = KimonoCodeGenerator.AddSupportingColor(FrameColor);
+			}
+
+			// Assemble paint
+			sourceCode += $"// Create {Name} frame paint\n" +
+				$"var {ElementName}FramePaint = new SKPaint()" + "{" +
+				$"\n\tStyle = SKPaintStyle.Stroke" +
+				$",\n\tColor = {colorName}" +
+				$",\n\tBlendMode = SKBlendMode.{Frame.BlendMode}" +
+				$",\n\tIsAntialias = {Frame.IsAntialias.ToString().ToLower()}" +
+				$",\n\tStrokeWidth = {Frame.StrokeWidth}f" +
+				$",\n\tStrokeMiter = {Frame.StrokeMiter}f" +
+				$",\n\tStrokeJoin = SKStrokeJoin.{Frame.StrokeJoin}" +
+				$",\n\tStrokeCap = SKStrokeCap.{Frame.StrokeCap}";
+			
+			// Has gradient?
+			if (FrameGradient != null)
+			{
+				// Yes, include
+				sourceCode += $",\n\tShader = {KimonoCodeGenerator.AddSupportingGradient(FrameGradient)}";
+			}
+
+			var jitterEffect = "";
+			var dashEffect = "";
+
+			// Needs dash precode?
+			if (HasFrameDash)
+			{
+				// Yes, construct intervals
+				preCode += $"// Dash Interval for {Name} Frame\n";
+				var intervals = MakeDashInterval();
+				var start = true;
+
+				// Process all intervals
+				preCode += $"var float[] {ElementName}DashIntervals = " + "{";
+				foreach (float interval in intervals)
+				{
+					// At start of list?
+					if (!start) preCode += ", ";
+
+					// Add interval
+					preCode += $"{interval}f";
+
+					// Set state
+					start = false;
+				}
+				preCode += "};\n\n";
+
+				// Assemble dash
+				dashEffect = $"SKPathEffect.CreateDash({ElementName}DashIntervals, 0)";
+			}
+
+			// Needs Jitter precode?
+			if (HasFrameJitter)
+			{
+				// Assemble jitter
+				jitterEffect = $"SKPathEffect.CreateDiscrete({FrameJitterLength}f, {FrameJitterDeviation}f)";
+			}
+
+			// Apply Jitter and Dash effects to paint
+			if (HasFrameJitter && HasFrameDash)
+			{
+				sourceCode += $",\n\tPathEffect = SKPathEffect.CreateCompose({dashEffect}, {jitterEffect})";
+			}
+			else if (HasFrameJitter)
+			{
+				sourceCode += $",\n\tPathEffect = {jitterEffect}";
+			}
+			else if (HasFrameDash)
+			{
+				sourceCode += $",\n\tPathEffect = {dashEffect}";
+			}
+
+			// Prepare for image effects
+			var shadowEffect = "";
+			var blurEffect = "";
+
+			// Build Shadow if required
+			if (HasFrameShadow)
+			{
+				// Assign the same element name
+				FrameShadow.Name = $"{ElementName}Frame";
+
+				// Add elements
+				shadowEffect = $"{FrameShadow.Name}Shadow";
+				preCode += FrameShadow.ToSkiaSharp() + "\n";
+			}
+
+			// Build blur if required
+			if (HasFrameBlur && (FrameBlur.HorizontalBlurAmount > 0 || FrameBlur.VerticalBlurAmount > 0))
+			{
+				// Assign the same element name
+				FrameBlur.Name = $"{ElementName}Frame";
+
+				// Add elements
+				blurEffect = $"{FrameBlur.Name}Blur";
+				preCode += FrameBlur.ToSkiaSharp() + "\n";
+			}
+
+			// Apply blur and shadow
+			if (blurEffect != "" && shadowEffect != "")
+			{
+				sourceCode += $",\n\tImageFilter = SKImageFilter.CreateCompose({shadowEffect}, {blurEffect})";
+			}
+			else if (blurEffect != "")
+			{
+				sourceCode += $",\n\tImageFilter = {blurEffect}";
+			}
+			else if (shadowEffect != "")
+			{
+				sourceCode += $",\n\tImageFilter = {shadowEffect}";
+			}
+
+			// Is text Style?
+			if (StyleType == KimonoStyleType.CustomText || StyleType == KimonoStyleType.Text)
+			{
+				// Yes, include text properties
+				sourceCode += $",\n\tTypeface = SKTypeface.FromFamilyName(\"{FontFamilyName}\", SKTypefaceStyle.{TypefaceStyle})" +
+					$",\n\tTextSize = {Frame.TextSize}f" +
+					$",\n\tTextAlign = SKTextAlign.{Frame.TextAlign}" +
+					$",\n\tStrikeThruText = {Frame.StrikeThruText.ToString().ToLower()}" +
+					$",\n\tUnderlineText = {Frame.UnderlineText.ToString().ToLower()}" +
+					$",\n\tIsVerticalText = {Frame.IsVerticalText.ToString().ToLower()}" +
+					$",\n\tTextScaleX = {Frame.TextScaleX}f" +
+					$",\n\tTextSkewX = {Frame.TextSkewX}f";
+			}
+
+			// Finalize paint
+			sourceCode += "};\n\n";
+
+			// Apply any precode
+			sourceCode = preCode + sourceCode;
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this style to C# code using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		internal string ToKimonoCore()
+		{
+			var sourceCode = "";
+			var preCode = "";
+
+			// Assemble code
+			sourceCode += $"// Build new {Name}\n" +
+				$"var {ElementName} = new KimonoStyle()"+"{" +
+				$"\n\tStyleType = KimonoStyleType.{StyleType}";
+
+			// Has fill?
+			if (HasFill)
+			{
+				// Yes, include fill code
+				sourceCode += $",\n\tHasFill = true";
+
+				// Has gradient?
+				if (FillGradient != null)
+				{
+					// Accumulate supporting gradient
+					sourceCode += $",\n\tFillGradient = {KimonoCodeGenerator.AddSupportingGradient(FillGradient)}";
+				}
+
+				// Has Jitter Effect?
+				if (HasFillJitter)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFillJitter = true" +
+						$",\n\tFillJitterLength = {FillJitterLength}f" +
+						$",\n\tFillJitterDeviation = {FillJitterDeviation}f";
+				}
+			}
+
+			// Has Frame?
+			if (HasFrame)
+			{
+				// Yes, include fill code
+				sourceCode += $",\n\tHasFrame = true";
+
+				// Has gradient?
+				if (FrameGradient != null)
+				{
+					// Accumulate supporting gradient
+					sourceCode += $",\n\tFrameGradient = {KimonoCodeGenerator.AddSupportingGradient(FrameGradient)}";
+				}
+
+				// Has Jitter Effect?
+				if (HasFrameJitter)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFrameJitter = true" +
+						$",\n\tFrameJitterLength = {FrameJitterLength}f" +
+						$",\n\tFrameJitterDeviation = {FrameJitterDeviation}f";
+				}
+			}
+
+			// Is text Style?
+			if (StyleType == KimonoStyleType.CustomText || StyleType == KimonoStyleType.Text)
+			{
+				// Yes, include text properties
+				sourceCode += $",\n\tFontFamilyName = \"{FontFamilyName}\"" +
+					$",\n\tTypefaceStyle = SKTypefaceStyle.{TypefaceStyle}" +
+					$",\n\tTextSize = {TextSize}f" +
+					$",\n\tTextAlign = SKTextAlign.{TextAlign}" +
+					$",\n\tStrikeThruText = {StrikeThruText.ToString().ToLower()}" +
+					$",\n\tUnderlineText = {UnderlineText.ToString().ToLower()}" +
+					$",\n\tIsVerticalText = {IsVerticalText.ToString().ToLower()}" +
+					$",\n\tTextScaleX = {TextScaleX}f" +
+					$",\n\tTextSkewX = {TextSkewX}f";
+			}
+
+			// Finalize style
+			sourceCode += "};\n";
+
+			// Requires configuration?
+			if (HasFill || HasFrame)
+			{
+				sourceCode += $"\n// Configure new {Name}\n";
+			}
+
+			// Add items that cannot be in an initializer
+			if (HasFill)
+			{
+				// Assemble parts
+				sourceCode += $"{ElementName}.Fill.BlendMode = SKBlendMode.{Fill.BlendMode};\n" +
+					$"{ElementName}.Fill.IsAntialias = {Fill.IsAntialias.ToString().ToLower()};\n";
+
+				// Linked color?
+				if (FillColor == null)
+				{
+					// Add direct color
+					sourceCode += $"{ElementName}.Fill.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Fill.Color)};\n";
+				}
+				else
+				{
+					// Accumulate supporting color
+					sourceCode += $"{ElementName}.FillColor = {KimonoCodeGenerator.AddSupportingColor(FillColor)};\n";
+				}
+
+				// Has Blur?
+				if (HasFillBlur)
+				{
+					// Yes, include
+					sourceCode += $"{ElementName}.HasFillBlur = true;\n" +
+						$"{ElementName}.FillBlur.HorizontalBlurAmount = {FillBlur.HorizontalBlurAmount}f;\n" +
+						$"{ElementName}.FillBlur.VerticalBlurAmount = {FillBlur.VerticalBlurAmount}f;\n";
+				}
+
+				// Has shadow?
+				if (HasFillShadow)
+				{
+					// Yes, include
+					sourceCode += $"{ElementName}.HasFillShadow = true;\n" +
+						$"{ElementName}.FillShadow.HorizontalOffset = {FillShadow.HorizontalOffset}f;\n" +
+						$"{ElementName}.FillShadow.VerticalOffset = {FillShadow.VerticalOffset}f;\n" +
+						$"{ElementName}.FillShadow.HorizontalBlurAmount = {FillShadow.HorizontalBlurAmount}f;\n" +
+						$"{ElementName}.FillShadow.VerticalBlurAmount = {FillShadow.VerticalBlurAmount}f;\n";
+
+					// Linked color?
+					if (FillShadow.LinkedColor == null)
+					{
+						// Add direct color
+						sourceCode += $"{ElementName}.FillShadow.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FillShadow.Color)};\n";
+					}
+					else
+					{
+						// Accumulate supporting color
+						sourceCode += $"{ElementName}.FillShadow.LinkedColor = {KimonoCodeGenerator.AddSupportingColor(FillShadow.LinkedColor)};\n";
+					}
+				}
+			}
+
+			if (HasFrame)
+			{
+				// Assemble parts
+				sourceCode += $"{ElementName}.Frame.BlendMode = SKBlendMode.{Frame.BlendMode};\n" +
+					$"{ElementName}.Frame.IsAntialias = {Frame.IsAntialias.ToString().ToLower()};\n" +
+					$"{ElementName}.Frame.StrokeWidth = {Frame.StrokeWidth}f;\n" +
+					$"{ElementName}.Frame.StrokeMiter = {Frame.StrokeMiter}f;\n" +
+					$"{ElementName}.Frame.StrokeJoin = SKStrokeJoin.{Frame.StrokeJoin};\n" +
+					$"{ElementName}.Frame.StrokeCap = SKStrokeCap.{Frame.StrokeCap};\n";
+
+				// Has dash effect?
+				if (HasFrameDash)
+				{
+					// Yes, include
+					sourceCode += $"{ElementName}.HasFrameDash = true;\n";
+					for (int n = 0; n < DashPattern.Length; ++n)
+					{
+						// Accumulate pattern
+						sourceCode += $"{ElementName}.DashPattern[{n}] = {DashPattern[n].ToString().ToLower()};\n";
+					}
+				}
+
+				// Linked color?
+				if (FrameColor == null)
+				{
+					// Add direct color
+					sourceCode += $"{ElementName}.Frame.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Frame.Color)};\n";
+				}
+				else
+				{
+					// Accumulate supporting color
+					sourceCode += $"{ElementName}.FrameColor = {KimonoCodeGenerator.AddSupportingColor(FrameColor)};\n";
+				}
+
+				// Has Blur?
+				if (HasFrameBlur)
+				{
+					// Yes, include
+					sourceCode += $"{ElementName}.HasFrameBlur = true;\n" +
+						$"{ElementName}.FrameBlur.HorizontalBlurAmount = {FrameBlur.HorizontalBlurAmount}f;\n" +
+						$"{ElementName}.FrameBlur.VerticalBlurAmount = {FrameBlur.VerticalBlurAmount}f;\n";
+				}
+
+				// Has shadow?
+				if (HasFrameShadow)
+				{
+					// Yes, include
+					sourceCode += $"{ElementName}.HasFrameShadow = true;\n" +
+						$"{ElementName}.FrameShadow.HorizontalOffset = {FrameShadow.HorizontalOffset}f;\n" +
+						$"{ElementName}.FrameShadow.VerticalOffset = {FrameShadow.VerticalOffset}f;\n" +
+						$"{ElementName}.FrameShadow.HorizontalBlurAmount = {FrameShadow.HorizontalBlurAmount}f;\n" +
+						$"{ElementName}.FrameShadow.VerticalBlurAmount = {FrameShadow.VerticalBlurAmount}f;\n";
+
+					// Linked color?
+					if (FrameShadow.LinkedColor == null)
+					{
+						// Add direct color
+						sourceCode += $"{ElementName}.FrameShadow.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FrameShadow.Color)};\n";
+					}
+					else
+					{
+						// Accumulate supporting color
+						sourceCode += $"{ElementName}.FrameShadow.LinkedColor = {KimonoCodeGenerator.AddSupportingColor(FrameShadow.LinkedColor)};\n";
+					}
+				}
+			}
+
+			// Close configuration section?
+			if (HasFill || HasFrame)
+			{
+				sourceCode += $"\n";
+			}
+
+			// Apply any precode
+			sourceCode = preCode + sourceCode;
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this styl to C# code.
+		/// </summary>
+		/// <returns>The style as code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to generate code in.</param>
+		internal string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					// Assemble bits
+					if (HasFill) sourceCode += FillToSkiaCode();
+					if (HasFrame) sourceCode += FrameToSkiaCode();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -1342,7 +1878,29 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
 		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Create code name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the output language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += ToCSharp(outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					sourceCode += ToObiScript();
+					break;
+			}
+
+			// Include any supporting elements
+			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
+			                                KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
+			                                sourceCode;
+
+			// Return resulting code
+			return sourceCode;
 		}
 		#endregion
 

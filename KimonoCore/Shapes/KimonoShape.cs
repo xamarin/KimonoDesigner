@@ -329,13 +329,12 @@ namespace KimonoCore
 			}
 		}
 
-		/// <summary>
-		/// Conforms the gradient to shape by fitting it to the bounds of the shape.
-		/// </summary>
-		/// <param name="gradient">The <c>KimonoGradient</c> to conform.</param>
-		/// <param name="paint">The <c>SKPaint</c> that the gradient is being attached to.</param>
-		public virtual void ConformGradientToShape(KimonoGradient gradient, SKPaint paint)
+		public virtual void CalculateConfromingGradientCoordinates(KimonoGradient gradient, out SKPoint startPoint, out SKPoint endPoint)
 		{
+			// Generate conforming coordinates
+			startPoint = new SKPoint();
+			endPoint = new SKPoint();
+
 			// Anything to process?
 			if (gradient == null) return;
 
@@ -376,11 +375,11 @@ namespace KimonoCore
 			if (shrinkX)
 			{
 				start.X = (start.X * offsetX) + Rect.Left;
-				end.X  = (end.X * offsetX) + Rect.Left;
+				end.X = (end.X * offsetX) + Rect.Left;
 			}
 			else
 			{
-				start.X  = (start.X  / offsetX) + Rect.Left;
+				start.X = (start.X / offsetX) + Rect.Left;
 				end.X = (end.X / offsetX) + Rect.Left;
 			}
 
@@ -396,8 +395,31 @@ namespace KimonoCore
 				end.Y = (end.Y / offsetY) + Rect.Top;
 			}
 
+			// Save new coordinates
+			startPoint.X = start.X;
+			startPoint.Y = start.Y;
+
+			endPoint.X = end.X;
+			endPoint.Y = end.Y;
+		}
+
+		/// <summary>
+		/// Conforms the gradient to shape by fitting it to the bounds of the shape.
+		/// </summary>
+		/// <param name="gradient">The <c>KimonoGradient</c> to conform.</param>
+		/// <param name="paint">The <c>SKPaint</c> that the gradient is being attached to.</param>
+		public virtual void ConformGradientToShape(KimonoGradient gradient, SKPaint paint)
+		{
+			// Anything to process?
+			if (gradient == null) return;
+
+			// Generate conforming coordinates
+			var start = new SKPoint();
+			var end = new SKPoint();
+			CalculateConfromingGradientCoordinates(gradient,out start, out end);
+
 			// Apply change to the paint
-			paint.Shader = gradient.ConformingShader(new SKPoint(start.X ,start.Y), new SKPoint(end.X, end.Y));
+			paint.Shader = gradient.ConformingShader(start, end);
 
 		}
 
@@ -426,6 +448,96 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Gets the style fill paint for code.
+		/// </summary>
+		/// <value>The style fill paint for code.</value>
+		internal string StyleFillPaintForCode
+		{
+			get
+			{
+				// Is this shape using a custom style?
+				if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
+				{
+					return $"{Style.ElementName}FillPaint";
+				}
+				else
+				{
+					return $"{Style.ElementName}.Fill";
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets the style frame paint for code.
+		/// </summary>
+		/// <value>The style frame paint for code.</value>
+		internal string StyleFramePaintForCode
+		{
+			get
+			{
+				// Is this shape using a custom style?
+				if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
+				{
+					return $"{Style.ElementName}FramePaint";
+				}
+				else
+				{
+					return $"{Style.ElementName}.Frame";
+				}
+			}
+		}
+
+		/// <summary>
+		/// Conforms the attached gradient to the shapes bounds for code.
+		/// </summary>
+		/// <returns>The fill gradient conformed in code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		internal string ConformedFillGradientCode(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Anything to process?
+			if (Style.FillGradient != null)
+			{
+				// Get conforming coordinates
+				var startPoint = new SKPoint();
+				var endPoint = new SKPoint();
+				CalculateConfromingGradientCoordinates(Style.FillGradient, out startPoint, out endPoint);
+
+				// Conform gradient
+				sourceCode += $"{StyleFillPaintForCode}.Shader = {Style.FillGradient.ToCSharp(outputLibrary, startPoint, endPoint)}";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Conforms the attached gradient to the shapes bounds for code.
+		/// </summary>
+		/// <returns>The frame gradient conformed in code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		internal string ConformedFrameGradientCode(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Anything to process?
+			if (Style.FrameGradient != null)
+			{
+				// Get conforming coordinates
+				var startPoint = new SKPoint();
+				var endPoint = new SKPoint();
+				CalculateConfromingGradientCoordinates(Style.FrameGradient, out startPoint, out endPoint);
+
+				// Conform gradient
+				sourceCode += $"{StyleFramePaintForCode}.Shader = {Style.FrameGradient.ToCSharp(outputLibrary, startPoint, endPoint)};";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -434,7 +546,33 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
 		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Is this shape using a custom style?
+			if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
+			{
+				// Yes, include it in the source code
+				Style.Name = $"{Name} Style";
+				Style.ElementName = KimonoCodeGenerator.MakeElementName(Style.Name);
+
+				// Take action based on the output language
+				switch (outputLanguage)
+				{
+					case CodeOutputLanguage.CSharp:
+						sourceCode += Style.ToCSharp(outputLibrary);
+						break;
+					case CodeOutputLanguage.ObiScript:
+						sourceCode += Style.ToObiScript();
+						break;
+				}
+			}
+			else
+			{
+				// Accumulate linked styles
+				KimonoCodeGenerator.AddSupportingStyle(Style);
+			}
+
+			return sourceCode;
 		}
 		#endregion
 

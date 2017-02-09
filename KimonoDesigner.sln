@@ -7,6 +7,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KimonoCore", "KimonoCore\Ki
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimonoCore.Mac", "KimonoCore.Mac\KimonoCore.Mac.csproj", "{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsumerMac", "TestConsumerMac\TestConsumerMac.csproj", "{57AAA310-9CA8-4A00-9AFE-19CB78C599E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -21,5 +23,9 @@ Global
 		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Debug|x86.Build.0 = Debug|Any CPU
 		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Release|x86.ActiveCfg = Release|Any CPU
 		{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}.Release|x86.Build.0 = Release|Any CPU
+		{57AAA310-9CA8-4A00-9AFE-19CB78C599E8}.Debug|x86.ActiveCfg = Debug|x86
+		{57AAA310-9CA8-4A00-9AFE-19CB78C599E8}.Debug|x86.Build.0 = Debug|x86
+		{57AAA310-9CA8-4A00-9AFE-19CB78C599E8}.Release|x86.ActiveCfg = Release|x86
+		{57AAA310-9CA8-4A00-9AFE-19CB78C599E8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal

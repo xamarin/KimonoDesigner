@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SkiaSharp;
 
 namespace KimonoCore
@@ -19,6 +20,24 @@ namespace KimonoCore
 		/// Add number to element names when generating.
 		/// </summary>
 		public static bool AddNumberToElementNames = false;
+
+		/// <summary>
+		/// A list of supporting colors that are required for the object being converted
+		/// to source code.
+		/// </summary>
+		public static List<KimonoColor> SupportingColors = new List<KimonoColor>();
+
+		/// <summary>
+		/// A list of supporting gradients that are required for the object being converted
+		/// to source code.
+		/// </summary>
+		public static List<KimonoGradient> SupportingGradients = new List<KimonoGradient>();
+
+		/// <summary>
+		/// A list of supporting styles that are required for the object being converted to
+		/// source code.
+		/// </summary>
+		public static List<KimonoStyle> SupportingStyles = new List<KimonoStyle>();
 		#endregion
 
 		#region Public Methods
@@ -30,6 +49,148 @@ namespace KimonoCore
 			// Returns the generator to the default state
 			NextElementNumber = 0;
 			AddNumberToElementNames = false;
+			SupportingColors.Clear();
+			SupportingGradients.Clear();
+			SupportingStyles.Clear();
+		}
+
+		/// <summary>
+		/// Adds the given color to the collection of named colors that are used
+		/// in the generation of other Kimono Objects. If a color is already in
+		/// the collection, its `ElementName` is returned.
+		/// </summary>
+		/// <returns>The `ElementName` for the supporting color.</returns>
+		/// <param name="color">The `KimonoColor` to add to the collection.</param>
+		public static string AddSupportingColor(KimonoColor color)
+		{
+			// Scan all colors
+			foreach (KimonoColor supportColor in SupportingColors)
+			{
+				// Already in collection?
+				if (supportColor == color) return supportColor.ElementName;
+			}
+
+			// Generate element name and add to collection
+			color.ElementName = MakeElementName(color.Name);
+			SupportingColors.Add(color);
+
+			// Return the new element name
+			return color.ElementName;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting colors used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForSupportingColors(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all colors
+			foreach (KimonoColor supportColor in SupportingColors)
+			{
+				// Accumulate color code
+				sourceCode += $"// Create new {supportColor.Name}\n";
+				sourceCode += $"var {supportColor.ElementName} = {ColorToCode(outputLibrary, supportColor.Color)};\n\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Adds the given gradient to the collection of named gradients that are used
+		/// in the generation of other Kimono Objects. If a gradient is already in
+		/// the collection, its `ElementName` is returned.
+		/// </summary>
+		/// <returns>The `ElementName` for the supporting gradient.</returns>
+		/// <param name="gradient">The `KimonoGradient` to add.</param>
+		public static string AddSupportingGradient(KimonoGradient gradient)
+		{
+			// Scan all gradients
+			foreach (KimonoGradient supportingGradient in SupportingGradients)
+			{
+				// Already in the collection?
+				if (supportingGradient == gradient) return supportingGradient.ElementName;
+			}
+
+			// Generate element name and add to collection
+			gradient.ElementName = MakeElementName(gradient.Name);
+			SupportingGradients.Add(gradient);
+
+			// Return the new element name
+			return gradient.ElementName;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting gradients used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoGradients`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForSupportGradients(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all gradients
+			foreach (KimonoGradient supportingGradient in SupportingGradients)
+			{
+				// Accumulate gradient
+				sourceCode += supportingGradient.ToCSharp(outputLibrary) + "\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Adds the given style to the collection of named styles that are used
+		/// in the generation of other Kimono Objects. If a style is already in
+		/// the collection, its `ElementName` is returned.
+		/// </summary>
+		/// <returns>The `ElementName` for the supporting style.</returns>
+		/// <param name="style">The `KimonoStyle` to add.</param>
+		public static string AddSupportingStyle(KimonoStyle style)
+		{
+			// Scan all styles
+			foreach (KimonoStyle supportingStyle in SupportingStyles)
+			{
+				// Already in the collection?
+				if (supportingStyle == style) return supportingStyle.ElementName;
+			}
+
+			// Generate element name and add to collection
+			style.ElementName = MakeElementName(style.Name);
+			SupportingStyles.Add(style);
+
+			// Return the new element name
+			return style.ElementName;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting styles used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoGradients`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForSupportStyles(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all gradients
+			foreach (KimonoStyle supportingStyle in SupportingStyles)
+			{
+				// Accumulate gradient
+				sourceCode += supportingStyle.ToCSharp(outputLibrary) + "\n";
+			}
+
+			// Return generated source
+			return sourceCode;
 		}
 
 		/// <summary>
@@ -37,7 +198,6 @@ namespace KimonoCore
 		/// </summary>
 		/// <returns>The element name valid for use in source code.</returns>
 		/// <param name="name">The source Kimono Object name.</param>
-		/// <param name="addNumber">If set to <c>true</c>, adds a unique number to the end of the output code.</param>
 		public static string MakeElementName(string name)
 		{
 			var elementName = "";
@@ -123,10 +283,10 @@ namespace KimonoCore
 			switch (outputLibrary)
 			{
 				case CodeOutputLibrary.SkiaSharp:
-					sourceCode = $"new SKPoint({point.X},{point.Y})";
+					sourceCode = $"new SKPoint({point.X}f, {point.Y}f)";
 					break;
 				case CodeOutputLibrary.KimonoCore:
-					sourceCode = $"new KimonoHandle({point.X},{point.Y})";
+					sourceCode = $"new KimonoHandle({point.X}f, {point.Y}f)";
 					break;
 			}
 
@@ -148,10 +308,10 @@ namespace KimonoCore
 			switch (outputLibrary)
 			{
 				case CodeOutputLibrary.SkiaSharp:
-					sourceCode = $"new SKPoint({point.X},{point.Y})";
+					sourceCode = $"new SKPoint({point.X}f, {point.Y}f)";
 					break;
 				case CodeOutputLibrary.KimonoCore:
-					sourceCode = $"new KimonoHandle({point.X},{point.Y})";
+					sourceCode = $"new KimonoHandle({point.X}f, {point.Y}f)";
 					break;
 			}
 

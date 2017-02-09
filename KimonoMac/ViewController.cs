@@ -1253,6 +1253,7 @@ namespace KimonoMac
 			LibrarySelector.Enabled = true;
 
 			// Show preview code
+			KimonoCodeGenerator.ResetCodeGeneration();
 			Text = KimonoPreviewElement.ToCode(GenerateOSCode, GenerateLanguageCode, GenerateLibraryCode);
 		}
 

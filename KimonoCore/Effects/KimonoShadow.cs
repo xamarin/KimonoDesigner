@@ -225,6 +225,67 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts this shadow to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shadow as code.</returns>
+		internal string ToSkiaSharp()
+		{
+			var sourceCode = "";
+			var colorName = "";
+
+			// Using linked color?
+			if (LinkedColor == null)
+			{
+				// Save color name
+				colorName = $"{Name}ShadowColor";
+
+				// No, generate a one off color
+				sourceCode += $"// Shadow color for {Name}\n" +
+					$"var {colorName} = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Color)};\n\n";
+			}
+			else
+			{
+				// Save linked color
+				colorName = KimonoCodeGenerator.AddSupportingColor(LinkedColor);
+			}
+
+			// Assemble code
+			sourceCode += $"// Build shadow for {Name}\n" +
+				$"var {Name}Shadow = SKImageFilter.CreateDropShadow({HorizontalOffset}f, {VerticalOffset}f, {HorizontalBlurAmount}f, {VerticalBlurAmount}f, {colorName}, SKDropShadowImageFilterShadowMode.DrawShadowAndForeground, null, null);\n";
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shadow to C# code using the KimonoCore library.
+		/// </summary>
+		/// <returns>The shadow as code.</returns>
+		internal string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Assemble code
+			sourceCode += $"// Build shadow for {Name}\n" +
+				$"var {Name}Shadow = new KimonoShadow({HorizontalOffset}f, {VerticalOffset}f, {HorizontalBlurAmount}f, {VerticalBlurAmount}f);\n";
+
+			// Using linked color?
+			if (LinkedColor == null)
+			{
+				// No, generate a one off color
+				sourceCode += $"{Name}Shadow.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Color)};\n";
+			}
+			else
+			{
+				// Use linked color
+				sourceCode += $"{Name}Shadow.LinkedColor = {KimonoCodeGenerator.AddSupportingColor(LinkedColor)};\n";
+			}
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -233,7 +294,24 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
 		public string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Include any supporting colors
+			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + sourceCode;
+
+			// Return resulting code
+			return sourceCode;
 		}
 		#endregion
 

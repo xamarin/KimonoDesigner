@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Styles/KimonoGradient.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/CodeGeneration/KimonoCodeGenerator.cs">
     <Files>
-      <File FileName="KimonoMac/ViewController.cs" Line="1020" Column="24" />
-      <File FileName="KimonoCore/CodeGeneration/KimonoCodeGenerator.cs" Line="142" Column="55" />
-      <File FileName="KimonoCore/Styles/KimonoGradient.cs" Line="937" Column="4" />
+      <File FileName="KimonoCore/Shapes/KimonoShape.cs" Line="567" Column="6" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeRect.cs" Line="184" Column="38" />
+      <File FileName="TestConsumerMac/ViewController.cs" Line="58" Column="5" />
+      <File FileName="KimonoCore/CodeGeneration/KimonoCodeGenerator.cs" Line="296" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
@@ -13,4 +14,5 @@
   <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.TestConsumerMac PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

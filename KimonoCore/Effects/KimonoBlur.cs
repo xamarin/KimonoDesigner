@@ -89,6 +89,38 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts this blur effect to code using the Skia library.
+		/// </summary>
+		/// <returns>The blur as code.</returns>
+		internal string ToSkiaSharp()
+		{
+			var sourceCode = "";
+
+			// Assemble code
+			sourceCode += $"// Build {Name} Blur\n" +
+				$"var {Name}Blur = SKImageFilter.CreateBlur({HorizontalBlurAmount}f, {VerticalBlurAmount}f, null, null);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this blur effect to code using the KimonoCore library.
+		/// </summary>
+		/// <returns>The blur as code.</returns>
+		internal string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Assemble code
+			sourceCode += $"// Build {Name} Blur\n" +
+				$"var {Name}Blur = new KimonoBlur({HorizontalBlurAmount}f, {VerticalBlurAmount}f);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -97,7 +129,21 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
 		public string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return resulting code
+			return sourceCode;
 		}
 		#endregion
 
