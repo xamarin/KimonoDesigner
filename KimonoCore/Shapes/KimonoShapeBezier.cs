@@ -139,6 +139,21 @@ namespace KimonoCore
 		{
 			// Add point and recalculate bounds
 			Points.Add(new KimonoBezierPoint(x,y,x,y));
+			RecalculateVectorBounds();
+		}
+
+		/// <summary>
+		/// Adds the point to the shape.
+		/// </summary>
+		/// <param name="controlX">Control x.</param>
+		/// <param name="controlY">Control y.</param>
+		/// <param name="endX">End x.</param>
+		/// <param name="endY">End y.</param>
+		public void AddPoint(float controlX, float controlY, float endX, float endY)
+		{
+			// Add point and recalculate bounds
+			Points.Add(new KimonoBezierPoint(controlX, controlY, endX, endY));
+			RecalculateVectorBounds();
 		}
 
 		/// <summary>
@@ -537,6 +552,149 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public override string ToSkiaSharpPath()
+		{
+			var sourceCode = "";
+
+			// Assemble path name
+			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
+			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
+			// Define path with Skia
+			sourceCode += $"// Define {Name} shape path\n" +
+				$"var {pathName} = new SKPath();\n";
+
+			// Define path
+			sourceCode += $"{pathName}.MoveTo(new SKPoint({Points[0].EndPoint.X}f, {Points[0].EndPoint.Y}f));\n";
+			for (int n = 1; n < Points.Count; n++)
+			{
+				sourceCode += $"{pathName}.QuadTo(new SKPoint({Points[n].ControlPoint.X}f, {Points[n].ControlPoint.Y}f), new SKPoint({Points[n].EndPoint.X}f, {Points[n].EndPoint.Y}f));\n";
+			}
+			if (Closed) sourceCode += $"{pathName}.QuadTo(new SKPoint({Points[0].ControlPoint.X}f, {Points[0].ControlPoint.Y}f), new SKPoint({Points[0].EndPoint.X}f, {Points[0].EndPoint.Y}f));\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public override string ToSkiaSharp()
+		{
+			var sourceCode = "";
+			var pathName = $"{ElementName}Path";
+
+			// Visible?
+			if (Visible)
+			{
+				// Yes, include shape path
+				sourceCode += ToSkiaSharpPath() + "\n";
+			}
+
+			// Draw with Skia
+			sourceCode += $"// Draw {Name} shape\n";
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Save current state and apply rotation
+				sourceCode += $"canvas.Save();\n" +
+					$"canvas.RotateDegrees({RotationDegrees}f, {HorizontalCenter}f, {VerticalCenter}f);\n";
+			}
+
+			// Draw shape
+			if (Visible)
+			{
+				if (Style.HasFill)
+				{
+					sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
+						$"canvas.DrawPath({pathName}, {StyleFillPaintForCode});\n";
+				}
+				if (Style.HasFrame)
+				{
+					sourceCode += ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp) +
+						$"canvas.DrawPath({pathName}, {StyleFramePaintForCode});\n";
+				}
+			}
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Restore previous state
+				sourceCode += $"canvas.Restore();\n";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Build with Kimono Core
+			sourceCode += $"// Build {Name} shape\n" +
+				$"var {ElementName} = new KimonoShapeBezier({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
+				$"\n\tRotationDegrees = {RotationDegrees}," +
+				$"\n\tVisible = {Visible.ToString().ToLower()}," +
+				$"\n\tStyle = {Style.ElementName}," +
+				$"\n\tClosed = {Closed.ToString().ToLower()}" +
+				"};\n\n";
+
+			// Add the points to the shape
+			sourceCode += $"// Add points to {Name} shape\n";
+			foreach (KimonoBezierPoint point in Points)
+			{
+				sourceCode += $"{ElementName}.AddPoint({point.ControlPoint.X}f, {point.ControlPoint.Y}f, {point.EndPoint.X}f, {point.EndPoint.Y}f);\n";
+			}
+
+			// Draw shape
+			sourceCode += $"\n// Draw {Name} shape\n" +
+				$"{ElementName}.Draw(canvas);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = base.ToCode(CodeOutputOS.CrossPlatform, CodeOutputLanguage.CSharp, outputLibrary);
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -546,13 +704,28 @@ namespace KimonoCore
 		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
+			var preCode = "";
+
+			// Take action based on the language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += ToCSharp(outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					// TODO: Add ObiScript output
+					break;
+			}
+
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			preCode = KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary);
+			preCode = KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) + preCode;
+			preCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + preCode;
 
 			// Include any supporting elements
-			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary) +
-											sourceCode;
+			sourceCode = preCode + sourceCode;
 
+			// Return code
 			return sourceCode;
 		}
 		#endregion

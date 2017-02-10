@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Styles/KimonoStyle.cs">
     <Files>
-      <File FileName="KimonoCore/CodeGeneration/KimonoCodeGenerator.cs" Line="46" Column="33" />
-      <File FileName="KimonoCore/Shapes/KimonoShape.cs" Line="567" Column="6" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeRect.cs" Line="240" Column="38" />
-      <File FileName="KimonoCore/Styles/KimonoStyle.cs" Line="1891" Column="44" />
+      <File FileName="KimonoCore/CodeGeneration/KimonoCodeGenerator.cs" Line="197" Column="22" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="1795" Column="7" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeRect.cs" Line="241" Column="4" />
+      <File FileName="KimonoCore/KimonoSketch.cs" Line="977" Column="33" />
+      <File FileName="KimonoCore/Styles/KimonoStyle.cs" Line="1342" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

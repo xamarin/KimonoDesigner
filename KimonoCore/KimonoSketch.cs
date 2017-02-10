@@ -67,10 +67,45 @@ namespace KimonoCore
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
+		/// Gets or sets the name of the element as it will be called in generated source
+		/// code.
+		/// </summary>
+		/// <value>The name of the element.</value>
+		internal string ElementName { get; set; } = "";
+
+		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
 		public string Name { get; set; } = "Untitled";
+
+		/// <summary>
+		/// When converting this Sketch to source code, ouput a method that draws into the
+		/// given SkiaSharp Canvas.
+		/// </summary>
+		/// <value><c>true</c> if generate code to ouput to canvas; otherwise, <c>false</c>.</value>
+		public bool GenerateCodeToOuputToCanvas { get; set; } = true;
+
+		/// <summary>
+		/// When converting this Sketch to source code, output a method that returns the SkiaSharp
+		/// Data (`SKData[]`) representing the Sketch.
+		/// </summary>
+		/// <value><c>true</c> if generate code to ouput skia data; otherwise, <c>false</c>.</value>
+		public bool GenerateCodeToOuputSkiaData { get; set; } = false;
+
+		/// <summary>
+		/// When converting this Sketch to source code, output a method that returns the Sketch as
+		/// a OS specific bitmap image.
+		/// </summary>
+		/// <value><c>true</c> if generate code to ouput bitmap image; otherwise, <c>false</c>.</value>
+		public bool GenerateCodeToOuputBitmapImage { get; set; } = true;
+
+		/// <summary>
+		/// When converting this Sketch to source code, output a method that returns the Sketch as class
+		/// based on the `SkiaSharp.Views` extension library.
+		/// </summary>
+		/// <value><c>true</c> if generate code to ouput to skia sharp views; otherwise, <c>false</c>.</value>
+		public bool GenerateCodeToOuputToSkiaSharpViews { get; set; } = false;
 
 		/// <summary>
 		/// Gets or sets the width.
@@ -483,6 +518,23 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Draw this sketch into the give SkiaSharp canvas.
+		/// </summary>
+		/// <param name="canvas">The `SKCanvas` to draw into.</param>
+		public void Draw(SKCanvas canvas)
+		{
+			// Draw all shapes into the canvas
+			foreach (KimonoShape shape in Shapes)
+			{
+				shape.Draw(canvas);
+			}
+
+			// If a new shape is being added to the document,
+			// draw it as well
+			ShapeUnderConstruction?.Draw(canvas);
+		}
+
+		/// <summary>
 		/// Moves the selected shape to bottom.
 		/// </summary>
 		public void MoveSelectedShapeToBottom()
@@ -753,6 +805,234 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public virtual string ToSkiaSharpPath()
+		{
+			var sourceCode = "";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public virtual string ToSkiaSharp()
+		{
+			var sourceCode = "";
+
+			// Draw each shape in the group
+			foreach (KimonoShape shape in Shapes)
+			{
+				sourceCode += shape.ToCSharp(CodeOutputLibrary.SkiaSharp) + "\n";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public virtual string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Draw with KimonoCore
+			sourceCode += $"// Draw {Name} shape\n" +
+				$"var {ElementName} = new KimonoSketch({Name}, {Width}f, {Height}f)" + "{" +
+				$"\n\tCanvasColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp,CanvasColor)}" +
+				"};\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Build the method to draw into a specific SkiaSharp Canvas in C# source code.
+		/// </summary>
+		/// <returns>The source code for the method.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string BuildCsharpToCanvasMethod(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Start method
+			sourceCode += (GenerateCodeToOuputToCanvas) ? "public" : "private";
+			sourceCode += $" void Draw{ElementName}(SKCanvas canvas)" + "{\n";
+
+			// Add body of method
+			if (Shapes.Count > 0)
+			{
+				// Take action based on the library
+				switch (outputLibrary)
+				{
+					case CodeOutputLibrary.SkiaSharp:
+						sourceCode += KimonoCodeGenerator.IncreaseIndentLevel(ToSkiaSharp());
+						break;
+					case CodeOutputLibrary.KimonoCore:
+						sourceCode += KimonoCodeGenerator.IncreaseIndentLevel(ToKimonoCore());
+						break;
+				}
+			}
+
+			// End method
+			sourceCode += "\n}\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharp(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var usingStatements = "";
+			var sourceCode = "";
+			var initializers = "";
+			var privateVariables = "";
+			var privateMethodsCode = "";
+			var publicMethodsCode = "";
+			var computedProperties = "";
+
+			// Add to canvas method
+			if (GenerateCodeToOuputToCanvas)
+			{
+				// Expose this method
+				publicMethodsCode = BuildCsharpToCanvasMethod(outputLibrary);
+			}
+			else
+			{
+				// Always required as it does the actual work of drawing the
+				// sketch
+				privateMethodsCode = BuildCsharpToCanvasMethod(outputLibrary);
+			}
+
+			// Assemble using statements
+			usingStatements = "using System;\n" +
+				"using SkiaSharp;\n";
+
+			if (GenerateCodeToOuputToSkiaSharpViews)
+			{
+				usingStatements += "using SkiaSharp.Views;\n";
+			}
+
+			if (outputLibrary == CodeOutputLibrary.KimonoCore)
+			{
+				usingStatements += "using KimonoCore;\n";
+			}
+
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			initializers = KimonoCodeGenerator.InitializerForSupportStyles(outputLanguage, outputLibrary);
+			initializers = KimonoCodeGenerator.InitializerForSupportGradients(outputLanguage, outputLibrary) + initializers;
+
+			// Assemble private variables
+			privateVariables += KimonoCodeGenerator.PrivateVariablesForSupportingGradients(outputLanguage, outputLibrary);
+
+			// Assemble computed properties
+			computedProperties += KimonoCodeGenerator.PropertyForSupportingColors(outputLanguage, outputLibrary);
+			computedProperties += KimonoCodeGenerator.PropertyForSupportingGradients(outputLanguage, outputLibrary);
+			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
+
+			// Convert this Sketch to a class
+			sourceCode += $"{usingStatements}\n" +
+				$"public class {ElementName}\n" + "{\n";
+
+			// Any private variables?
+			if (privateVariables != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Private Variables\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(privateVariables) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Any computed properties?
+			if (computedProperties != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Computed Properties\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(computedProperties) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Add constructors
+			sourceCode += "\t#region Constructors\n" +
+				$"\tpublic {ElementName}() " + "{\n\n";
+
+			// Any initialization code?
+			if (initializers != "")
+			{
+				// Yes, include code
+				sourceCode += KimonoCodeGenerator.IncreaseIndentLevel(KimonoCodeGenerator.IncreaseIndentLevel(initializers));
+			}
+
+
+			// Complete costructor
+			sourceCode += "\n\t}\n" +
+				"\t#endregion\n\n";
+
+			// Any private methods?
+			if (privateMethodsCode != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Private Methods\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(privateMethodsCode) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Any private methods?
+			if (publicMethodsCode != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Public Methods\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(publicMethodsCode) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Close class
+			sourceCode += "}\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -761,7 +1041,24 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
 		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += ToCSharp(outputOS, outputLanguage, outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					// TODO: Add ObiScript output
+					break;
+			}
+
+			// Return code
+			return sourceCode;
 		}
 		#endregion
 

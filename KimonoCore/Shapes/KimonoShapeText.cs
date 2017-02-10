@@ -319,6 +319,9 @@ namespace KimonoCore
 				canvas.RotateDegrees(RotationDegrees, HorizontalCenter, VerticalCenter);
 			}
 
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Apply gradients
 			ConformGradientToShape(Style.FillGradient, Style.Fill);
 			ConformGradientToShape(Style.FrameGradient, Style.Frame);
@@ -326,9 +329,6 @@ namespace KimonoCore
 			// Draw shape
 			if (Visible)
 			{
-				// Update any attached properties
-				EvaluateConnectedProperties();
-
 				// Vertical text?
 				if (IsVerticalText)
 				{
@@ -493,6 +493,230 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public override string ToSkiaSharpPath()
+		{
+			var sourceCode = "";
+
+			// Assemble path name
+			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
+			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
+			// Define path with Skia
+			sourceCode += $"// Define {Name} shape path\n" +
+				$"var {pathName} = new SKPath();\n";
+
+			// Define path
+			// TODO: Create text code paths
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <remarks>TODO: This routine currently breaks line on characters and it needs
+		/// to be adjust to break on word boundaries.</remarks>
+		/// <returns>The shape as code.</returns>
+		public override string ToSkiaSharp()
+		{
+			var sourceCode = "";
+
+			// Draw with Skia
+			sourceCode += $"// Draw {Name} shape\n";
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Save current state and apply rotation
+				sourceCode += $"canvas.Save();\n" +
+					$"canvas.RotateDegrees({RotationDegrees}f, {HorizontalCenter}f, {VerticalCenter}f);\n";
+			}
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
+			// Conform gradients first
+			sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
+				ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp);
+			
+			// Draw shape
+			if (Visible)
+			{
+				// Vertical text?
+				if (IsVerticalText)
+				{
+					var x = Left + FontMetrics.AverageCharacterWidth;
+					var y = Top + FontMetrics.XMax;
+					var line = "";
+
+					// Adjust x based on text alignment
+					switch (TextAlign)
+					{
+						case SKTextAlign.Left:
+							y = Top + FontMetrics.XMax;
+							break;
+						case SKTextAlign.Center:
+							y = VerticalCenter;
+							break;
+						case SKTextAlign.Right:
+							y = Bottom;
+							break;
+					}
+
+					// Draw text inside of the bounds
+					for (int n = 0; n < Text.Length && y < Bottom; ++n)
+					{
+						// Get current character
+						var c = Text[n];
+
+						// At end of line?
+						if ((line.Length) * FontMetrics.XMax > Height)
+						{
+							// Print current line
+							if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
+							if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+
+							// Advance line
+							line = "" + c;
+							x += FontMetrics.MaxCharacterWidth;
+						}
+						else
+						{
+							// Accumulate characters on line
+							line += c;
+						}
+					}
+
+					// Any text remaining to be printed?
+					if (line != "")
+					{
+						// Print last line
+						if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
+						if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+					}
+				}
+				else
+				{
+					var x = Left;
+					var y = Top + FontMetrics.XMax;
+					var line = "";
+
+					// Adjust x based on text alignment
+					switch (TextAlign)
+					{
+						case SKTextAlign.Left:
+							x = Left;
+							break;
+						case SKTextAlign.Center:
+							x = HorizontalCenter;
+							break;
+						case SKTextAlign.Right:
+							x = Right;
+							break;
+					}
+
+					// Draw text inside of the bounds
+					for (int n = 0; n < Text.Length && y < Bottom; ++n)
+					{
+						// Get current character
+						var c = Text[n];
+
+						// At end of line?
+						if (Style.Fill.MeasureText(line + c) > Width)
+						{
+							// Print current line
+							if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
+							if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+
+							// Advance line
+							line = "" + c;
+							y += FontMetrics.XMax;
+						}
+						else
+						{
+							// Accumulate characters on line
+							line += c;
+						}
+					}
+
+					// Any text remaining to be printed?
+					if (line != "")
+					{
+						// Print last line
+						if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
+						if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+					}
+				}
+			}
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Restore previous state
+				sourceCode += $"canvas.Restore();\n";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Draw with KimonoCore
+			sourceCode += $"// Draw {Name} shape\n" +
+				$"var {ElementName} = new KimonoShapeText({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
+				$"\n\tRotationDegrees = {RotationDegrees}," +
+				$"\n\tVisible = {Visible.ToString().ToLower()}," +
+				$"\n\tStyle = {Style.ElementName}," +
+				$"\n\tText = \"{Text}\"" +
+				"};\n" +
+				$"{ElementName}.Draw(canvas);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = base.ToCode(CodeOutputOS.CrossPlatform, CodeOutputLanguage.CSharp, outputLibrary);
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -502,13 +726,28 @@ namespace KimonoCore
 		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
+			var preCode = "";
+
+			// Take action based on the language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += ToCSharp(outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					// TODO: Add ObiScript output
+					break;
+			}
+
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			preCode = KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary);
+			preCode = KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) + preCode;
+			preCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + preCode;
 
 			// Include any supporting elements
-			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary) +
-											sourceCode;
+			sourceCode = preCode + sourceCode;
 
+			// Return code
 			return sourceCode;
 		}
 		#endregion

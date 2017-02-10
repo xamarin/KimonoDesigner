@@ -31,10 +31,23 @@ namespace KimonoCore
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
+		/// Gets or sets the name of the element as it will be called in generated source
+		/// code.
+		/// </summary>
+		/// <value>The name of the element.</value>
+		internal string ElementName { get; set; } = "";
+
+		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
 		public string Name { get; set; } = "Blur";
+
+		/// <summary>
+		/// Gets or sets the namespace.
+		/// </summary>
+		/// <value>The namespace.</value>
+		public string Namespace { get; set; } = "Kimono";
 
 		/// <summary>
 		/// Gets or sets the sketches.
@@ -734,6 +747,44 @@ namespace KimonoCore
 		#endregion
 
 		#region Conversion Routines
+		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public virtual string ToSkiaSharpPath()
+		{
+			return "";
+		}
+
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public virtual string ToSkiaSharp()
+		{
+			return "";
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public string ToKimonoCore()
+		{
+			return "";
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			return "";
+		}
+
 		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>

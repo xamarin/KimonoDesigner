@@ -44,42 +44,67 @@ namespace TestConsumerMac
 				canvas.Clear(KimonoColor.White);
 
 				// Draw all shapes into the canvas
-				TestGeneratedShape(canvas);
+				TestSketchClass(canvas);
 
 				// Return data from sketch
 				return surface.Snapshot().Encode();
 			}
 		}
 
+		public void TestSketchClass(SKCanvas canvas)
+		{
+			var sketch = new Sketch();
+			sketch.DrawSketch(canvas);
+		}
+
 		public void TestGeneratedShape(SKCanvas canvas)
 		{
-			// Build new Rectangle Style
-			var RectangleStyle = new KimonoStyle()
+			// Fill color for Group Style
+			var GroupStyleFillColor = new SKColor(230, 230, 230, 255);
+
+			// Create Group Style fill paint
+			var GroupStyleFillPaint = new SKPaint()
 			{
-				StyleType = KimonoStyleType.Custom,
-				HasFill = true,
-				HasFrame = true
+				Style = SKPaintStyle.Fill,
+				Color = GroupStyleFillColor,
+				BlendMode = SKBlendMode.SrcOver,
+				IsAntialias = true
 			};
 
-			// Configure new Rectangle Style
-			RectangleStyle.Fill.BlendMode = SKBlendMode.SrcOver;
-			RectangleStyle.Fill.IsAntialias = true;
-			RectangleStyle.Fill.Color = new SKColor(255, 0, 0, 255);
-			RectangleStyle.Frame.BlendMode = SKBlendMode.SrcOver;
-			RectangleStyle.Frame.IsAntialias = true;
-			RectangleStyle.Frame.StrokeWidth = 1f;
-			RectangleStyle.Frame.StrokeMiter = 4f;
-			RectangleStyle.Frame.StrokeJoin = SKStrokeJoin.Mitter;
-			RectangleStyle.Frame.StrokeCap = SKStrokeCap.Butt;
-			RectangleStyle.Frame.Color = new SKColor(0, 0, 0, 255);
+			// Frame color for Group Style
+			var GroupStyleFrameColor = new SKColor(0, 0, 0, 255);
 
-			// Draw Rectangle shape
-			var Rectangle = new KimonoShapeRect(161.7266f, 122.8398f, 392.0703f, 282.7344f)
+			// Create Group Style frame paint
+			var GroupStyleFramePaint = new SKPaint()
 			{
-				RotationDegrees = 0,
-				Style = RectangleStyle
+				Style = SKPaintStyle.Stroke,
+				Color = GroupStyleFrameColor,
+				BlendMode = SKBlendMode.SrcOver,
+				IsAntialias = true,
+				StrokeWidth = 1f,
+				StrokeMiter = 4f,
+				StrokeJoin = SKStrokeJoin.Mitter,
+				StrokeCap = SKStrokeCap.Butt
 			};
-			Rectangle.Draw(canvas);
+
+			//-----------------------------------------------------------------------------
+			// Draw Group shape group
+			// Define Rectangle shape path
+			var RectanglePath = new SKPath();
+			RectanglePath.AddRect(new SKRect(29.55859f, 28.60938f, 193.6055f, 149.0313f), SKPathDirection.Clockwise);
+			var GroupPath = RectanglePath;
+
+			// Define Oval shape path
+			var OvalPath = new SKPath();
+			OvalPath.AddOval(new SKRect(113.043f, 72.44141f, 294.5547f, 234.2383f), SKPathDirection.Clockwise);
+			GroupPath = GroupPath.Op(OvalPath, SKPathOp.Union);
+
+
+			// Draw Group boolean shape
+			canvas.DrawPath(GroupPath, GroupStyleFillPaint);
+			canvas.DrawPath(GroupPath, GroupStyleFramePaint);
+			//-----------------------------------------------------------------------------
+
 
 		}
 

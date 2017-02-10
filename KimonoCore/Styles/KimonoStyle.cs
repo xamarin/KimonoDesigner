@@ -1344,7 +1344,7 @@ namespace KimonoCore
 		/// Converts this object to Obi Script represnetation.
 		/// </summary>
 		/// <returns>The obi script.</returns>
-		internal string ToObiScript()
+		public virtual string ToObiScript()
 		{
 			var sourceCode = "";
 
@@ -1357,10 +1357,44 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public virtual string ToSkiaSharpPath()
+		{
+			return "";
+		}
+
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public virtual string ToSkiaSharp()
+		{
+			return "";
+		}
+
+		/// <summary>
 		/// Converts this style's Fill to C# code using the Skia library.
 		/// </summary>
 		/// <returns>The Fill `SKPaint` as code.</returns>
-		internal string FillToSkiaCode()
+		public virtual string FillToSkiaCode()
+		{
+			var sourceCode = "";
+
+			// Build code
+			sourceCode += FillToSkiaInitializer(true);
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this style's Fill to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The Fill `SKPaint` as code.</returns>
+		public virtual string FillToSkiaInitializer(bool constructor)
 		{
 			var sourceCode = "";
 			var preCode = "";
@@ -1382,9 +1416,12 @@ namespace KimonoCore
 				colorName = KimonoCodeGenerator.AddSupportingColor(FillColor);
 			}
 
+			var action = (constructor) ? "New" : "Initialize";
+			var prefix = (constructor) ? "var " : "";
+
 			// Assemble paint
-			sourceCode += $"// Create {Name} fill paint\n" +
-				$"var {ElementName}FillPaint = new SKPaint()" + "{" +
+			sourceCode += $"// {action} {Name} fill paint\n" +
+				$"{prefix}{ElementName}FillPaint = new SKPaint()" + "{" +
 				$"\n\tStyle = SKPaintStyle.Fill" +
 				$",\n\tColor = {colorName}" +
 				$",\n\tBlendMode = SKBlendMode.{Fill.BlendMode}" +
@@ -1434,7 +1471,8 @@ namespace KimonoCore
 			if (blurEffect != "" && shadowEffect != "")
 			{
 				sourceCode += $",\n\tImageFilter = SKImageFilter.CreateCompose({shadowEffect}, {blurEffect})";
-			} else if (blurEffect != "")
+			}
+			else if (blurEffect != "")
 			{
 				sourceCode += $",\n\tImageFilter = {blurEffect}";
 			}
@@ -1471,7 +1509,22 @@ namespace KimonoCore
 		/// Converts this style's Frame to C# code using the Skia library.
 		/// </summary>
 		/// <returns>The Frame `SKPaint` as code.</returns>
-		internal string FrameToSkiaCode()
+		public virtual string FrameToSkiaCode()
+		{
+			var sourceCode = "";
+
+			// Add body
+			sourceCode += FrameToSkiaInitializer(true);
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this style's Frame to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The Frame `SKPaint` as code.</returns>
+		public virtual string FrameToSkiaInitializer(bool constructor)
 		{
 			var sourceCode = "";
 			var preCode = "";
@@ -1493,9 +1546,12 @@ namespace KimonoCore
 				colorName = KimonoCodeGenerator.AddSupportingColor(FrameColor);
 			}
 
+			var action = (constructor) ? "New" : "Initialize";
+			var prefix = (constructor) ? "var " : "";
+
 			// Assemble paint
-			sourceCode += $"// Create {Name} frame paint\n" +
-				$"var {ElementName}FramePaint = new SKPaint()" + "{" +
+			sourceCode += $"// {action} {Name} frame paint\n" +
+				$"{prefix}{ElementName}FramePaint = new SKPaint()" + "{" +
 				$"\n\tStyle = SKPaintStyle.Stroke" +
 				$",\n\tColor = {colorName}" +
 				$",\n\tBlendMode = SKBlendMode.{Frame.BlendMode}" +
@@ -1631,14 +1687,32 @@ namespace KimonoCore
 		/// Converts this style to C# code using the KimonoCore library.
 		/// </summary>
 		/// <returns>The kimono core.</returns>
-		internal string ToKimonoCore()
+		public virtual string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Build body
+			sourceCode += ToKimonoCoreInitializer(true);
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this style to C# code using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public virtual string ToKimonoCoreInitializer(bool constructor)
 		{
 			var sourceCode = "";
 			var preCode = "";
 
+			var action = (constructor) ? "Build new" : "Initialize";
+			var prefix = (constructor) ? "var " : "";
+
 			// Assemble code
-			sourceCode += $"// Build new {Name}\n" +
-				$"var {ElementName} = new KimonoStyle()"+"{" +
+			sourceCode += $"// {action} {Name}\n" +
+				$"{prefix}{ElementName} = new KimonoStyle()" + "{" +
 				$"\n\tStyleType = KimonoStyleType.{StyleType}";
 
 			// Has fill?
@@ -1848,7 +1922,7 @@ namespace KimonoCore
 		/// </summary>
 		/// <returns>The style as code.</returns>
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to generate code in.</param>
-		internal string ToCSharp(CodeOutputLibrary outputLibrary)
+		public virtual string ToCSharp(CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
 
@@ -1862,6 +1936,32 @@ namespace KimonoCore
 					break;
 				case CodeOutputLibrary.KimonoCore:
 					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return resulting code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this styl to C# code.
+		/// </summary>
+		/// <returns>The style as code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to generate code in.</param>
+		public virtual string ToCSharpInitializer(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					// Assemble bits
+					if (HasFill) sourceCode += FillToSkiaInitializer(false);
+					if (HasFrame) sourceCode += FrameToSkiaInitializer(false);
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCoreInitializer(false);
 					break;
 			}
 

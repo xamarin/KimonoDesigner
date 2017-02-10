@@ -118,6 +118,128 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public override string ToSkiaSharpPath()
+		{
+			var sourceCode = "";
+
+			// Assemble path name
+			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
+			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
+			// Define path with Skia
+			sourceCode += $"// Define {Name} shape path\n" +
+				$"var {pathName} = new SKPath();\n";
+
+			// Define path
+			sourceCode += $"{pathName}.AddOval(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), SKPathDirection.Clockwise);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public override string ToSkiaSharp()
+		{
+			var sourceCode = "";
+
+			// Draw with Skia
+			sourceCode += $"// Draw {Name} shape\n";
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Save current state and apply rotation
+				sourceCode += $"canvas.Save();\n" +
+					$"canvas.RotateDegrees({RotationDegrees}f, {HorizontalCenter}f, {VerticalCenter}f);\n";
+			}
+
+			// Draw shape
+			if (Visible)
+			{
+				// Update any attached properties
+				EvaluateConnectedProperties();
+
+				if (Style.HasFill)
+				{
+					sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
+						$"canvas.DrawOval(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFillPaintForCode});\n";
+				}
+				if (Style.HasFrame)
+				{
+					sourceCode += ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp) +
+						$"canvas.DrawOval(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFramePaintForCode});\n";
+				}
+			}
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Restore previous state
+				sourceCode += $"canvas.Restore();\n";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Draw with KimonoCore
+			sourceCode += $"// Draw {Name} shape\n" +
+				$"var {ElementName} = new KimonoShapeOval({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
+				$"\n\tRotationDegrees = {RotationDegrees}," +
+				$"\n\tVisible = {Visible.ToString().ToLower()}," +
+				$"\n\tStyle = {Style.ElementName}" +
+				"};\n" +
+				$"{ElementName}.Draw(canvas);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = base.ToCode(CodeOutputOS.CrossPlatform, CodeOutputLanguage.CSharp, outputLibrary);
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -127,13 +249,28 @@ namespace KimonoCore
 		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
+			var preCode = "";
+
+			// Take action based on the language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += ToCSharp(outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					// TODO: Add ObiScript output
+					break;
+			}
+
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			preCode = KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary);
+			preCode = KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) + preCode;
+			preCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + preCode;
 
 			// Include any supporting elements
-			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary) +
-											sourceCode;
+			sourceCode = preCode + sourceCode;
 
+			// Return code
 			return sourceCode;
 		}
 		#endregion

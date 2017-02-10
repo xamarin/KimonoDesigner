@@ -225,10 +225,30 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public virtual string ToSkiaSharpPath()
+		{
+			return "";
+		}
+
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			return "";
+		}
+
+		/// <summary>
 		/// Converts this shadow to C# code using the Skia library.
 		/// </summary>
 		/// <returns>The shadow as code.</returns>
-		internal string ToSkiaSharp()
+		public virtual string ToSkiaSharp()
 		{
 			var sourceCode = "";
 			var colorName = "";
@@ -261,7 +281,7 @@ namespace KimonoCore
 		/// Converts this shadow to C# code using the KimonoCore library.
 		/// </summary>
 		/// <returns>The shadow as code.</returns>
-		internal string ToKimonoCore()
+		public virtual string ToKimonoCore()
 		{
 			var sourceCode = "";
 

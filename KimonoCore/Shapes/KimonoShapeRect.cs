@@ -119,10 +119,36 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public override string ToSkiaSharpPath()
+		{
+			var sourceCode = "";
+
+			// Assemble path name
+			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
+			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
+			// Define path with Skia
+			sourceCode += $"// Define {Name} shape path\n" +
+				$"var {pathName} = new SKPath();\n";
+
+			// Define path
+			sourceCode += $"{pathName}.AddRect(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), SKPathDirection.Clockwise);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts the shape to C# code using the Skia library.
 		/// </summary>
 		/// <returns>The shape as code.</returns>
-		internal string ToSkiaSharp()
+		public override string ToSkiaSharp()
 		{
 			var sourceCode = "";
 
@@ -170,18 +196,18 @@ namespace KimonoCore
 		/// Converts this shape C# using the KimonoCore library.
 		/// </summary>
 		/// <returns>The kimono core.</returns>
-		internal string ToKimonoCore()
+		public override string ToKimonoCore()
 		{
 			var sourceCode = "";
-			var elementName = KimonoCodeGenerator.MakeElementName(Name);
 
-			// Draw with Skia
+			// Draw with KimonoCore
 			sourceCode += $"// Draw {Name} shape\n"+
-				$"var {elementName} = new KimonoShapeRect({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
+				$"var {ElementName} = new KimonoShapeRect({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
 				$"\n\tRotationDegrees = {RotationDegrees}," +
+				$"\n\tVisible = {Visible.ToString().ToLower()}," +
 				$"\n\tStyle = {Style.ElementName}" +
 				"};\n"+
-				$"{elementName}.Draw(canvas);\n";
+				$"{ElementName}.Draw(canvas);\n";
 
 			// Return code
 			return sourceCode;
@@ -192,9 +218,12 @@ namespace KimonoCore
 		/// </summary>
 		/// <returns>The shape as C# code.</returns>
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
-		internal string ToCSharp(CodeOutputLibrary outputLibrary)
+		public override string ToCSharp(CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = base.ToCode(CodeOutputOS.CrossPlatform, CodeOutputLanguage.CSharp, outputLibrary);
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
 
 			// Take action based on the library
 			switch (outputLibrary)
@@ -228,6 +257,9 @@ namespace KimonoCore
 			{
 				case CodeOutputLanguage.CSharp:
 					sourceCode += ToCSharp(outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					// TODO: Add ObiScript output
 					break;
 			}
 

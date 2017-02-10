@@ -340,6 +340,226 @@ namespace KimonoCore
 
 		#region Conversion Routines
 		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public override string ToSkiaSharpPath()
+		{
+			var sourceCode = "";
+
+			// Assemble path name
+			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
+			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
+			// Define path with Skia
+			sourceCode += $"// Define {Name} shape path\n"+
+				$"var {pathName} = new SKPath();\n";
+
+			// Calculate sizes
+			var innerSize = Width * (HeadInnerRatio * .01f);
+			var outerSize = Width * (HeadOuterRatio * .01f);
+			var bodyThickness = Height / 4;
+
+			// Is this a streamlined arrow?
+			if (IsStreamlined)
+			{
+				// Yes, start streamlined arrow
+				sourceCode += $"{pathName}.MoveTo(new SKPoint({Left}f, {VerticalCenter}f));\n";
+
+				// Has starting head?
+				if (HasStartHead)
+				{
+					// Draw head
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Left + outerSize}f, {Top}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left + innerSize}f, {VerticalCenter}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left + outerSize}f, {Bottom}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left}f, {VerticalCenter}f));\n" +
+						$"{pathName}.MoveTo(new SKPoint({Left + innerSize}f, {VerticalCenter}f));\n";
+				}
+
+				// Has ending head?
+				if (HasEndHead)
+				{
+					// Draw body
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Right - innerSize}f, {VerticalCenter}f));\n" +
+						$"{pathName}.MoveTo(new SKPoint({Right}f, {VerticalCenter}f));\n";
+
+					// Draw head
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Right - outerSize}f, {Top}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right - innerSize}f, {VerticalCenter}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right - outerSize}f, {Bottom}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right}f, {VerticalCenter}f));\n";
+				}
+				else
+				{
+					// Draw body
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Right}f, {VerticalCenter}f));\n";
+				}
+
+			}
+			else
+			{
+				// No, start thick arrow
+				if (HasStartHead)
+				{
+					// Draw head
+					sourceCode += $"{pathName}.MoveTo(new SKPoint({Left + innerSize}f, {VerticalCenter + bodyThickness}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left + outerSize}f, {Bottom}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left}f, {VerticalCenter}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left + outerSize}f, {Top}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left + innerSize}f, {VerticalCenter - bodyThickness}f));\n";
+				}
+				else
+				{
+					// Draw flat end
+					sourceCode += $"{pathName}.MoveTo(new SKPoint({Left}f, {VerticalCenter + bodyThickness}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Left}f, {VerticalCenter - bodyThickness}f));\n";
+				}
+
+				// Has ending head?
+				if (HasEndHead)
+				{
+					// Draw Head
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Right - innerSize}f, {VerticalCenter - bodyThickness}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right - outerSize}f, {Top}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right}f, {VerticalCenter}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right - outerSize}f, {Bottom}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right - innerSize}f, {VerticalCenter + bodyThickness}f));\n";
+				}
+				else
+				{
+					// Draw flat end
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Right}f, {VerticalCenter - bodyThickness}f));\n" +
+						$"{pathName}.LineTo(new SKPoint({Right}f, {VerticalCenter + bodyThickness}f));\n";
+				}
+
+				// Terminate
+				if (HasStartHead)
+				{
+					// Close head
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Left + innerSize}f, {VerticalCenter + bodyThickness}f));\n";
+				}
+				else
+				{
+					// Close flat end
+					sourceCode += $"{pathName}.LineTo(new SKPoint({Left}f, {VerticalCenter + bodyThickness}f));\n";
+				}
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public override string ToSkiaSharp()
+		{
+			var sourceCode = "";
+			var pathName = $"{ElementName}Path";
+
+			// Visible?
+			if (Visible)
+			{
+				// Yes, include shape path
+				sourceCode += ToSkiaSharpPath()+"\n";
+			}
+
+			// Draw with Skia
+			sourceCode += $"// Draw {Name} shape\n";
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Save current state and apply rotation
+				sourceCode += $"canvas.Save();\n" +
+					$"canvas.RotateDegrees({RotationDegrees}f, {HorizontalCenter}f, {VerticalCenter}f);\n";
+			}
+
+			// Draw shape
+			if (Visible)
+			{
+				if (Style.HasFill)
+				{
+					sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
+						$"canvas.DrawPath({pathName}, {StyleFillPaintForCode});\n";
+				}
+				if (Style.HasFrame)
+				{
+					sourceCode += ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp) +
+						$"canvas.DrawPath({pathName}, {StyleFramePaintForCode});\n";
+				}
+			}
+
+			// Rotated?
+			if (RotationDegrees > 0)
+			{
+				// Restore previous state
+				sourceCode += $"canvas.Restore();\n";
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Draw with Skia
+			sourceCode += $"// Draw {Name} shape\n" +
+				$"var {ElementName} = new KimonoShapeArrow({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
+				$"\n\tRotationDegrees = {RotationDegrees}," +
+				$"\n\tVisible = {Visible.ToString().ToLower()}," +
+				$"\n\tStyle = {Style.ElementName}," +
+				$"\n\tHasStartHead = {HasStartHead.ToString().ToLower()}," +
+				$"\n\tHasEndHead = {HasEndHead.ToString().ToLower()}," +
+				$"\n\tHeadInnerRatio = {HeadInnerRatio}," +
+				$"\n\tHeadOuterRatio = {HeadOuterRatio}," +
+				$"\n\tIsStreamlined = {IsStreamlined.ToString().ToLower()}" +
+				"};\n" +
+				$"{ElementName}.Draw(canvas);\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = base.ToCode(CodeOutputOS.CrossPlatform, CodeOutputLanguage.CSharp, outputLibrary);
+
+			// Define element name
+			ElementName = KimonoCodeGenerator.MakeElementName(Name);
+
+			// Take action based on the library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -349,13 +569,28 @@ namespace KimonoCore
 		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
+			var preCode = "";
+
+			// Take action based on the language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode += ToCSharp(outputLibrary);
+					break;
+				case CodeOutputLanguage.ObiScript:
+					// TODO: Add ObiScript output
+					break;
+			}
+
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			preCode = KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary);
+			preCode = KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) + preCode;
+			preCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + preCode;
 
 			// Include any supporting elements
-			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
-											KimonoCodeGenerator.CodeForSupportStyles(outputLanguage, outputLibrary) +
-											sourceCode;
+			sourceCode = preCode + sourceCode;
 
+			// Return code
 			return sourceCode;
 		}
 		#endregion

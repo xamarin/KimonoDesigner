@@ -49,6 +49,13 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Gets or sets the name of the element as it will be called in generated source
+		/// code.
+		/// </summary>
+		/// <value>The name of the element.</value>
+		internal string ElementName { get; set; } = "";
+
+		/// <summary>
 		/// Gets or sets the style.
 		/// </summary>
 		/// <value>The <c>KimonoStyle</c> that will be used to draw this shape.</value>
@@ -451,7 +458,7 @@ namespace KimonoCore
 		/// Gets the style fill paint for code.
 		/// </summary>
 		/// <value>The style fill paint for code.</value>
-		internal string StyleFillPaintForCode
+		public string StyleFillPaintForCode
 		{
 			get
 			{
@@ -471,7 +478,7 @@ namespace KimonoCore
 		/// Gets the style frame paint for code.
 		/// </summary>
 		/// <value>The style frame paint for code.</value>
-		internal string StyleFramePaintForCode
+		public string StyleFramePaintForCode
 		{
 			get
 			{
@@ -492,7 +499,7 @@ namespace KimonoCore
 		/// </summary>
 		/// <returns>The fill gradient conformed in code.</returns>
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
-		internal string ConformedFillGradientCode(CodeOutputLibrary outputLibrary)
+		public string ConformedFillGradientCode(CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
 
@@ -517,7 +524,7 @@ namespace KimonoCore
 		/// </summary>
 		/// <returns>The frame gradient conformed in code.</returns>
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
-		internal string ConformedFrameGradientCode(CodeOutputLibrary outputLibrary)
+		public string ConformedFrameGradientCode(CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
 
@@ -535,6 +542,44 @@ namespace KimonoCore
 
 			// Return code
 			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts the shapes path to C# Skia based code.
+		/// </summary>
+		/// <returns>The path as code.</returns>
+		public override string ToSkiaSharpPath()
+		{
+			return "";
+		}
+
+
+		/// <summary>
+		/// Converts the shape to C# code using the Skia library.
+		/// </summary>
+		/// <returns>The shape as code.</returns>
+		public override string ToSkiaSharp()
+		{
+			return "";
+		}
+
+		/// <summary>
+		/// Converts this shape C# using the KimonoCore library.
+		/// </summary>
+		/// <returns>The kimono core.</returns>
+		public override string ToKimonoCore()
+		{
+			return "";
+		}
+
+		/// <summary>
+		/// Converts this shape to C# code.
+		/// </summary>
+		/// <returns>The shape as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			return "";
 		}
 
 		/// <summary>

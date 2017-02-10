@@ -25,29 +25,19 @@ namespace KimonoCore
 		/// A list of supporting colors that are required for the object being converted
 		/// to source code.
 		/// </summary>
-		public static List<KimonoColor> SupportingColors;
+		public static List<KimonoColor> SupportingColors = new List<KimonoColor>();
 
 		/// <summary>
 		/// A list of supporting gradients that are required for the object being converted
 		/// to source code.
 		/// </summary>
-		public static List<KimonoGradient> SupportingGradients;
+		public static List<KimonoGradient> SupportingGradients = new List<KimonoGradient>();
 
 		/// <summary>
 		/// A list of supporting styles that are required for the object being converted to
 		/// source code.
 		/// </summary>
-		public static List<KimonoStyle> SupportingStyles;
-		#endregion
-
-		#region Static Constructors
-		static KimonoCodeGenerator()
-		{
-			// Allocate storage for lists
-			SupportingColors = new List<KimonoColor>();
-			SupportingGradients = new List<KimonoGradient>();
-			SupportingStyles = new List<KimonoStyle>();
-		}
+		public static List<KimonoStyle> SupportingStyles = new List<KimonoStyle>();
 		#endregion
 
 		#region Public Methods
@@ -112,6 +102,32 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Returns the source code for all of the supporting colors used in generating
+		/// a higher level Kimono object as a public computed propert.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string PropertyForSupportingColors(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+			var classType = (outputLibrary == CodeOutputLibrary.SkiaSharp) ? "SKColor" : "KimonoColor";
+
+			// Process all colors
+			foreach (KimonoColor supportColor in SupportingColors)
+			{
+				// Accumulate color code
+				sourceCode += $"// Global color {supportColor.Name}\n";
+				sourceCode += $"public {classType} {supportColor.ElementName} " +
+					"{get; set;} " +
+					$"= {ColorToCode(outputLibrary, supportColor.Color)};\n\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Adds the given gradient to the collection of named gradients that are used
 		/// in the generation of other Kimono Objects. If a gradient is already in
 		/// the collection, its `ElementName` is returned.
@@ -158,6 +174,77 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Returns the source code for all of the supporting colors used in generating
+		/// a higher level Kimono object as a public computed propert.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string PrivateVariablesForSupportingGradients(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all colors
+			foreach (KimonoGradient supportingGradient in SupportingGradients)
+			{
+				// Accumulate color code
+				sourceCode += $"// Private gradient {supportingGradient.Name} vairables\n";
+				sourceCode += $"private SKColor[] {supportingGradient.ElementName}Colors;\n" +
+					$"private float[] {supportingGradient.ElementName}Weights;\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting colors used in generating
+		/// a higher level Kimono object as a public computed propert.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string PropertyForSupportingGradients(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+			var classType = (outputLibrary == CodeOutputLibrary.SkiaSharp) ? "SKShader" : "KimonoGradient";
+
+			// Process all colors
+			foreach (KimonoGradient supportingGradient in SupportingGradients)
+			{
+				// Accumulate color code
+				sourceCode += $"// Global gradient {supportingGradient.Name}\n";
+				sourceCode += $"public {classType} {supportingGradient.ElementName} " +
+					"{get; set;}\n\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting gradients used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoGradients`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string InitializerForSupportGradients(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all gradients
+			foreach (KimonoGradient supportingGradient in SupportingGradients)
+			{
+				// Accumulate gradient
+				sourceCode += supportingGradient.ToCSharpInitializer(outputLibrary) + "\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Adds the given style to the collection of named styles that are used
 		/// in the generation of other Kimono Objects. If a style is already in
 		/// the collection, its `ElementName` is returned.
@@ -197,6 +284,72 @@ namespace KimonoCore
 			{
 				// Accumulate gradient
 				sourceCode += supportingStyle.ToCSharp(outputLibrary) + "\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting colors used in generating
+		/// a higher level Kimono object as a public computed propert.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string PropertyForSupportingStyles(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all colors
+			foreach (KimonoStyle supportingStyle in SupportingStyles)
+			{
+				// Accumulate color code
+				sourceCode += $"// Global style {supportingStyle.Name}\n";
+
+				// Take action based on library
+				switch (outputLibrary)
+				{
+					case CodeOutputLibrary.SkiaSharp:
+						if (supportingStyle.HasFill)
+						{
+							sourceCode += $"public SKPaint {supportingStyle.ElementName}FillPaint " +
+								"{get; set;}\n";
+						}
+
+						if (supportingStyle.HasFill)
+						{
+							sourceCode += $"public SKPaint {supportingStyle.ElementName}FramePaint " +
+								"{get; set;}\n\n";
+						}
+						break;
+					case CodeOutputLibrary.KimonoCore:
+						sourceCode += $"public KimonoStyle {supportingStyle.ElementName} " +
+							"{get; set;}\n\n";
+						break;
+				}
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting styles used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoGradients`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string InitializerForSupportStyles(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all gradients
+			foreach (KimonoStyle supportingStyle in SupportingStyles)
+			{
+				// Accumulate gradient
+				sourceCode += supportingStyle.ToCSharpInitializer(outputLibrary) + "\n";
 			}
 
 			// Return generated source
@@ -252,6 +405,16 @@ namespace KimonoCore
 
 			// Return resulting name
 			return elementName;
+		}
+
+		/// <summary>
+		/// Increases the indent level of the given section of source code.
+		/// </summary>
+		/// <returns>The source code indented by one tab.</returns>
+		/// <param name="sourceCode">The source code to indent.</param>
+		public static string IncreaseIndentLevel(string sourceCode)
+		{
+			return "\t" + sourceCode.Replace("\n", "\n\t");
 		}
 
 		/// <summary>
