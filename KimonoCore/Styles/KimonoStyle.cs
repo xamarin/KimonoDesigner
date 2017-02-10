@@ -1879,6 +1879,7 @@ namespace KimonoCore
 		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
 		{
 			var sourceCode = "";
+			var preCode = "";
 
 			// Create code name
 			ElementName = KimonoCodeGenerator.MakeElementName(Name);
@@ -1894,10 +1895,12 @@ namespace KimonoCore
 					break;
 			}
 
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			preCode = KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary);
+			preCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) + preCode;
+
 			// Include any supporting elements
-			sourceCode = KimonoCodeGenerator.CodeForSupportingColors(outputLanguage, outputLibrary) +
-			                                KimonoCodeGenerator.CodeForSupportGradients(outputLanguage, outputLibrary) +
-			                                sourceCode;
+			sourceCode = preCode + sourceCode;
 
 			// Return resulting code
 			return sourceCode;

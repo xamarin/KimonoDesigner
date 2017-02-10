@@ -25,19 +25,29 @@ namespace KimonoCore
 		/// A list of supporting colors that are required for the object being converted
 		/// to source code.
 		/// </summary>
-		public static List<KimonoColor> SupportingColors = new List<KimonoColor>();
+		public static List<KimonoColor> SupportingColors;
 
 		/// <summary>
 		/// A list of supporting gradients that are required for the object being converted
 		/// to source code.
 		/// </summary>
-		public static List<KimonoGradient> SupportingGradients = new List<KimonoGradient>();
+		public static List<KimonoGradient> SupportingGradients;
 
 		/// <summary>
 		/// A list of supporting styles that are required for the object being converted to
 		/// source code.
 		/// </summary>
-		public static List<KimonoStyle> SupportingStyles = new List<KimonoStyle>();
+		public static List<KimonoStyle> SupportingStyles;
+		#endregion
+
+		#region Static Constructors
+		static KimonoCodeGenerator()
+		{
+			// Allocate storage for lists
+			SupportingColors = new List<KimonoColor>();
+			SupportingGradients = new List<KimonoGradient>();
+			SupportingStyles = new List<KimonoStyle>();
+		}
 		#endregion
 
 		#region Public Methods
