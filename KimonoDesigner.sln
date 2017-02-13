@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsumer.Android", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimonoCore.Android", "KimonoCore.Android\KimonoCore.Android.csproj", "{2AC0BC35-2B78-4782-BABB-E1754B9878AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimonoCore.Windows", "KimonoCore.Windows\KimonoCore.Windows.csproj", "{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -111,5 +113,17 @@ Global
 		{2AC0BC35-2B78-4782-BABB-E1754B9878AA}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{2AC0BC35-2B78-4782-BABB-E1754B9878AA}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{2AC0BC35-2B78-4782-BABB-E1754B9878AA}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Debug|x86.Build.0 = Debug|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Release|x86.Build.0 = Release|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Release|iPhone.Build.0 = Release|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2B4FAA48-5D44-442F-A7E1-BD933C1FB76D}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

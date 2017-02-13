@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/KimonoSketch.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore.Windows/MyClass.cs">
     <Files>
       <File FileName="KimonoMac/ViewController.cs" Line="1576" Column="24" />
       <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="87" Column="16" />
-      <File FileName="KimonoCore/KimonoSketch.cs" Line="1010" Column="5" />
+      <File FileName="KimonoCore/KimonoSketch.cs" Line="1028" Column="26" />
+      <File FileName="KimonoCore.Windows/MyClass.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
