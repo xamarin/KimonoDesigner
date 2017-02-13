@@ -1182,7 +1182,7 @@ namespace KimonoMac
 			Text = EditingProperty.ObiScript;
 
 			// Update UI
-			OSSelector.SelectItem(4);
+			OSSelector.SelectItem(7);
 			OSSelector.Enabled = false;
 			LanguageSelector.SelectItem(1);
 			LanguageSelector.Enabled = false;
@@ -1209,19 +1209,28 @@ namespace KimonoMac
 			switch (GenerateOSCode)
 			{
 				case CodeOutputOS.Android:
-					OSSelector.SelectItem(1);
+					OSSelector.SelectItem(3);
 					break;
 				case CodeOutputOS.CrossPlatform:
-					OSSelector.SelectItem(4);
+					OSSelector.SelectItem(7);
 					break;
 				case CodeOutputOS.iOS:
-					OSSelector.SelectItem(2);
+					OSSelector.SelectItem(4);
+					break;
+				case CodeOutputOS.tvOS:
+					OSSelector.SelectItem(5);
 					break;
 				case CodeOutputOS.macOS:
-					OSSelector.SelectItem(3);
+					OSSelector.SelectItem(6);
 					break;
 				case CodeOutputOS.Windows:
 					OSSelector.SelectItem(0);
+					break;
+				case CodeOutputOS.WindowsUWP:
+					OSSelector.SelectItem(1);
+					break;
+				case CodeOutputOS.WindowsWPF:
+					OSSelector.SelectItem(2);
 					break;
 			}
 			OSSelector.Enabled = true;
@@ -1946,15 +1955,24 @@ namespace KimonoMac
 					GenerateOSCode = CodeOutputOS.Windows;
 					break;
 				case 1:
-					GenerateOSCode = CodeOutputOS.Android;
+					GenerateOSCode = CodeOutputOS.WindowsUWP;
 					break;
 				case 2:
-					GenerateOSCode = CodeOutputOS.iOS;
+					GenerateOSCode = CodeOutputOS.WindowsWPF;
 					break;
 				case 3:
-					GenerateOSCode = CodeOutputOS.macOS;
+					GenerateOSCode = CodeOutputOS.Android;
 					break;
 				case 4:
+					GenerateOSCode = CodeOutputOS.iOS;
+					break;
+				case 5:
+					GenerateOSCode = CodeOutputOS.tvOS;
+					break;
+				case 6:
+					GenerateOSCode = CodeOutputOS.macOS;
+					break;
+				case 7:
 					GenerateOSCode = CodeOutputOS.CrossPlatform;
 					break;
 

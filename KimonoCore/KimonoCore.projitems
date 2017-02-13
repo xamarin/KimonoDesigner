@@ -9,7 +9,6 @@
     <Import_RootNamespace>KimonoCore</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)KimonoSketch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoTool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Kimono.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoPortfolio.cs" />
@@ -58,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\CodeOutputLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\KimonoCodeGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\IKimonoCodeGeneration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoSketch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

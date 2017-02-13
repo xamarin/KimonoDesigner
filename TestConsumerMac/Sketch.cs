@@ -7,7 +7,6 @@ public class Sketch
 	// Private gradient Berry Blast vairables
 	private SKColor[] BerryBlastColors;
 	private float[] BerryBlastWeights;
-
 	#endregion
 
 	#region Computed Properties
@@ -22,20 +21,15 @@ public class Sketch
 
 	// Global gradient Berry Blast
 	public SKShader BerryBlast { get; set; }
-
-
 	#endregion
 
 	#region Constructors
 	public Sketch()
 	{
-
 		// Initialize Berry Blast
 		BerryBlastColors = new SKColor[] { new SKColor(255, 255, 255, 255), Strawberry, Grape, new SKColor(0, 0, 0, 255) };
 		BerryBlastWeights = new float[] { 0f, 0.2834916f, 0.6944554f, 0.9662447f };
 		BerryBlast = SKShader.CreateLinearGradient(new SKPoint(0f, 0f), new SKPoint(168f, 168f), BerryBlastColors, BerryBlastWeights, SKShaderTileMode.Clamp);
-
-
 	}
 	#endregion
 
@@ -64,7 +58,7 @@ public class Sketch
 			IsAntialias = true,
 			StrokeWidth = 2.285407f,
 			StrokeMiter = 4f,
-			StrokeJoin = SKStrokeJoin.Mitter,
+			StrokeJoin = SKStrokeJoin.Miter,
 			StrokeCap = SKStrokeCap.Butt
 		};
 
@@ -72,10 +66,7 @@ public class Sketch
 		OvalStyleFillPaint.Shader = SKShader.CreateLinearGradient(new SKPoint(48.94141f, 53.875f), new SKPoint(279.0689f, 257.9874f), BerryBlastColors, BerryBlastWeights, SKShaderTileMode.Clamp);
 		canvas.DrawOval(new SKRect(48.94141f, 53.875f, 290.0273f, 267.707f), OvalStyleFillPaint);
 		canvas.DrawOval(new SKRect(48.94141f, 53.875f, 290.0273f, 267.707f), OvalStyleFramePaint);
-
-
 	}
-
 	#endregion
 
 }

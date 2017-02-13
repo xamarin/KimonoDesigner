@@ -458,19 +458,16 @@ namespace KimonoCore
 		/// Gets the style fill paint for code.
 		/// </summary>
 		/// <value>The style fill paint for code.</value>
-		public string StyleFillPaintForCode
+		public string StyleFillPaintForCode(CodeOutputLibrary outputLibrary)
 		{
-			get
+			// Is this shape using a custom style?
+			if (outputLibrary == CodeOutputLibrary.SkiaSharp || Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
 			{
-				// Is this shape using a custom style?
-				if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
-				{
-					return $"{Style.ElementName}FillPaint";
-				}
-				else
-				{
-					return $"{Style.ElementName}.Fill";
-				}
+				return $"{Style.ElementName}FillPaint";
+			}
+			else
+			{
+				return $"{Style.ElementName}.Fill";
 			}
 		}
 
@@ -478,19 +475,16 @@ namespace KimonoCore
 		/// Gets the style frame paint for code.
 		/// </summary>
 		/// <value>The style frame paint for code.</value>
-		public string StyleFramePaintForCode
+		public string StyleFramePaintForCode(CodeOutputLibrary outputLibrary)
 		{
-			get
+			// Is this shape using a custom style?
+			if (outputLibrary == CodeOutputLibrary.SkiaSharp || Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
 			{
-				// Is this shape using a custom style?
-				if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
-				{
-					return $"{Style.ElementName}FramePaint";
-				}
-				else
-				{
-					return $"{Style.ElementName}.Frame";
-				}
+				return $"{Style.ElementName}FramePaint";
+			}
+			else
+			{
+				return $"{Style.ElementName}.Frame";
 			}
 		}
 
@@ -512,7 +506,7 @@ namespace KimonoCore
 				CalculateConfromingGradientCoordinates(Style.FillGradient, out startPoint, out endPoint);
 
 				// Conform gradient
-				sourceCode += $"{StyleFillPaintForCode}.Shader = {Style.FillGradient.ToCSharp(outputLibrary, startPoint, endPoint)}";
+				sourceCode += $"{StyleFillPaintForCode(outputLibrary)}.Shader = {Style.FillGradient.ToCSharp(outputLibrary, startPoint, endPoint)}";
 			}
 
 			// Return code
@@ -537,7 +531,7 @@ namespace KimonoCore
 				CalculateConfromingGradientCoordinates(Style.FrameGradient, out startPoint, out endPoint);
 
 				// Conform gradient
-				sourceCode += $"{StyleFramePaintForCode}.Shader = {Style.FrameGradient.ToCSharp(outputLibrary, startPoint, endPoint)};";
+				sourceCode += $"{StyleFramePaintForCode(outputLibrary)}.Shader = {Style.FrameGradient.ToCSharp(outputLibrary, startPoint, endPoint)};";
 			}
 
 			// Return code

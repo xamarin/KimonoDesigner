@@ -168,7 +168,7 @@ namespace KimonoCore
 				if (Style.HasFrame)
 				{
 					sourceCode += ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp) +
-						$"canvas.DrawLine(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFramePaintForCode});\n";
+						$"canvas.DrawLine(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 				}
 			}
 

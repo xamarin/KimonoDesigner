@@ -812,6 +812,28 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 
+			// Assemble path name
+			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
+			var pathName = $"{ElementName}Path";
+
+			// Define path with Skia
+			sourceCode += "//-----------------------------------------------------------------------------\n" +
+				$"// Define {Name} Sketch paths\n" +
+				$"var {pathName} = new SKPath();\n";
+
+			// Add all of the child paths
+			foreach (KimonoShape shape in Shapes)
+			{
+				// Emit the shape's path
+				sourceCode += shape.ToSkiaSharpPath();
+
+				// Add path to group path
+				sourceCode += $"{pathName}.AddPath({shape.ElementName}Path, SKPath.AddMode.Append);\n";
+			}
+
+			// Close group's code
+			sourceCode += "//-----------------------------------------------------------------------------\n\n";
+
 			// Return code
 			return sourceCode;
 		}
@@ -888,6 +910,113 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Bulids the method to convert this Sketch to SkiaSharp data (`SKData`).
+		/// </summary>
+		/// <returns>The Sketch as `SKData`.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string BuildCsharpToSkiaDataMethod(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Start method
+			sourceCode += (GenerateCodeToOuputSkiaData) ? "public" : "private";
+			sourceCode += $" SKData {ElementName}ToData()" + "{\n";
+
+			// Draw all of the elements into the image buffer
+			sourceCode += $"\tusing (var surface = SKSurface.Create({(int)Width}, {(int)Height}, SKImageInfo.PlatformColorType, SKAlphaType.Premul))\n" +
+				"\t{\n" +
+				"\t\t// Create Canvas\n" +
+				"\t\tSKCanvas canvas = surface.Canvas;\n" +
+				$"\t\tcanvas.Clear({KimonoCodeGenerator.ColorToCode(outputLibrary,CanvasColor)});\n\n" +
+				"\t\t// Draw all shapes into the canvas\n" +
+				$"\t\tDraw{ElementName}(canvas);\n\n" +
+				"\t\t// Return data from sketch\n" +
+				"\t\treturn surface.Snapshot().Encode();\n" +
+				"\t}";
+
+			// End method
+			sourceCode += "\n}\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Bulids the method to convert this Sketch to OS specific bitmap image format.
+		/// </summary>
+		/// <returns>Sketch as a platform specific image.</returns>
+		/// <param name="outputOS">Output os.</param>
+		public virtual string BuildCsharpToBitmapImage(CodeOutputOS outputOS)
+		{
+			var sourceCode = "";
+			var imageType = "";
+
+			// Set the output image type
+			switch (outputOS)
+			{
+				case CodeOutputOS.Android:
+					imageType = "Bitmap";
+					break;
+				case CodeOutputOS.iOS:
+				case CodeOutputOS.tvOS:
+					imageType = "UIImage";
+					break;
+				case CodeOutputOS.macOS:
+					imageType = "NSImage";
+					break;
+				case CodeOutputOS.Windows:
+				case CodeOutputOS.WindowsUWP:
+				case CodeOutputOS.WindowsWPF:
+					imageType = "BitmapImage";
+					break;
+			}
+
+			// Start method
+			sourceCode += (GenerateCodeToOuputBitmapImage) ? "public" : "private";
+			sourceCode += $" {imageType} {ElementName}ToImage()" + "{\n" +
+				"\t// Get image data from sketch\n" +
+				$"\tvar skPngdata = {ElementName}ToData();\n\n";
+
+			// Export image based on OS type
+			switch (outputOS)
+			{
+				case CodeOutputOS.Android:
+					sourceCode += "\t// Convert to image and return\n" +
+						"\tvar imageBytes = skPngdata.ToArray();\n" +
+						"\treturn BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);";
+					break;
+				case CodeOutputOS.iOS:
+				case CodeOutputOS.tvOS:
+					sourceCode += "\t// Convert to image and return\n" +
+						"\tvar data = NSData.FromBytes(skPngdata.Data, (nuint)skPngdata.Size);\n" +
+						"\treturn new UIImage(data);";
+					break;
+				case CodeOutputOS.macOS:
+					sourceCode += "\t// Convert to image and return\n" +
+						"\tvar data = NSData.FromBytes(skPngdata.Data, (nuint)skPngdata.Size);\n" +
+						"\treturn new NSImage(data);";
+					break;
+				case CodeOutputOS.Windows:
+				case CodeOutputOS.WindowsUWP:
+				case CodeOutputOS.WindowsWPF:
+					sourceCode += "\t// Convert to image and return\n" +
+						"\tvar imageBytes = skPngData.ToArray();\n" +
+						"\tvar image = new BitMapImage();\n" +
+						"\tInMemoryRandomAccessStream ms = new InMemoryRandomAccessStream();\n" +
+						"\tms.AsStreamForWrite().Write(imageBytes, 0, imageBytes.Length);\n" +
+						"\tms.Seek(0);\n" +
+						"\timage.SetSource(ms);\n";
+					break;
+			}
+
+			// End method
+			sourceCode += "\n}\n";
+
+			// Return code
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this shape to C# code.
 		/// </summary>
 		/// <returns>The shape as C# code.</returns>
@@ -933,18 +1062,62 @@ namespace KimonoCore
 			if (GenerateCodeToOuputToCanvas)
 			{
 				// Expose this method
-				publicMethodsCode = BuildCsharpToCanvasMethod(outputLibrary);
+				publicMethodsCode += BuildCsharpToCanvasMethod(outputLibrary);
 			}
 			else
 			{
 				// Always required as it does the actual work of drawing the
-				// sketch
-				privateMethodsCode = BuildCsharpToCanvasMethod(outputLibrary);
+				// sketch and is used by the other export methods
+				privateMethodsCode += BuildCsharpToCanvasMethod(outputLibrary);
+			}
+
+			// Add to Skia Data method?
+			if (GenerateCodeToOuputSkiaData)
+			{
+				// Expose this method
+				publicMethodsCode += BuildCsharpToSkiaDataMethod(outputLibrary);
+			}
+			else if (GenerateCodeToOuputBitmapImage)
+			{
+				// Add this method if making bitmap images, as it is required to do the
+				// conversion
+				privateMethodsCode += BuildCsharpToSkiaDataMethod(outputLibrary);
+			}
+
+			// Add to Bitmap Image method?
+			if (GenerateCodeToOuputBitmapImage)
+			{
+				// Expose this method
+				publicMethodsCode += BuildCsharpToBitmapImage(outputOS);
 			}
 
 			// Assemble using statements
 			usingStatements = "using System;\n" +
 				"using SkiaSharp;\n";
+
+			// Add any supporting using statements based
+			// on the selected OS
+			switch (outputOS)
+			{
+				case CodeOutputOS.Android:
+					usingStatements += "using Android.App;\n" +
+						"using Android.Widget;\n" +
+						"using Android.OS;\n" +
+						"using Android.Graphics;\n";
+					break;
+				case CodeOutputOS.CrossPlatform:
+					break;
+				case CodeOutputOS.iOS:
+					usingStatements += "using Foundation;\n" +
+						"using UIKit;\n";
+					break;
+				case CodeOutputOS.macOS:
+					usingStatements += "using Foundation;\n" +
+						"using AppKit;\n";
+					break;
+				case CodeOutputOS.Windows:
+					break;
+			}
 
 			if (GenerateCodeToOuputToSkiaSharpViews)
 			{

@@ -469,12 +469,12 @@ namespace KimonoCore
 				if (Style.HasFill)
 				{
 					sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
-						$"canvas.DrawPath({pathName}, {StyleFillPaintForCode});\n";
+						$"canvas.DrawPath({pathName}, {StyleFillPaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 				}
 				if (Style.HasFrame)
 				{
 					sourceCode += ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp) +
-						$"canvas.DrawPath({pathName}, {StyleFramePaintForCode});\n";
+						$"canvas.DrawPath({pathName}, {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 				}
 			}
 

@@ -172,12 +172,12 @@ namespace KimonoCore
 				if (Style.HasFill)
 				{
 					sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
-						$"canvas.DrawRect(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFillPaintForCode});\n";
+						$"canvas.DrawRect(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFillPaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 				}
 				if (Style.HasFrame)
 				{
 					sourceCode += ConformedFrameGradientCode(CodeOutputLibrary.SkiaSharp) +
-						$"canvas.DrawRect(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFramePaintForCode});\n";
+						$"canvas.DrawRect(new SKRect({Rect.Left}f ,{Rect.Top}f, {Rect.Right}f, {Rect.Bottom}f), {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 				}
 			}
 

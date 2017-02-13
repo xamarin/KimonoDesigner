@@ -376,7 +376,7 @@ namespace KimonoCore
 					if (isFirstLetter)
 					{
 						// Yes, not valid at the start of a name
-						elementName += $"skia{c}";
+						elementName += $"Skia{c}";
 					}
 					else
 					{
@@ -389,6 +389,9 @@ namespace KimonoCore
 					// Always valid, add
 					elementName += c;
 				}
+
+				// Clear state
+				isFirstLetter = false;
 			}
 
 			// Was a name generated at all?

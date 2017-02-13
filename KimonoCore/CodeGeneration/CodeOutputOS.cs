@@ -12,6 +12,16 @@ namespace KimonoCore
 		Windows,
 
 		/// <summary>
+		/// For Windows OS based machines using Universal Windows Platform.
+		/// </summary>
+		WindowsUWP,
+
+		/// <summary>
+		/// For Windows OS based machines using Windows Presentation Foundation.
+		/// </summary>
+		WindowsWPF,
+
+		/// <summary>
 		/// For Android OS based machines.
 		/// </summary>
 		Android,
@@ -20,6 +30,11 @@ namespace KimonoCore
 		/// For iOS based machines.
 		/// </summary>
 		iOS,
+
+		/// <summary>
+		/// For tvOS based machines.
+		/// </summary>
+		tvOS,
 
 		/// <summary>
 		/// For macOS based machines.

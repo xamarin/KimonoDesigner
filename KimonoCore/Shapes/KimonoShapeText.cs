@@ -580,8 +580,8 @@ namespace KimonoCore
 						if ((line.Length) * FontMetrics.XMax > Height)
 						{
 							// Print current line
-							if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
-							if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+							if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
+							if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 
 							// Advance line
 							line = "" + c;
@@ -598,8 +598,8 @@ namespace KimonoCore
 					if (line != "")
 					{
 						// Print last line
-						if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
-						if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+						if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
+						if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 					}
 				}
 				else
@@ -632,8 +632,8 @@ namespace KimonoCore
 						if (Style.Fill.MeasureText(line + c) > Width)
 						{
 							// Print current line
-							if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
-							if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+							if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
+							if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 
 							// Advance line
 							line = "" + c;
@@ -650,8 +650,8 @@ namespace KimonoCore
 					if (line != "")
 					{
 						// Print last line
-						if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode});\n";
-						if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode});\n";
+						if (Style.HasFill) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFillPaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
+						if (Style.HasFrame) sourceCode += $"canvas.DrawText(\"{line}\", {x}f, {y}f, {StyleFramePaintForCode(CodeOutputLibrary.SkiaSharp)});\n";
 					}
 				}
 			}
