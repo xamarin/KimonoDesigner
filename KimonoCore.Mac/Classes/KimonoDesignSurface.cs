@@ -299,12 +299,8 @@ namespace KimonoCore.Mac
 		/// </summary>
 		public void RefreshView()
 		{
-			// Get image data from sketch
-			var skPngdata = SelectedSketch.Draw();
-
-			// Convert to image and display
-			var data = NSData.FromBytes(skPngdata.Data, (nuint)skPngdata.Size);
-			Image = new NSImage(data);
+			// Get image data from sketch and display
+			Image = SelectedSketch.ToImage();
 		}
 
 		/// <summary>

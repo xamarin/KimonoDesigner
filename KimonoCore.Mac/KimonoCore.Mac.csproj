@@ -60,6 +60,7 @@
     <Compile Include="Classes\KimonoDesignSurface.cs" />
     <Compile Include="Classes\KimonoGradientDesignBar.cs" />
     <Compile Include="Classes\KimonoGradientDesignPreview.cs" />
+    <Compile Include="Classes\KimonoSketch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\" />

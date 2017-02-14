@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// Holds a collection of <c>KimonoShapes</c> that are used to create a given
 	/// image using Skia.
 	/// </summary>
-	public class KimonoSketch : IKimonoCodeGeneration
+	public partial class KimonoSketch : IKimonoCodeGeneration
 	{
 
 		#region Private Variables

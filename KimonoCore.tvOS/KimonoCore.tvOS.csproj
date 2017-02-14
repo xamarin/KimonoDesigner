@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F358DC7-6C6F-4862-A3AF-E12978D1EACC}</ProjectGuid>
-    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{68A6ACD8-8F0A-4CF4-82CD-73430FCF2EA3}</ProjectGuid>
+    <ProjectTypeGuids>{06FA79CB-D6CD-4721-BB4B-1BD202089C55};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>KimonoCore.iOS</RootNamespace>
-    <AssemblyName>KimonoCore.iOS</AssemblyName>
+    <RootNamespace>KimonoCore.tvOS</RootNamespace>
+    <AssemblyName>KimonoCore.tvOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -24,7 +24,7 @@
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
-    <IOSDebuggerPort>12086</IOSDebuggerPort>
+    <IOSDebuggerPort>42423</IOSDebuggerPort>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
     <MtouchLink></MtouchLink>
     <MtouchHttpClientHandler></MtouchHttpClientHandler>
@@ -46,9 +46,9 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Xamarin.iOS" />
+    <Reference Include="Xamarin.TVOS" />
     <Reference Include="SkiaSharp">
-      <HintPath>..\packages\SkiaSharp.1.56.1\lib\XamariniOS\SkiaSharp.dll</HintPath>
+      <HintPath>..\packages\SkiaSharp.1.56.1\lib\XamarintvOS\SkiaSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +56,7 @@
     <Folder Include="Classes\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\KimonoSketch.cs" />
   </ItemGroup>
@@ -63,5 +64,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" Condition="Exists('..\KimonoCore\KimonoCore.projitems')" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\TVOS\Xamarin.TVOS.CSharp.targets" />
 </Project>
