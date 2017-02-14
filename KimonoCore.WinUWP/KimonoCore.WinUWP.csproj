@@ -7,7 +7,7 @@
     <ProjectGuid>{F44A69C7-E93B-4950-8A29-4ED5447D13A7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KimonoCore.WinUWP</RootNamespace>
+    <RootNamespace>KimonoCore.Windows.UWP</RootNamespace>
     <AssemblyName>KimonoCore.WinUWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -107,7 +107,8 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Classes\KimonoDesignSurface.cs" />
+    <Compile Include="Classes\KimonoSketch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\KimonoCore.WinUWP.rd.xml" />
   </ItemGroup>

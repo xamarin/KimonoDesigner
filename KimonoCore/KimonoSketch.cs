@@ -965,8 +965,10 @@ namespace KimonoCore
 					imageType = "NSImage";
 					break;
 				case CodeOutputOS.Windows:
+                case CodeOutputOS.WindowsWPF:
+                    imageType = "Bitmap";
+                    break;
 				case CodeOutputOS.WindowsUWP:
-				case CodeOutputOS.WindowsWPF:
 					imageType = "BitmapImage";
 					break;
 			}
@@ -997,15 +999,23 @@ namespace KimonoCore
 						"\treturn new NSImage(data);";
 					break;
 				case CodeOutputOS.Windows:
-				case CodeOutputOS.WindowsUWP:
-				case CodeOutputOS.WindowsWPF:
-					sourceCode += "\t// Convert to image and return\n" +
-						"\tvar imageBytes = skPngData.ToArray();\n" +
-						"\tvar image = new BitMapImage();\n" +
-						"\tInMemoryRandomAccessStream ms = new InMemoryRandomAccessStream();\n" +
-						"\tms.AsStreamForWrite().Write(imageBytes, 0, imageBytes.Length);\n" +
-						"\tms.Seek(0);\n" +
-						"\timage.SetSource(ms);\n";
+                case CodeOutputOS.WindowsWPF:
+                    sourceCode += "\t// Convert to image and return\n" +
+                        "\tvar imageBytes = skPngdata.ToArray();\n" +
+                        "\tImageConverter ic = new ImageConverter();\n" +
+                        "\tImage img = (Image)ic.ConvertFrom(imageBytes);\n" +
+                        "\tBitmap bitmap = new Bitmap(img);\n" +
+                        "\treturn bitmap;";
+                    break;
+                case CodeOutputOS.WindowsUWP:
+                    sourceCode += "\t// Convert to image and return\n" +
+                        "\tvar imageBytes = skPngdata.ToArray();\n" +
+                        "\tvar image = new BitmapImage();\n" +
+                        "\tInMemoryRandomAccessStream ms = new InMemoryRandomAccessStream();\n" +
+                        "\tms.AsStreamForWrite().Write(imageBytes, 0, imageBytes.Length);\n" +
+                        "\tms.Seek(0);\n" +
+                        "\timage.SetSource(ms);\n" +
+                        "\treturn image;";
 					break;
 			}
 
@@ -1015,6 +1025,44 @@ namespace KimonoCore
 			// Return code
 			return sourceCode;
 		}
+
+        /// <summary>
+        /// Builds the C# ToImage method for Cross Platform image support.
+        /// </summary>
+        /// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+        /// <returns>Conditionally compiled code to support all of the different image types.</returns>
+        public virtual string BuildCSharpCrossPlatformToImage(CodeOutputLibrary outputLibrary)
+        {
+            var sourceCode = "";
+
+            // Add Android platform
+            sourceCode += "#if __Android__\n" +
+                BuildCsharpToBitmapImage(CodeOutputOS.Android) +
+                "#endif\n\n";
+
+            // Add iOS and tvOS platforms
+            sourceCode += "#if (__IOS__ || __TVOS__)\n" +
+                BuildCsharpToBitmapImage(CodeOutputOS.iOS) +
+                "#endif\n\n";
+
+            // Add macOS platform
+            sourceCode += "#if __MACOS__\n" +
+                BuildCsharpToBitmapImage(CodeOutputOS.macOS) +
+                "#endif\n\n";
+
+            // Add Windows and Window WPF platforms
+            sourceCode += "#if (WINDOWS || WINDOWS_WPF)\n" +
+                BuildCsharpToBitmapImage(CodeOutputOS.Windows) +
+                "#endif\n\n";
+
+            // Add Windows UWP platform
+            sourceCode += "#if WINDOWS_UWP\n" +
+                BuildCsharpToBitmapImage(CodeOutputOS.WindowsUWP) +
+                "#endif\n";
+
+            // Return code
+            return sourceCode;
+        }
 
 		/// <summary>
 		/// Converts this shape to C# code.
@@ -1087,8 +1135,18 @@ namespace KimonoCore
 			// Add to Bitmap Image method?
 			if (GenerateCodeToOuputBitmapImage)
 			{
-				// Expose this method
-				publicMethodsCode += BuildCsharpToBitmapImage(outputOS);
+                // Cross platform?
+                if (outputOS == CodeOutputOS.CrossPlatform)
+                {
+                    // Expose all possible versions of this method with conditional
+                    // compile statements based on the OS the class is being used on.
+                    publicMethodsCode += BuildCSharpCrossPlatformToImage(outputLibrary);
+                }
+                else
+                {
+                    // Expose this method
+                    publicMethodsCode += BuildCsharpToBitmapImage(outputOS);
+                }
 			}
 
 			// Assemble using statements
@@ -1104,29 +1162,65 @@ namespace KimonoCore
 						"using Android.Widget;\n" +
 						"using Android.OS;\n" +
 						"using Android.Graphics;\n";
-					break;
+
+                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
+                    {
+                        usingStatements += "using KimonoCore.Android;\n";
+                    }
+                    break;
 				case CodeOutputOS.CrossPlatform:
 					break;
 				case CodeOutputOS.iOS:
 					usingStatements += "using Foundation;\n" +
 						"using UIKit;\n";
-					break;
-				case CodeOutputOS.macOS:
+
+                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
+                    {
+                        usingStatements += "using KimonoCore.iOS;\n";
+                    }
+                    break;
+                case CodeOutputOS.tvOS:
+                    usingStatements += "using Foundation;\n" +
+                        "using UIKit;\n";
+
+                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
+                    {
+                        usingStatements += "using KimonoCore.tvOS;\n";
+                    }
+                    break;
+                case CodeOutputOS.macOS:
 					usingStatements += "using Foundation;\n" +
 						"using AppKit;\n";
-					break;
-				case CodeOutputOS.Windows:
-					break;
+
+                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
+                    {
+                        usingStatements += "using KimonoCore.Mac;\n";
+                    }
+                    break;
+                case CodeOutputOS.Windows:
+                case CodeOutputOS.WindowsWPF:
+                    usingStatements += "using System.Drawing;\n";
+
+                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
+                    {
+                        usingStatements += "using KimonoCore.Windows;\n";
+                    }
+                    break;
+                case CodeOutputOS.WindowsUWP:
+                    usingStatements += "using Windows.UI.Xaml.Media.Imaging;\n" +
+                        "using System.IO;\n" +
+                        "using Windows.Storage.Streams;";
+
+                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
+                    {
+                        usingStatements += "using KimonoCore.Windows.UWP;\n";
+                    }
+                    break;
 			}
 
 			if (GenerateCodeToOuputToSkiaSharpViews)
 			{
 				usingStatements += "using SkiaSharp.Views;\n";
-			}
-
-			if (outputLibrary == CodeOutputLibrary.KimonoCore)
-			{
-				usingStatements += "using KimonoCore;\n";
 			}
 
 			// Assemble precode items in reverse order to ensure dependencies are registered first
@@ -1173,8 +1267,7 @@ namespace KimonoCore
 				// Yes, include code
 				sourceCode += KimonoCodeGenerator.IncreaseIndentLevel(KimonoCodeGenerator.IncreaseIndentLevel(initializers));
 			}
-
-
+            
 			// Complete costructor
 			sourceCode += "\n\t}\n" +
 				"\t#endregion\n\n";
@@ -1233,9 +1326,9 @@ namespace KimonoCore
 			// Return code
 			return sourceCode;
 		}
-		#endregion
+#endregion
 
-		#region Cloning
+#region Cloning
 		/// <summary>
 		/// Relinks the given shape after a clone operation.
 		/// </summary>
@@ -1312,9 +1405,9 @@ namespace KimonoCore
 			// Return new instance
 			return sketch;
 		}
-		#endregion
+#endregion
 
-		#region Tool Events
+#region Tool Events
 		// -----------------------------------------------------------------------------------------------------
 		// NOTICE:
 		// Changes to the code in the <c>KimonoSketch<c> Tool Events will also need to be made to the 
@@ -1638,9 +1731,9 @@ namespace KimonoCore
 				}
 			}
 		}
-		#endregion
+#endregion
 
-		#region Events
+#region Events
 		/// <summary>
 		/// Occurs when a new undo point is requested.
 		/// </summary>
@@ -1738,7 +1831,7 @@ namespace KimonoCore
 		{
 			if (ToolChanged != null) ToolChanged(tool);
 		}
-		#endregion
+#endregion
 
 	}
 }
