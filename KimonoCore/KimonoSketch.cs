@@ -1092,6 +1092,83 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Builds the C# using statements.
+		/// </summary>
+		/// <returns>The required using statements based on what other features have been selected.</returns>
+		/// <param name="outputOS">The `CodeOutputOS` to write code for.</param>
+		/// <param name="outputLibrary">Output library.</param>
+		public virtual string ToCSharpUsingStatements(CodeOutputOS outputOS, CodeOutputLibrary outputLibrary)
+		{
+			var usingStatements = "";
+
+			// Add any supporting using statements based
+			// on the selected OS
+			switch (outputOS)
+			{
+				case CodeOutputOS.Android:
+					usingStatements += "using Android.App;\n" +
+						"using Android.Widget;\n" +
+						"using Android.OS;\n" +
+						"using Android.Graphics;\n";
+
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						usingStatements += "using KimonoCore.Android;\n";
+					}
+					break;
+				case CodeOutputOS.iOS:
+					usingStatements += "using Foundation;\n" +
+						"using UIKit;\n";
+					
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						usingStatements += "using KimonoCore.iOS;\n";
+					}
+					break;
+				case CodeOutputOS.tvOS:
+					usingStatements += "using Foundation;\n" +
+						"using UIKit;\n";
+
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						usingStatements += "using KimonoCore.tvOS;\n";
+					}
+					break;
+				case CodeOutputOS.macOS:
+					usingStatements += "using Foundation;\n" +
+						"using AppKit;\n";
+
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						usingStatements += "using KimonoCore.Mac;\n";
+					}
+					break;
+				case CodeOutputOS.Windows:
+				case CodeOutputOS.WindowsWPF:
+					usingStatements += "using System.Drawing;\n";
+
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						usingStatements += "using KimonoCore.Windows;\n";
+					}
+					break;
+				case CodeOutputOS.WindowsUWP:
+					usingStatements += "using Windows.UI.Xaml.Media.Imaging;\n" +
+						"using System.IO;\n" +
+						"using Windows.Storage.Streams;\n";
+
+					if (outputLibrary == CodeOutputLibrary.KimonoCore)
+					{
+						usingStatements += "using KimonoCore.Windows.UWP;\n";
+					}
+					break;
+			}
+
+			// Return code
+			return usingStatements;
+		}
+
+		/// <summary>
 		/// Converts this shape to C# code.
 		/// </summary>
 		/// <returns>The shape as C# code.</returns>
@@ -1105,6 +1182,7 @@ namespace KimonoCore
 			var privateMethodsCode = "";
 			var publicMethodsCode = "";
 			var computedProperties = "";
+			var overrideMethods = "";
 
 			// Add to canvas method
 			if (GenerateCodeToOuputToCanvas)
@@ -1153,74 +1231,81 @@ namespace KimonoCore
 			usingStatements = "using System;\n" +
 				"using SkiaSharp;\n";
 
-			// Add any supporting using statements based
-			// on the selected OS
-			switch (outputOS)
-			{
-				case CodeOutputOS.Android:
-					usingStatements += "using Android.App;\n" +
-						"using Android.Widget;\n" +
-						"using Android.OS;\n" +
-						"using Android.Graphics;\n";
-
-                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
-                    {
-                        usingStatements += "using KimonoCore.Android;\n";
-                    }
-                    break;
-				case CodeOutputOS.CrossPlatform:
-					break;
-				case CodeOutputOS.iOS:
-					usingStatements += "using Foundation;\n" +
-						"using UIKit;\n";
-
-                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
-                    {
-                        usingStatements += "using KimonoCore.iOS;\n";
-                    }
-                    break;
-                case CodeOutputOS.tvOS:
-                    usingStatements += "using Foundation;\n" +
-                        "using UIKit;\n";
-
-                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
-                    {
-                        usingStatements += "using KimonoCore.tvOS;\n";
-                    }
-                    break;
-                case CodeOutputOS.macOS:
-					usingStatements += "using Foundation;\n" +
-						"using AppKit;\n";
-
-                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
-                    {
-                        usingStatements += "using KimonoCore.Mac;\n";
-                    }
-                    break;
-                case CodeOutputOS.Windows:
-                case CodeOutputOS.WindowsWPF:
-                    usingStatements += "using System.Drawing;\n";
-
-                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
-                    {
-                        usingStatements += "using KimonoCore.Windows;\n";
-                    }
-                    break;
-                case CodeOutputOS.WindowsUWP:
-                    usingStatements += "using Windows.UI.Xaml.Media.Imaging;\n" +
-                        "using System.IO;\n" +
-                        "using Windows.Storage.Streams;";
-
-                    if (outputLibrary == CodeOutputLibrary.KimonoCore)
-                    {
-                        usingStatements += "using KimonoCore.Windows.UWP;\n";
-                    }
-                    break;
-			}
-
+			// Using the SkiaSharp.Views library?
 			if (GenerateCodeToOuputToSkiaSharpViews)
 			{
-				usingStatements += "using SkiaSharp.Views;\n";
+				// Yes, add it
+				usingStatements += "using SkiaSharp.Views.Forms;\n";
+			}
+
+			// Cross platform?
+			if (outputOS == CodeOutputOS.CrossPlatform)
+			{
+				// Yes, add all platform's using statements
+				// Add Android platform
+				usingStatements += "\n#if __Android__\n" +
+					ToCSharpUsingStatements(CodeOutputOS.Android, outputLibrary) +
+					"#endif\n\n";
+
+				// Add iOS platforms
+				usingStatements += "#if __IOS__ \n" +
+					ToCSharpUsingStatements(CodeOutputOS.iOS, outputLibrary) +
+					"#endif\n\n";
+
+				// Add tvOS platforms
+				usingStatements += "#if __TVOS__ \n" +
+					ToCSharpUsingStatements(CodeOutputOS.tvOS, outputLibrary) +
+					"#endif\n\n";
+
+				// Add macOS platform
+				usingStatements += "#if __MACOS__\n" +
+					ToCSharpUsingStatements(CodeOutputOS.macOS, outputLibrary) +
+					"#endif\n\n";
+
+				// Add Windows and Window WPF platforms
+				usingStatements += "#if (WINDOWS || WINDOWS_WPF)\n" +
+					ToCSharpUsingStatements(CodeOutputOS.Windows, outputLibrary) +
+					"#endif\n\n";
+
+				// Add Windows UWP platform
+				usingStatements += "#if WINDOWS_UWP\n" +
+					ToCSharpUsingStatements(CodeOutputOS.WindowsUWP, outputLibrary) +
+					"#endif\n";
+			}
+			else
+			{
+				// No, add only the specific OS using statements
+				usingStatements += ToCSharpUsingStatements(outputOS, outputLibrary);
+
+				// Using the SkiaSharp.Views library?
+				if (GenerateCodeToOuputToSkiaSharpViews)
+				{
+					// Yes, add it
+					switch (outputOS)
+					{
+						case CodeOutputOS.Android:
+							usingStatements += "using SkiaSharp.Views.Android;\n";
+							break;
+						case CodeOutputOS.iOS:
+							usingStatements += "using SkiaSharp.Views.iOS;\n";
+							break;
+						case CodeOutputOS.tvOS:
+							usingStatements += "using SkiaSharp.Views.tvOS;\n";
+							break;
+						case CodeOutputOS.macOS:
+							usingStatements += "using SkiaSharp.Views.Mac;\n";
+							break;
+						case CodeOutputOS.Windows:
+							usingStatements += "using SkiaSharp.Views.Desktop;\n";
+							break;
+						case CodeOutputOS.WindowsWPF:
+							usingStatements += "using SkiaSharp.Views.WPF;\n";
+							break;
+						case CodeOutputOS.WindowsUWP:
+							usingStatements += "using SkiaSharp.Views.UWP;\n";
+							break;
+					}
+				}
 			}
 
 			// Assemble precode items in reverse order to ensure dependencies are registered first
@@ -1236,8 +1321,115 @@ namespace KimonoCore
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
 
 			// Convert this Sketch to a class
-			sourceCode += $"{usingStatements}\n" +
-				$"public class {ElementName}\n" + "{\n";
+			// Using a SkiaSharp.Views?
+			if (GenerateCodeToOuputToSkiaSharpViews)
+			{
+				// Yes, Take action based on OS
+				switch (outputOS)
+				{
+					case CodeOutputOS.Android:
+						// Setup class
+						sourceCode += $"{usingStatements}\n" +
+							$"public class {ElementName} : SKCanvasView\n" + "{\n";
+
+						// Generate override methods
+						overrideMethods += "protected override void OnDraw (SKSurface surface, SKImageInfo info) {\n" +
+							"\t// Call the base method\n" +
+							"\tbase.OnDraw (surface, info);\n\n" +
+							"\t// Draw the sketch into the canvas\n" +
+							$"\tDraw{ElementName}(surface.Canvas);\n" +
+							"\tsurface.Canvas.Flush();\n" +
+							"}\n";
+						break;
+					case CodeOutputOS.iOS:
+					case CodeOutputOS.tvOS:
+					case CodeOutputOS.macOS:
+						// Setup class
+						sourceCode += $"{usingStatements}\n" +
+							$"[Register(\"{ElementName}\")]\n" +
+							$"public class {ElementName} : SKCanvasView\n" + "{\n";
+
+						// Generate override methods
+						overrideMethods += "protected override void DrawInSurface (SKSurface surface, SKImageInfo info) {\n" +
+							"\t// Call the base method\n" +
+							"\tbase.DrawInSurface (surface, info);\n\n" +
+							"\t// Draw the sketch into the canvas\n" +
+							$"\tDraw{ElementName}(surface.Canvas);\n" +
+							"\tsurface.Canvas.Flush();\n" +
+							"}\n";
+						break;
+					case CodeOutputOS.Windows:
+						// Setup class
+						sourceCode += $"{usingStatements}\n" +
+							$"public class {ElementName} : SKControl\n" + "{\n";
+
+						// Generate override methods
+						overrideMethods += "protected override void OnPaintSurface (SKPaintSurfaceEventArgs e) {\n" +
+							"\t// Call the base method\n" +
+							"\tbase.OnPaintSurface (e);\n\n" +
+							"\t// Get surface\n" +
+							"\tvar surface = e.Surface;\n\n" +
+							"\t// Draw the sketch into the canvas\n" +
+							$"\tDraw{ElementName}(surface.Canvas);\n" +
+							"\tsurface.Canvas.Flush();\n" +
+							"}\n";
+						break;
+					case CodeOutputOS.WindowsWPF:
+						// Setup class
+						sourceCode += $"{usingStatements}\n" +
+							$"public class {ElementName} : SKElement\n" + "{\n";
+
+						// Generate override methods
+						overrideMethods += "protected override void OnPaintSurface (SKPaintSurfaceEventArgs e) {\n" +
+							"\t// Call the base method\n" +
+							"\tbase.OnPaintSurface (e);\n\n" +
+							"\t// Get surface\n" +
+							"\tvar surface = e.Surface;\n\n" +
+							"\t// Draw the sketch into the canvas\n" +
+							$"\tDraw{ElementName}(surface.Canvas);\n" +
+							"\tsurface.Canvas.Flush();\n" +
+							"}\n";
+						break;
+					case CodeOutputOS.WindowsUWP:
+						// Setup class
+						sourceCode += $"{usingStatements}\n" +
+							$"public class {ElementName} : SKXamlCanvas\n" + "{\n";
+
+						// Generate override methods
+						overrideMethods += "protected override void OnPaintSurface (SKPaintSurfaceEventArgs e) {\n" +
+							"\t// Call the base method\n" +
+							"\tbase.OnPaintSurface (e);\n\n" +
+							"\t// Get surface\n" +
+							"\tvar surface = e.Surface;\n\n" +
+							"\t// Draw the sketch into the canvas\n" +
+							$"\tDraw{ElementName}(surface.Canvas);\n" +
+							"\tsurface.Canvas.Flush();\n" +
+							"}\n";
+						break;
+					case CodeOutputOS.CrossPlatform:
+						// Setup class
+						sourceCode += $"{usingStatements}\n" +
+							$"public class {ElementName} : SKCanvasView\n" + "{\n";
+
+						// Generate override methods
+						overrideMethods += "protected override void OnPaintSurface (SKPaintSurfaceEventArgs e) {\n" +
+							"\t// Call the base method\n" +
+							"\tbase.OnPaintSurface (e);\n\n" +
+							"\t// Get surface\n" +
+							"\tvar surface = e.Surface;\n\n" +
+							"\t// Draw the sketch into the canvas\n" +
+							$"\tDraw{ElementName}(surface.Canvas);\n" +
+							"\tsurface.Canvas.Flush();\n" +
+							"}\n";
+						break;
+				}
+			}
+			else
+			{
+				// No, make a generic class
+				sourceCode += $"{usingStatements}\n" +
+					$"public class {ElementName}\n" + "{\n";
+			}
 
 			// Any private variables?
 			if (privateVariables != "")
@@ -1259,7 +1451,41 @@ namespace KimonoCore
 
 			// Add constructors
 			sourceCode += "\t#region Constructors\n" +
-				$"\tpublic {ElementName}() " + "{\n\n";
+				$"\tpublic {ElementName}() " + "{\n" +
+				"\t\tInitialize();\n" +
+				"\t}\n\n";
+
+			// Using a SkiaSharp.Views?
+			if (GenerateCodeToOuputToSkiaSharpViews)
+			{
+				// Take action based on OS
+				switch (outputOS)
+				{
+					case CodeOutputOS.Android:
+						// Add Android specific constructors.
+						sourceCode += $"\tpublic {ElementName}(Context context) : base(context) " + "{\n" +
+							"\t\tInitialize();\n" +
+							"\t}\n\n" +
+							$"\tpublic {ElementName}(Context context, IAttributeSet attrs) : base(context, attrs) " + "{\n" +
+							"\t\tInitialize();\n" +
+							"\t}\n\n" +
+							$"\tpublic {ElementName}(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr) " + "{\n" +
+							"\t\tInitialize();\n" +
+							"\t}\n\n";
+						break;
+					case CodeOutputOS.iOS:
+					case CodeOutputOS.tvOS:
+					case CodeOutputOS.macOS:
+						// Add required storyboard/.xib constructor for Apple OSes.
+						sourceCode += $"\tpublic {ElementName}(IntPtr p) : base(p) " + "{\n" +
+							"\t\tInitialize();\n" +
+							"\t}\n\n";
+						break;
+				}
+			}
+
+			// Add initializer
+			sourceCode += "\tinternal void Initialize() {\n";
 
 			// Any initialization code?
 			if (initializers != "")
@@ -1290,6 +1516,15 @@ namespace KimonoCore
 					"\n\t#endregion\n\n";
 			}
 
+			// Any override methods?
+			if (overrideMethods != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Override Methods\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(overrideMethods) +
+					"\n\t#endregion\n\n";
+			}
+
 			// Close class
 			sourceCode += "}\n";
 
@@ -1297,6 +1532,159 @@ namespace KimonoCore
 			return sourceCode;
 		}
 
+		/// <summary>
+		/// Converts this sketch to C# code using the KimonoCore library.
+		/// </summary>
+		/// <returns>The sketch as source code.</returns>
+		/// <param name="outputOS">The `CodeOutputOS` to create code for.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` to use.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharpKimono(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var usingStatements = "";
+			var sourceCode = "";
+			var initializers = "";
+			var privateVariables = "";
+			var privateMethodsCode = "";
+			var publicMethodsCode = "";
+			var computedProperties = "";
+			var overrideMethods = "";
+
+			// Assemble using statements
+			usingStatements = "using System;\n" +
+				"using SkiaSharp;\n";
+
+			// Take action based on the outputOS
+			switch (outputOS)
+			{
+				case CodeOutputOS.Android:
+					usingStatements += "using KimonoCore.Android;\n";
+					break;
+				case CodeOutputOS.CrossPlatform:
+					usingStatements += "using KimonoCore.Forms;\n";
+					break;
+				case CodeOutputOS.iOS:
+					usingStatements += "using KimonoCore.iOS;\n";
+					break;
+				case CodeOutputOS.macOS:
+					usingStatements += "using KimonoCore.Mac;\n";
+					break;
+				case CodeOutputOS.tvOS:
+					usingStatements += "using KimonoCore.tvOS;\n";
+					break;
+				case CodeOutputOS.Windows:
+				case CodeOutputOS.WindowsWPF:
+					usingStatements += "using KimonoCore.Windows;\n";
+					break;
+				case CodeOutputOS.WindowsUWP:
+					usingStatements += "using KimonoCore.Windows.UWP;\n";
+					break;
+			}
+
+			// Start initializers
+			initializers += "// Initialize Sketch\n" +
+				$"Name = \"{Name}\";\n" +
+				$"Width = {Width}f;\n" +
+				$"Height = {Height}f;\n" +
+				$"CanvasColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, CanvasColor)};\n\n";
+
+			// Add shapes
+			foreach (KimonoShape shape in Shapes)
+			{
+				var shapeCode = shape.ToCSharp(CodeOutputLibrary.KimonoCore);
+				initializers += shapeCode.Replace($"{shape.ElementName}.Draw(canvas);\n",$"Shapes.Add({shape.ElementName});\n\n");
+			}
+
+			// Assemble precode items in reverse order to ensure dependencies are registered first
+			var baseInitializers = KimonoCodeGenerator.InitializerForSupportStyles(outputLanguage, outputLibrary);
+			baseInitializers = KimonoCodeGenerator.InitializerForSupportGradients(outputLanguage, outputLibrary) + baseInitializers;
+
+			// Assemble full initializer code
+			initializers = baseInitializers + initializers;
+
+			// Assemble private variables
+			privateVariables += KimonoCodeGenerator.PrivateVariablesForSupportingGradients(outputLanguage, outputLibrary);
+
+			// Assemble computed properties
+			computedProperties += KimonoCodeGenerator.PropertyForSupportingColors(outputLanguage, outputLibrary);
+			computedProperties += KimonoCodeGenerator.PropertyForSupportingGradients(outputLanguage, outputLibrary);
+			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
+
+			// Start class
+			sourceCode += $"{usingStatements}\n" +
+				$"public class {ElementName} : KimonoSketch\n" + "{\n";
+
+			// Any private variables?
+			if (privateVariables != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Private Variables\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(privateVariables) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Any computed properties?
+			if (computedProperties != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Computed Properties\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(computedProperties) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Add constructors
+			sourceCode += "\t#region Constructors\n" +
+				$"\tpublic {ElementName}() " + "{\n" +
+				"\t\tInitialize();\n" +
+				"\t}\n\n";
+
+			// Add initializer
+			sourceCode += "\tinternal void Initialize() {\n";
+
+			// Any initialization code?
+			if (initializers != "")
+			{
+				// Yes, include code
+				sourceCode += KimonoCodeGenerator.IncreaseIndentLevel(KimonoCodeGenerator.IncreaseIndentLevel(initializers));
+			}
+
+			// Complete costructor
+			sourceCode += "\n\t}\n" +
+				"\t#endregion\n\n";
+
+			// Any private methods?
+			if (privateMethodsCode != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Private Methods\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(privateMethodsCode) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Any private methods?
+			if (publicMethodsCode != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Public Methods\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(publicMethodsCode) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Any override methods?
+			if (overrideMethods != "")
+			{
+				// Yes, emit private methods
+				sourceCode += "\t#region Override Methods\n" +
+					KimonoCodeGenerator.IncreaseIndentLevel(overrideMethods) +
+					"\n\t#endregion\n\n";
+			}
+
+			// Close class
+			sourceCode += "}\n";
+
+			// Return code
+			return sourceCode;
+		}
 
 		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
@@ -1316,7 +1704,16 @@ namespace KimonoCore
 			switch (outputLanguage)
 			{
 				case CodeOutputLanguage.CSharp:
-					sourceCode += ToCSharp(outputOS, outputLanguage, outputLibrary);
+					// Take action based on the output library
+					switch (outputLibrary)
+					{
+						case CodeOutputLibrary.SkiaSharp:
+							sourceCode += ToCSharp(outputOS, outputLanguage, outputLibrary);
+							break;
+						case CodeOutputLibrary.KimonoCore:
+							sourceCode += ToCSharpKimono(outputOS, outputLanguage, outputLibrary);
+							break;
+					}
 					break;
 				case CodeOutputLanguage.ObiScript:
 					// TODO: Add ObiScript output

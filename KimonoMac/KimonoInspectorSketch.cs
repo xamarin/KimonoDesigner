@@ -109,7 +109,10 @@ namespace KimonoMac
 											   SelectedSketch.CanvasColor.Alpha / 255f);
 			OpacitySlider.IntValue = SelectedSketch.CanvasColor.Alpha;
 			OpacityValue.StringValue = $"{(int)((OpacitySlider.IntValue / 255f) * 100f)}%";
-
+			ToCanvasCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputToCanvas ? 1 : 0;
+			ToDataCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputSkiaData ? 1 : 0;
+			ToBitmapCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputBitmapImage ? 1 : 0;
+			UseSkiaSharpViewsCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputToSkiaSharpViews ? 1 : 0;
 		}
 
 		/// <summary>
@@ -148,6 +151,70 @@ namespace KimonoMac
 		}
 
 		/// <summary>
+		/// Handles the to canvas checkboc changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ToCanvasChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedSketch.GenerateCodeToOuputToCanvas = (ToCanvasCheckbox.IntValue == 1);
+
+			// Update UI
+			RaiseSketchModified();
+		}
+
+		/// <summary>
+		/// Handles the to data checkbox changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ToDataChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedSketch.GenerateCodeToOuputSkiaData = (ToDataCheckbox.IntValue == 1);
+
+			// Update UI
+			RaiseSketchModified();
+		}
+
+		/// <summary>
+		/// Handles the to bitmap checkbox changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ToBitmapChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedSketch.GenerateCodeToOuputBitmapImage = (ToBitmapCheckbox.IntValue == 1);
+
+			// Update UI
+			RaiseSketchModified();
+		}
+
+		/// <summary>
+		/// Handles the use SkiaSharp views checkbox changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void UseSkiaSharpViewsChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedSketch.GenerateCodeToOuputToSkiaSharpViews = (UseSkiaSharpViewsCheckbox.IntValue == 1);
+
+			// Update UI
+			RaiseSketchModified();
+		}
+
+		/// <summary>
 		/// Handles the opacity changing.
 		/// </summary>
 		/// <param name="sender">Sender.</param>
@@ -166,6 +233,9 @@ namespace KimonoMac
 														 (byte)(blue * 255),
 														 (byte)(OpacitySlider.IntValue));
 			OpacityValue.StringValue = $"{(int)((OpacitySlider.IntValue / 255f) * 100f)}%";
+
+			// Update UI
+			RaiseSketchModified();
 		}
 
 		/// <summary>
@@ -186,6 +256,9 @@ namespace KimonoMac
 														 (byte)(green * 255),
 														 (byte)(blue * 255),
 														 (byte)(OpacitySlider.IntValue));
+
+			// Update UI
+			RaiseSketchModified();
 		}
 
 		/// <summary>
