@@ -44,11 +44,17 @@ namespace TestConsumerMac
 				canvas.Clear(KimonoColor.White);
 
 				// Draw all shapes into the canvas
-				TestSketchClass(canvas);
+				TestPortfolioClass(canvas);
 
 				// Return data from sketch
 				return surface.Snapshot().Encode();
 			}
+		}
+
+		public void TestPortfolioClass(SKCanvas canvas)
+		{
+			var portfolio = new Portfolio();
+			portfolio.DrawCircle(canvas);
 		}
 
 		public void TestSketchClass(SKCanvas canvas)

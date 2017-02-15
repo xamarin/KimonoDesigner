@@ -76,6 +76,9 @@ namespace KimonoMac
 		KimonoMac.KimonoInspectorPolygon PolygonInspector { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorPortfolio PortfolioInspector { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorProperty PropertyInspector { get; set; }
 
 		[Outlet]
@@ -194,34 +197,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (TextEditorMode != null) {
-				TextEditorMode.Dispose ();
-				TextEditorMode = null;
-			}
-
-			if (TextEditorTitle != null) {
-				TextEditorTitle.Dispose ();
-				TextEditorTitle = null;
-			}
-
-			if (OSSelector != null) {
-				OSSelector.Dispose ();
-				OSSelector = null;
-			}
-
-			if (LanguageSelector != null) {
-				LanguageSelector.Dispose ();
-				LanguageSelector = null;
-			}
-
-			if (LibrarySelector != null) {
-				LibrarySelector.Dispose ();
-				LibrarySelector = null;
-			}
-
-			if (TextEditor != null) {
-				TextEditor.Dispose ();
-				TextEditor = null;
+			if (PortfolioInspector != null) {
+				PortfolioInspector.Dispose ();
+				PortfolioInspector = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -309,6 +287,21 @@ namespace KimonoMac
 				InspectorView = null;
 			}
 
+			if (LanguageSelector != null) {
+				LanguageSelector.Dispose ();
+				LanguageSelector = null;
+			}
+
+			if (LibrarySelector != null) {
+				LibrarySelector.Dispose ();
+				LibrarySelector = null;
+			}
+
+			if (OSSelector != null) {
+				OSSelector.Dispose ();
+				OSSelector = null;
+			}
+
 			if (PolygonInspector != null) {
 				PolygonInspector.Dispose ();
 				PolygonInspector = null;
@@ -347,6 +340,21 @@ namespace KimonoMac
 			if (StyleInspector != null) {
 				StyleInspector.Dispose ();
 				StyleInspector = null;
+			}
+
+			if (TextEditor != null) {
+				TextEditor.Dispose ();
+				TextEditor = null;
+			}
+
+			if (TextEditorMode != null) {
+				TextEditorMode.Dispose ();
+				TextEditorMode = null;
+			}
+
+			if (TextEditorTitle != null) {
+				TextEditorTitle.Dispose ();
+				TextEditorTitle = null;
 			}
 
 			if (TextInspector != null) {

@@ -401,6 +401,10 @@
     <Compile Include="Classes\Markdown.cs" />
     <Compile Include="Classes\AppPreferences.cs" />
     <Compile Include="LanguageFormats\ObiScriptDescriptor.cs" />
+    <Compile Include="KimonoInspectorPortfolio.cs" />
+    <Compile Include="KimonoInspectorPortfolio.designer.cs">
+      <DependentUpon>KimonoInspectorPortfolio.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

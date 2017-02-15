@@ -735,8 +735,8 @@ namespace KimonoMac
 			// Repopulate
 			ProjectList.AddItem("Portfolio", "IconPortfolio", () =>
 				 {
-					 // TODO: Display editor for the given portfolio
-					 
+					 // Update the UI
+					 ShowPortfolioInspectors(DesignSurface.Portfolio);
 				 });
 
 			// Empty list?
@@ -808,6 +808,7 @@ namespace KimonoMac
 			GroupInspector.Initialize();
 			RoundRectInspector.Initialize();
 			PropertyInspector.Initialize();
+			PortfolioInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -826,6 +827,7 @@ namespace KimonoMac
 			GroupInspector.DesignSurface = DesignSurface;
 			RoundRectInspector.DesignSurface = DesignSurface;
 			PropertyInspector.DesignSurface = DesignSurface;
+			PortfolioInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -1139,6 +1141,13 @@ namespace KimonoMac
 				// Remove current sketch
 				DesignSurface.Portfolio.DeleteSelectedSketch();
 			};
+
+			// -- Portfolio Inspector -----------------------------------------
+			PortfolioInspector.PortfolioModified += () =>
+			{
+				// Update the code generation
+				UpdateTextEditor();
+			};
 		}
 
 		/// <summary>
@@ -1163,6 +1172,7 @@ namespace KimonoMac
 			GroupInspector.RemoveFromSuperview();
 			RoundRectInspector.RemoveFromSuperview();
 			PropertyInspector.RemoveFromSuperview();
+			PortfolioInspector.RemoveFromSuperview();
 		}
 
 		/// <summary>
@@ -1557,6 +1567,34 @@ namespace KimonoMac
 
 			// Show Obi Script
 			ShowPropertyObiScript(property);
+		}
+
+		/// <summary>
+		/// Shows the portfolio inspectors.
+		/// </summary>
+		/// <param name="portfolio">The `KimonoPortfolio` to show the inspectors for.</param>
+		private void ShowPortfolioInspectors(KimonoPortfolio portfolio)
+		{
+			// Close any open inspectors
+			CloseAllInspectors();
+
+			// Get initial offset
+			var offset = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
+
+			// Add required inspector panels
+			PortfolioInspector.SelectedPortfolio = portfolio;
+			offset = PortfolioInspector.MoveTo(offset);
+			InspectorView.AddSubview(PortfolioInspector);
+
+			// Adjust Side content size
+			var height = View.Frame.Height - offset;
+			if (height < View.Frame.Height) height = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
+			ScrollInspectorsToTop();
+
+			// Update code preview
+			ShowCodePreview(portfolio);
 		}
 
 		/// <summary>

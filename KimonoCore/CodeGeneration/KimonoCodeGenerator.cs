@@ -411,6 +411,25 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Increases the indent level of the given section of source code by the given
+		/// number of levels
+		/// </summary>
+		/// <returns>The indent level.</returns>
+		/// <param name="sourceCode">Source code.</param>
+		/// <param name="levels">Levels.</param>
+		public static string IncreaseIndentLevel(string sourceCode, int levels)
+		{
+			// Add the required number of levels
+			for (int n = 0; n < levels; ++n)
+			{
+				sourceCode = IncreaseIndentLevel(sourceCode);
+			}
+			
+			// Return adjusted source
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Increases the indent level of the given section of source code.
 		/// </summary>
 		/// <returns>The source code indented by one tab.</returns>
