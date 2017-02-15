@@ -628,7 +628,7 @@ CA
                                 </connections>
                             </button>
                             <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="QDD-Hk-b5q">
-                                <rect key="frame" x="0.0" y="101" width="300" height="4"/>
+                                <rect key="frame" x="0.0" y="101" width="300" height="5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SxV-5G-PtT">
@@ -1350,20 +1350,20 @@ CA
                                 </holdingPriorities>
                             </splitView>
                             <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="rWI-tv-DIL">
-                                <rect key="frame" x="714" y="0.0" width="252" height="466"/>
+                                <rect key="frame" x="714" y="0.0" width="252" height="431"/>
                                 <clipView key="contentView" id="m4e-8H-MJh">
-                                    <rect key="frame" x="1" y="1" width="250" height="464"/>
+                                    <rect key="frame" x="1" y="1" width="250" height="429"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IdR-Ga-LdV">
-                                            <rect key="frame" x="0.0" y="0.0" width="235" height="449"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="235" height="414"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" red="0.92148774862289429" green="0.92162030935287476" blue="0.92145878076553345" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="252" id="bc6-7v-vBO"/>
+                                    <constraint firstAttribute="width" constant="252" id="Iw3-av-1dE"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zNa-UR-Np3">
                                     <rect key="frame" x="-100" y="-100" width="250" height="16"/>
@@ -1374,15 +1374,76 @@ CA
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <box boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="dvb-SY-kyd">
+                                <rect key="frame" x="714" y="430" width="252" height="36"/>
+                                <view key="contentView" id="crM-Ed-a75">
+                                    <rect key="frame" x="1" y="1" width="250" height="34"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button toolTip="Border Style Inspector" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VI0-PJ-xAp">
+                                            <rect key="frame" x="130" y="5" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconBorderOff" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="jOu-qO-Gmx">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="SwitchToBorderInspectors:" target="XfG-lQ-9wD" id="iUx-UK-X97"/>
+                                            </connections>
+                                        </button>
+                                        <button toolTip="Property Connection Inspector" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8K0-rJ-SRv">
+                                            <rect key="frame" x="164" y="5" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconConnectionOff" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="C1e-w9-OFT">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="SwitchToConnectionInspectors:" target="XfG-lQ-9wD" id="vAp-Kn-urE"/>
+                                            </connections>
+                                        </button>
+                                        <button toolTip="Fill Style Inspector" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dHz-Hh-e3k">
+                                            <rect key="frame" x="96" y="5" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconFillOff" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="V15-6W-xWN">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="SwitchToFillInspectors:" target="XfG-lQ-9wD" id="C7z-xd-rnZ"/>
+                                            </connections>
+                                        </button>
+                                        <button toolTip="Details Inspector" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ltl-7s-axl">
+                                            <rect key="frame" x="62" y="5" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconDetailsOn" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Pqd-LR-xTs">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="SwitchToDetailsInspectors:" target="XfG-lQ-9wD" id="MxQ-cW-Ylb"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="252" id="Hw1-38-McJ"/>
+                                    <constraint firstAttribute="height" constant="36" id="rnh-dA-VTj"/>
+                                </constraints>
+                                <color key="borderColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="fillColor" red="0.94893664119999999" green="0.94907277820000002" blue="0.94890671969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </box>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="rWI-tv-DIL" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="3T1-vt-w5Y"/>
-                            <constraint firstAttribute="trailing" secondItem="rWI-tv-DIL" secondAttribute="trailing" id="GFf-SV-Y73"/>
+                            <constraint firstItem="rWI-tv-DIL" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="35" id="GVN-fE-ZKX"/>
                             <constraint firstAttribute="bottom" secondItem="t70-ng-1y8" secondAttribute="bottom" id="HYG-le-y9c"/>
+                            <constraint firstAttribute="trailing" secondItem="dvb-SY-kyd" secondAttribute="trailing" id="Khj-Cl-6yN"/>
+                            <constraint firstAttribute="trailing" secondItem="rWI-tv-DIL" secondAttribute="trailing" id="MbA-ZA-HdH"/>
+                            <constraint firstAttribute="bottom" secondItem="rWI-tv-DIL" secondAttribute="bottom" id="NJW-xs-aqm"/>
                             <constraint firstAttribute="trailing" secondItem="bNW-54-dbk" secondAttribute="trailing" constant="250" id="OKj-KB-eOt"/>
                             <constraint firstItem="bNW-54-dbk" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="Ssn-TO-Dug"/>
-                            <constraint firstAttribute="bottom" secondItem="rWI-tv-DIL" secondAttribute="bottom" id="Tp2-fA-RFx"/>
                             <constraint firstItem="t70-ng-1y8" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Trh-X0-lFr"/>
+                            <constraint firstItem="dvb-SY-kyd" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="We8-hd-S7M"/>
                             <constraint firstItem="bNW-54-dbk" firstAttribute="leading" secondItem="t70-ng-1y8" secondAttribute="trailing" id="d0K-k5-ght"/>
                             <constraint firstAttribute="bottom" secondItem="bNW-54-dbk" secondAttribute="bottom" id="tvf-FM-Dmr"/>
                             <constraint firstItem="t70-ng-1y8" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="vTv-xe-VN6"/>
@@ -1392,13 +1453,17 @@ CA
                         <outlet property="ArrowInspector" destination="opp-Fu-hFc" id="065-SB-I60"/>
                         <outlet property="AttachedStyleInspector" destination="IOD-wd-APB" id="odn-Sb-5UC"/>
                         <outlet property="BackButton" destination="fOV-0Q-sVF" id="E0c-F8-YaM"/>
+                        <outlet property="BorderInspectorsButton" destination="VI0-PJ-xAp" id="XFe-Nu-rSf"/>
                         <outlet property="ColorPaletteInspector" destination="G5J-If-2Uz" id="27M-1h-TOT"/>
+                        <outlet property="ConnectionInspectorsButton" destination="8K0-rJ-SRv" id="3R6-Ly-GDi"/>
                         <outlet property="DesignSurface" destination="V5v-Ah-NRM" id="uLP-bl-l7H"/>
+                        <outlet property="DetailsInspectorButton" destination="ltl-7s-axl" id="Ixd-4S-c7Z"/>
                         <outlet property="DocumentScrollView" destination="2lW-Ri-VOL" id="7sI-kL-nFU"/>
                         <outlet property="DocumentView" destination="ZHD-Pd-8cv" id="LKX-PX-qu1"/>
                         <outlet property="DocumentViewHeight" destination="MXE-4T-nSN" id="wuH-JV-cyL"/>
                         <outlet property="DocumentViewWidth" destination="c0x-am-Jl1" id="7OY-Th-RXG"/>
                         <outlet property="FillInspector" destination="TeS-MC-kJ4" id="pla-cy-yb4"/>
+                        <outlet property="FillInspectorsButton" destination="dHz-Hh-e3k" id="HdX-Mi-SG2"/>
                         <outlet property="FontInspector" destination="CRF-Au-Jkl" id="nRG-IT-LNp"/>
                         <outlet property="FrameInspector" destination="MbT-Uk-x0l" id="oIr-Am-QHi"/>
                         <outlet property="GeneralInfoInspector" destination="rgT-Ax-TTx" id="iK0-0h-MTx"/>
@@ -1676,7 +1741,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="ycs-Nm-D64">
-                            <rect key="frame" x="0.0" y="3" width="251" height="28"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XYm-TA-zWh">
@@ -1851,7 +1916,7 @@ CA
                             <autoresizingMask key="autoresizingMask"/>
                             <clipView key="contentView" ambiguous="YES" id="kcr-mL-NIJ">
                                 <rect key="frame" x="1" y="1" width="173" height="87"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <textView ambiguous="YES" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="NS0-Ls-1U7" customClass="KimonoTextView">
                                         <rect key="frame" x="0.0" y="0.0" width="173" height="87"/>
@@ -1869,7 +1934,7 @@ CA
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Bfm-9j-QV0">
-                                <rect key="frame" x="158" y="1" width="16" height="87"/>
+                                <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -1948,7 +2013,7 @@ CA
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="nVa-DU-I2N">
-                            <rect key="frame" x="0.0" y="64" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="64" width="251" height="194"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l43-gZ-9Pg">
@@ -2198,7 +2263,7 @@ CA
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="HEX-PK-aYm">
-                            <rect key="frame" x="0.0" y="3" width="251" height="4"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                     </subviews>
@@ -2399,7 +2464,7 @@ CA
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Rdy-Ge-c3W">
-                            <rect key="frame" x="0.0" y="238" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="238" width="251" height="4"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIq-D6-dTC">
@@ -3003,7 +3068,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="gUS-vN-Xrm">
-                            <rect key="frame" x="0.0" y="3" width="251" height="4"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                     </subviews>
@@ -4216,7 +4281,7 @@ CA
                             </textFieldCell>
                         </textField>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="zFt-lO-1lM">
-                            <rect key="frame" x="0.0" y="535" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="535" width="251" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="s0z-Qh-72l">
@@ -4748,7 +4813,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="NKN-kD-koB">
-                            <rect key="frame" x="1" y="79" width="251" height="5"/>
+                            <rect key="frame" x="1" y="79" width="251" height="10"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HHQ-Zr-1qj">
@@ -5028,16 +5093,20 @@ CA
         <image name="IconBack" width="48" height="48"/>
         <image name="IconBackToTop" width="64" height="64"/>
         <image name="IconBezier" width="50" height="50"/>
+        <image name="IconBorderOff" width="50" height="50"/>
         <image name="IconBottomAlign" width="50" height="50"/>
         <image name="IconBringForward" width="50" height="50"/>
         <image name="IconBringToFront" width="50" height="50"/>
         <image name="IconCenter" width="50" height="50"/>
         <image name="IconCenterHorizontal" width="50" height="50"/>
         <image name="IconCenterVertical" width="50" height="50"/>
+        <image name="IconConnectionOff" width="50" height="50"/>
         <image name="IconCursorSelected" width="50" height="50"/>
         <image name="IconDashOff" width="15" height="15"/>
+        <image name="IconDetailsOn" width="50" height="50"/>
         <image name="IconDuplicate" width="48" height="48"/>
         <image name="IconEdit" width="50" height="50"/>
+        <image name="IconFillOff" width="50" height="50"/>
         <image name="IconGroup" width="48" height="48"/>
         <image name="IconLeftAlign" width="50" height="50"/>
         <image name="IconLine" width="50" height="50"/>

@@ -212,6 +212,22 @@
     <ImageAsset Include="Assets.xcassets\IconAddProperty.imageset\Add Tag Filled-50.png" />
     <ImageAsset Include="Assets.xcassets\IconDeleteProperty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IconDeleteProperty.imageset\Remove Tag Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconBorderOn.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBorderOn.imageset\Border Color Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconBorderOff.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconBorderOff.imageset\Border Color Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconFillOn.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconFillOn.imageset\Fill Color Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconFillOff.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconFillOff.imageset\Fill Color Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconConnectionOn.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconConnectionOn.imageset\Unicast Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconConnectionOff.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconConnectionOff.imageset\Unicast Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconDetailsOn.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDetailsOn.imageset\View Details Filled-50-2.png" />
+    <ImageAsset Include="Assets.xcassets\IconDetailsOff.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDetailsOff.imageset\View Details Filled-50.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -291,6 +307,14 @@
     <Folder Include="Assets.xcassets\IconDeleteProperty.imageset\" />
     <Folder Include="LanguageFormatter\" />
     <Folder Include="LanguageFormats\" />
+    <Folder Include="Assets.xcassets\IconBorderOn.imageset\" />
+    <Folder Include="Assets.xcassets\IconBorderOff.imageset\" />
+    <Folder Include="Assets.xcassets\IconFillOn.imageset\" />
+    <Folder Include="Assets.xcassets\IconFillOff.imageset\" />
+    <Folder Include="Assets.xcassets\IconConnectionOn.imageset\" />
+    <Folder Include="Assets.xcassets\IconConnectionOff.imageset\" />
+    <Folder Include="Assets.xcassets\IconDetailsOn.imageset\" />
+    <Folder Include="Assets.xcassets\IconDetailsOff.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -405,6 +429,7 @@
     <Compile Include="KimonoInspectorPortfolio.designer.cs">
       <DependentUpon>KimonoInspectorPortfolio.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\InspectorViewMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

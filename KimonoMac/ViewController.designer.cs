@@ -22,10 +22,19 @@ namespace KimonoMac
 		AppKit.NSButton BackButton { get; set; }
 
 		[Outlet]
+		AppKit.NSButton BorderInspectorsButton { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorPaleteColor ColorPaletteInspector { get; set; }
 
 		[Outlet]
+		AppKit.NSButton ConnectionInspectorsButton { get; set; }
+
+		[Outlet]
 		KimonoCore.Mac.KimonoDesignSurface DesignSurface { get; set; }
+
+		[Outlet]
+		AppKit.NSButton DetailsInspectorButton { get; set; }
 
 		[Outlet]
 		AppKit.NSScrollView DocumentScrollView { get; set; }
@@ -41,6 +50,9 @@ namespace KimonoMac
 
 		[Outlet]
 		KimonoMac.KimonoInspectorFill FillInspector { get; set; }
+
+		[Outlet]
+		AppKit.NSButton FillInspectorsButton { get; set; }
 
 		[Outlet]
 		KimonoMac.KimonoInspectorFont FontInspector { get; set; }
@@ -159,6 +171,18 @@ namespace KimonoMac
 		[Action ("OSSelectionChanged:")]
 		partial void OSSelectionChanged (Foundation.NSObject sender);
 
+		[Action ("SwitchToBorderInspectors:")]
+		partial void SwitchToBorderInspectors (Foundation.NSObject sender);
+
+		[Action ("SwitchToConnectionInspectors:")]
+		partial void SwitchToConnectionInspectors (Foundation.NSObject sender);
+
+		[Action ("SwitchToDetailsInspectors:")]
+		partial void SwitchToDetailsInspectors (Foundation.NSObject sender);
+
+		[Action ("SwitchToFillInspectors:")]
+		partial void SwitchToFillInspectors (Foundation.NSObject sender);
+
 		[Action ("ToolArrowSelected:")]
 		partial void ToolArrowSelected (Foundation.NSObject sender);
 
@@ -197,9 +221,24 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (PortfolioInspector != null) {
-				PortfolioInspector.Dispose ();
-				PortfolioInspector = null;
+			if (DetailsInspectorButton != null) {
+				DetailsInspectorButton.Dispose ();
+				DetailsInspectorButton = null;
+			}
+
+			if (FillInspectorsButton != null) {
+				FillInspectorsButton.Dispose ();
+				FillInspectorsButton = null;
+			}
+
+			if (BorderInspectorsButton != null) {
+				BorderInspectorsButton.Dispose ();
+				BorderInspectorsButton = null;
+			}
+
+			if (ConnectionInspectorsButton != null) {
+				ConnectionInspectorsButton.Dispose ();
+				ConnectionInspectorsButton = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -305,6 +344,11 @@ namespace KimonoMac
 			if (PolygonInspector != null) {
 				PolygonInspector.Dispose ();
 				PolygonInspector = null;
+			}
+
+			if (PortfolioInspector != null) {
+				PortfolioInspector.Dispose ();
+				PortfolioInspector = null;
 			}
 
 			if (PropertyInspector != null) {

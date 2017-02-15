@@ -30,9 +30,39 @@ namespace KimonoMac
 		/// The information on the currently highlighted keyword.
 		/// </summary>
 		private KeywordDescriptor _keywordInfo = null;
+
+		/// <summary>
+		/// Holds the current inspector view that is being displayed.
+		/// </summary>
+		private InspectorViewMode _currentInspectorMode = InspectorViewMode.DetailsView;
+
+		/// <summary>
+		/// The Kimono element that is currently being inspected.
+		/// </summary>
+		private object InspectingElement = null;
 		#endregion
 
 		#region Computed Properties
+		/// <summary>
+		/// Gets or sets the inspector view mode.
+		/// </summary>
+		/// <value>The `InspectorViewMode`.</value>
+		public InspectorViewMode CurrentInspectorMode
+		{
+			get { return _currentInspectorMode; } 
+			set
+			{
+				// Save new value
+				_currentInspectorMode = value;
+
+				// Set on/off states
+				DetailsInspectorButton.Image = (_currentInspectorMode == InspectorViewMode.DetailsView) ? NSImage.ImageNamed("IconDetailsOn") : NSImage.ImageNamed("IconDetailsOff");
+				FillInspectorsButton.Image = (_currentInspectorMode == InspectorViewMode.FillStyleView) ? NSImage.ImageNamed("IconFillOn") : NSImage.ImageNamed("IconFillOff");
+				BorderInspectorsButton.Image = (_currentInspectorMode == InspectorViewMode.BorderStyleView) ? NSImage.ImageNamed("IconBorderOn") : NSImage.ImageNamed("IconBorderOff");
+				ConnectionInspectorsButton.Image = (_currentInspectorMode == InspectorViewMode.ConnectionView) ? NSImage.ImageNamed("IconConnectionOn") : NSImage.ImageNamed("IconConnectionOff");
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the OS that code will be generated for.
 		/// </summary>
@@ -1309,116 +1339,158 @@ namespace KimonoMac
 		/// <param name="shape">The <c>KimonoShape</c> to show the inspectors for.</param>
 		private void ShowGeneralInspectors(KimonoShape shape)
 		{
-			var showFillFrame = true;
+			var showFillFrame = (shape.Style.StyleType == KimonoStyleType.Custom ||
+					   shape.Style.StyleType == KimonoStyleType.CustomText);
+			var showStyle = true;
 
 			// Close any open inspectors
 			CloseAllInspectors();
 
-			// Get initial offset
-			var offset = View.Frame.Height;
-			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
+			// Save the shape being inspected
+			InspectingElement = shape;
 
-			// Add required inspector panels
-			GeneralInfoInspector.SelectedShape = shape;
-			offset = GeneralInfoInspector.MoveTo(offset);
-			InspectorView.AddSubview(GeneralInfoInspector);
-
-			// Is this a round rectangle?
-			if (shape is KimonoShapeRoundRect)
-			{
-				// Show the round rectangle inspector
-				RoundRectInspector.SelectedRoundRect = shape as KimonoShapeRoundRect;
-				offset = RoundRectInspector.MoveTo(offset);
-				InspectorView.AddSubview(RoundRectInspector);
-			}
-
-			// Is this a star?
-			if (shape is KimonoShapeStar)
-			{
-				// Show star inspector
-				StarInspector.SelectedShape = shape as KimonoShapeStar;
-				offset = StarInspector.MoveTo(offset);
-				InspectorView.AddSubview(StarInspector);
-			}
-
-			// Is this a polygon?
-			if (shape is KimonoShapePolygon)
-			{
-				// Show the polygon inspector
-				PolygonInspector.SelectedShape = shape as KimonoShapePolygon;
-				offset = PolygonInspector.MoveTo(offset);
-				InspectorView.AddSubview(PolygonInspector);
-			}
-
-			// Is this an arrow?
-			if (shape is KimonoShapeArrow)
-			{
-				ArrowInspector.SelectedShape = shape as KimonoShapeArrow;
-				offset = ArrowInspector.MoveTo(offset);
-				InspectorView.AddSubview(ArrowInspector);
-			}
-
-			// Is this a text box?
-			if (shape is KimonoShapeText)
-			{
-				TextInspector.SelectedShape = shape as KimonoShapeText;
-				offset = TextInspector.MoveTo(offset);
-				InspectorView.AddSubview(TextInspector);
-			}
-
-			// Is this a group?
+			// Should show fill/frame?
 			if (shape is KimonoShapeGroup)
 			{
 				// Grab group
 				var group = shape as KimonoShapeGroup;
 
-				// Is this group a collection?
-				if (group.GroupType == KimonoShapeGroupType.Collection)
-				{
-					// Yes, show the group inspector
-					GroupInspector.SelectedGroup = group;
-					offset = GroupInspector.MoveTo(offset);
-					InspectorView.AddSubview(GroupInspector);
-				}
-
 				// Show style tools?
-				showFillFrame = (group.IsBooleanConstruct && group.State != KimonoShapeState.Editing);
+				showStyle = (group.IsBooleanConstruct && group.State != KimonoShapeState.Editing);
+				showFillFrame = (showFillFrame && showStyle);
 			}
 
-			// Display the style editors?
-			if (showFillFrame) {
-				// Display attached style
-				AttachedStyleInspector.SelectedStyle = shape.Style;
-				AttachedStyleInspector.SelectedShape = shape;
-				offset = AttachedStyleInspector.MoveTo(offset);
-				InspectorView.AddSubview(AttachedStyleInspector);
-
-				// Is a style attached?
-				if (shape.Style.StyleType == KimonoStyleType.Custom ||
-				   shape.Style.StyleType == KimonoStyleType.CustomText)
-				{
-					// No, add text properties
-					if (shape.Style.StyleType == KimonoStyleType.CustomText)
+			// Validate the current mode
+			switch (CurrentInspectorMode)
+			{
+				case InspectorViewMode.DetailsView:
+					break;
+				case InspectorViewMode.FillStyleView:
+					if (shape is KimonoShapeLine || !showFillFrame)
 					{
-						FontInspector.SelectedStyle = shape.Style;
-						FontInspector.SelectedShape = shape;
-						offset = FontInspector.MoveTo(offset);
-						InspectorView.AddSubview(FontInspector);
+						CurrentInspectorMode = InspectorViewMode.DetailsView;
+					}
+					break;
+				case InspectorViewMode.BorderStyleView:
+					if (!showFillFrame)
+					{
+						CurrentInspectorMode = InspectorViewMode.DetailsView;
+					}
+					break;
+				case InspectorViewMode.ConnectionView:
+					break;
+			}
+
+			// Update inspector UI
+			FillInspectorsButton.Enabled =(showFillFrame && !(shape is KimonoShapeLine));
+			BorderInspectorsButton.Enabled = showFillFrame;
+			ConnectionInspectorsButton.Enabled = true;
+
+			// Get initial offset
+			var offset = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
+
+			// Show inspectors based on the view mode
+			switch (CurrentInspectorMode)
+			{
+				case InspectorViewMode.DetailsView:
+					// Add required inspector panels
+					GeneralInfoInspector.SelectedShape = shape;
+					offset = GeneralInfoInspector.MoveTo(offset);
+					InspectorView.AddSubview(GeneralInfoInspector);
+
+					// Is this a round rectangle?
+					if (shape is KimonoShapeRoundRect)
+					{
+						// Show the round rectangle inspector
+						RoundRectInspector.SelectedRoundRect = shape as KimonoShapeRoundRect;
+						offset = RoundRectInspector.MoveTo(offset);
+						InspectorView.AddSubview(RoundRectInspector);
 					}
 
+					// Is this a star?
+					if (shape is KimonoShapeStar)
+					{
+						// Show star inspector
+						StarInspector.SelectedShape = shape as KimonoShapeStar;
+						offset = StarInspector.MoveTo(offset);
+						InspectorView.AddSubview(StarInspector);
+					}
+
+					// Is this a polygon?
+					if (shape is KimonoShapePolygon)
+					{
+						// Show the polygon inspector
+						PolygonInspector.SelectedShape = shape as KimonoShapePolygon;
+						offset = PolygonInspector.MoveTo(offset);
+						InspectorView.AddSubview(PolygonInspector);
+					}
+
+					// Is this an arrow?
+					if (shape is KimonoShapeArrow)
+					{
+						ArrowInspector.SelectedShape = shape as KimonoShapeArrow;
+						offset = ArrowInspector.MoveTo(offset);
+						InspectorView.AddSubview(ArrowInspector);
+					}
+
+					// Is this a text box?
+					if (shape is KimonoShapeText)
+					{
+						TextInspector.SelectedShape = shape as KimonoShapeText;
+						offset = TextInspector.MoveTo(offset);
+						InspectorView.AddSubview(TextInspector);
+					}
+
+					// Is this a group?
+					if (shape is KimonoShapeGroup)
+					{
+						// Grab group
+						var group = shape as KimonoShapeGroup;
+
+						// Is this group a collection?
+						if (group.GroupType == KimonoShapeGroupType.Collection)
+						{
+							// Yes, show the group inspector
+							GroupInspector.SelectedGroup = group;
+							offset = GroupInspector.MoveTo(offset);
+							InspectorView.AddSubview(GroupInspector);
+						}
+					}
+
+					// Display the style editors?
+					if (showStyle)
+					{
+						// Display attached style
+						AttachedStyleInspector.SelectedStyle = shape.Style;
+						AttachedStyleInspector.SelectedShape = shape;
+						offset = AttachedStyleInspector.MoveTo(offset);
+						InspectorView.AddSubview(AttachedStyleInspector);
+
+						// No, add text properties
+						if (shape.Style.StyleType == KimonoStyleType.CustomText)
+						{
+							FontInspector.SelectedStyle = shape.Style;
+							FontInspector.SelectedShape = shape;
+							offset = FontInspector.MoveTo(offset);
+							InspectorView.AddSubview(FontInspector);
+						}
+					}
+					break;
+				case InspectorViewMode.FillStyleView:
 					// Add Fill inspector
-					if (!(shape is KimonoShapeLine))
-					{
-						FillInspector.SelectedStyle = shape.Style;
-						offset = FillInspector.MoveTo(offset);
-						InspectorView.AddSubview(FillInspector);
-					}
-
+					FillInspector.SelectedStyle = shape.Style;
+					offset = FillInspector.MoveTo(offset);
+					InspectorView.AddSubview(FillInspector);
+					break;
+				case InspectorViewMode.BorderStyleView:
 					// Add Frame inspector
 					FrameInspector.SelectedStyle = shape.Style;
 					offset = FrameInspector.MoveTo(offset);
 					InspectorView.AddSubview(FrameInspector);
-				}
+					break;
+				case InspectorViewMode.ConnectionView:
+					break;
 			}
 
 			// Adjust Side content size
@@ -1444,34 +1516,52 @@ namespace KimonoMac
 			// Close any open inspectors
 			CloseAllInspectors();
 
+			// Save the style being inspected
+			InspectingElement = style;
+
+			// Update inspector UI
+			FillInspectorsButton.Enabled = true;
+			BorderInspectorsButton.Enabled = true;
+			ConnectionInspectorsButton.Enabled = true;
+
 			// Get initial offset
 			var offset = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
 
-			// Add required inspector panels
-			StyleInspector.SelectedStyle = style;
-			StyleInspector.SelectedShape = DesignSurface.SelectedShape;
-			offset = StyleInspector.MoveTo(offset);
-			InspectorView.AddSubview(StyleInspector);
-
-			// Add text properties
-			if (style.StyleType == KimonoStyleType.Text)
+			// Show inspectors based on the view mode
+			switch (CurrentInspectorMode)
 			{
-				FontInspector.SelectedStyle = style;
-				FontInspector.SelectedShape = DesignSurface.SelectedShape;
-				offset = FontInspector.MoveTo(offset);
-				InspectorView.AddSubview(FontInspector);
+				case InspectorViewMode.DetailsView:
+					// Add required inspector panels
+					StyleInspector.SelectedStyle = style;
+					StyleInspector.SelectedShape = DesignSurface.SelectedShape;
+					offset = StyleInspector.MoveTo(offset);
+					InspectorView.AddSubview(StyleInspector);
+
+					// Add text properties
+					if (style.StyleType == KimonoStyleType.Text)
+					{
+						FontInspector.SelectedStyle = style;
+						FontInspector.SelectedShape = DesignSurface.SelectedShape;
+						offset = FontInspector.MoveTo(offset);
+						InspectorView.AddSubview(FontInspector);
+					}
+					break;
+				case InspectorViewMode.FillStyleView:
+					// Add Fill inspector
+					FillInspector.SelectedStyle = style;
+					offset = FillInspector.MoveTo(offset);
+					InspectorView.AddSubview(FillInspector);
+					break;
+				case InspectorViewMode.BorderStyleView:
+					// Add Frame inspector
+					FrameInspector.SelectedStyle = style;
+					offset = FrameInspector.MoveTo(offset);
+					InspectorView.AddSubview(FrameInspector);
+					break;
+				case InspectorViewMode.ConnectionView:
+					break;
 			}
-
-			// Add Fill inspector
-			FillInspector.SelectedStyle = style;
-			offset = FillInspector.MoveTo(offset);
-			InspectorView.AddSubview(FillInspector);
-
-			// Add Frame inspector
-			FrameInspector.SelectedStyle = style;
-			offset = FrameInspector.MoveTo(offset);
-			InspectorView.AddSubview(FrameInspector);
 
 			// Adjust Side content size
 			var height = View.Frame.Height - offset;
@@ -1492,15 +1582,44 @@ namespace KimonoMac
 			// Close any open inspectors
 			CloseAllInspectors();
 
+			// Save the color being inspected
+			InspectingElement = color;
+
+			// Validate the current mode
+			switch (CurrentInspectorMode)
+			{
+				case InspectorViewMode.DetailsView:
+					break;
+				case InspectorViewMode.FillStyleView:
+					CurrentInspectorMode = InspectorViewMode.DetailsView;
+					break;
+				case InspectorViewMode.BorderStyleView:
+					CurrentInspectorMode = InspectorViewMode.DetailsView;
+					break;
+				case InspectorViewMode.ConnectionView:
+					break;
+			}
+
+			// Update inspector UI
+			FillInspectorsButton.Enabled = false;
+			BorderInspectorsButton.Enabled = false;
+			ConnectionInspectorsButton.Enabled = true;
+
 			// Get initial offset
 			var offset = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
 
-			// Add required inspector panels
-			ColorPaletteInspector.SelectedShape = DesignSurface.SelectedShape;
-			ColorPaletteInspector.SelectedColor = color;
-			offset = ColorPaletteInspector.MoveTo(offset);
-			InspectorView.AddSubview(ColorPaletteInspector);
+			// Take action based on the inspector mode
+			switch (CurrentInspectorMode)
+			{
+				case InspectorViewMode.DetailsView:
+					// Add required inspector panels
+					ColorPaletteInspector.SelectedShape = DesignSurface.SelectedShape;
+					ColorPaletteInspector.SelectedColor = color;
+					offset = ColorPaletteInspector.MoveTo(offset);
+					InspectorView.AddSubview(ColorPaletteInspector);
+					break;
+			}
 
 			// Adjust Side content size
 			var height = View.Frame.Height - offset;
@@ -1520,6 +1639,15 @@ namespace KimonoMac
 		{
 			// Close any open inspectors
 			CloseAllInspectors();
+
+			// Save the gradient being inspected
+			InspectingElement = gradient;
+
+			// Update inspector UI
+			CurrentInspectorMode = InspectorViewMode.DetailsView;
+			FillInspectorsButton.Enabled = false;
+			BorderInspectorsButton.Enabled = false;
+			ConnectionInspectorsButton.Enabled = false;
 
 			// Get initial offset
 			var offset = View.Frame.Height;
@@ -1550,6 +1678,15 @@ namespace KimonoMac
 			// Close any open inspectors
 			CloseAllInspectors();
 
+			// Save the property being inspected
+			InspectingElement = property;
+
+			// Update inspector UI
+			CurrentInspectorMode = InspectorViewMode.DetailsView;
+			FillInspectorsButton.Enabled = false;
+			BorderInspectorsButton.Enabled = false;
+			ConnectionInspectorsButton.Enabled = false;
+
 			// Get initial offset
 			var offset = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
@@ -1577,6 +1714,15 @@ namespace KimonoMac
 		{
 			// Close any open inspectors
 			CloseAllInspectors();
+
+			// Save the portfolio being inspected
+			InspectingElement = portfolio;
+
+			// Update inspector UI
+			CurrentInspectorMode = InspectorViewMode.DetailsView;
+			FillInspectorsButton.Enabled = false;
+			BorderInspectorsButton.Enabled = false;
+			ConnectionInspectorsButton.Enabled = false;
 
 			// Get initial offset
 			var offset = View.Frame.Height;
@@ -1606,6 +1752,15 @@ namespace KimonoMac
 			// Close any open inspectors
 			CloseAllInspectors();
 
+			// Save the sketch being inspected
+			InspectingElement = sketch;
+
+			// Update inspector UI
+			CurrentInspectorMode = InspectorViewMode.DetailsView;
+			FillInspectorsButton.Enabled = false;
+			BorderInspectorsButton.Enabled = false;
+			ConnectionInspectorsButton.Enabled = false;
+
 			// Get initial offset
 			var offset = View.Frame.Height;
 			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
@@ -1623,6 +1778,45 @@ namespace KimonoMac
 
 			// Update code preview
 			ShowCodePreview(sketch);
+		}
+
+		/// <summary>
+		/// Updates the inspectors view based on the Kimono element currently
+		/// being inspected.
+		/// </summary>
+		private void UpdateInspectorsView()
+		{
+			// Take action based on the element being
+			// inspected
+			if (InspectingElement is KimonoPortfolio)
+			{
+				ShowPortfolioInspectors(InspectingElement as KimonoPortfolio);
+			}
+			else if (InspectingElement is KimonoSketch)
+			{
+				ShowSketchInspectors(InspectingElement as KimonoSketch);
+			}
+			else if (InspectingElement is KimonoProperty)
+			{
+				ShowPropertyInspectors(InspectingElement as KimonoProperty);
+			}
+			else if (InspectingElement is KimonoGradient)
+			{
+				ShowGradientInspectors(InspectingElement as KimonoGradient);
+			}
+			else if (InspectingElement is KimonoColor)
+			{
+				ShowPaletteColorInspectors(InspectingElement as KimonoColor);
+			}
+			else if (InspectingElement is KimonoStyle)
+			{
+				ShowStyleInspectors(InspectingElement as KimonoStyle);
+			}
+			else
+			{
+				// Default to shapes
+				ShowGeneralInspectors(InspectingElement as KimonoShape);
+			}
 		}
 
 		/// <summary>
@@ -1978,6 +2172,46 @@ namespace KimonoMac
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Switch to details inspectors.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void SwitchToDetailsInspectors(Foundation.NSObject sender)
+		{
+			CurrentInspectorMode = InspectorViewMode.DetailsView;
+			UpdateInspectorsView();
+		}
+
+		/// <summary>
+		/// Switch to fill inspectors.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void SwitchToFillInspectors(Foundation.NSObject sender)
+		{
+			CurrentInspectorMode = InspectorViewMode.FillStyleView;
+			UpdateInspectorsView();
+		}
+
+		/// <summary>
+		/// Switch to border inspectors.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void SwitchToBorderInspectors(Foundation.NSObject sender)
+		{
+			CurrentInspectorMode = InspectorViewMode.BorderStyleView;
+			UpdateInspectorsView();
+		}
+
+		/// <summary>
+		/// Switch to connection inspectors.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void SwitchToConnectionInspectors(Foundation.NSObject sender)
+		{
+			CurrentInspectorMode = InspectorViewMode.ConnectionView;
+			UpdateInspectorsView();
 		}
 
 		/// <summary>
