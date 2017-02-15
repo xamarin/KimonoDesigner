@@ -1,9 +1,81 @@
 Kimono Designer
 ============
 
-Kimono Designer allows a developer to graphically edit Skia based graphic objects that can can be converted to code and included in any cross-platform language and OS that SkiaSharp supports.
+Kimono Designer allows a developer to graphically edit SkiaSharp based graphic objects that can can be converted to code and included in any cross-platform language and OS that SkiaSharp supports.
 
 ![](Images/Intro01.png)
+
+## Key Features
+
+Kimono Designer provides several key features that make it the perfect tool for designing SkiaSharp graphics that can be used in all of your cross-platform applications.
+
+### Groups with Boolean Operations and Masks
+
+Multiple shapes can be grouped together and features such as boolean operations and masks can be applied to the items in the group. When applying a mask, the top-most item in the group will be used as the masking path:
+
+![](Images/Intro02.png)
+
+### Named Palette Colors
+
+A series of named colors can be defined and used in gradients, named styles, by shapes directly or as the basis of other named colors. If a named color is adjusted, everything using the named color will be updated to reflect the new value:
+
+![](Images/Intro03.png)
+
+### Visual Gradient Editor
+
+Build named gradients that can be used in named styles or in shapes directly using the built-in gradient editor. Any changes to a gradient will instantly be reflected in the sketch:
+
+![](Images/Intro04.png)
+
+### Named Styles
+
+A series of named styles can be created and applied to several shapes in any sketch in a portfolio to provide a uniform look. Any change in a named style will instantly be reflected in the sketch:
+
+![](Images/Intro05.png)
+
+### Multiple Sketches within a Portfolio
+
+Multiple sketches can be created inside the same portfolio and all of the named colors, gradients and named styles can be applied across sketches. Additionally, the user has control over how an individual sketch will be exported to source code:
+
+![](Images/Intro06.png)
+
+### Portfolios
+
+Portfolios can contain multiple named colors, gradients, styles and sketches that can be exported to source code as a single class:
+
+![](Images/Intro07.png)
+
+When this class is included in a cross-platform application, the developer can use its properties and methods to adjust graphics properties and draw the individual sketches:
+
+![](Images/Intro08.png)
+
+## Source Code Generation
+
+The main purpose of the Kimono Designer is to allow the developer to graphically define SkiaSharp objects that will be converted to source code that can be used in any cross-platform application that supports SkiaSharp.
+
+As the sketch is designed and edited on the Kimono Designer design surface, source code will be generated for the requested operating system, language and support library in the code preview area:
+
+![](Images/Intro09.png)
+
+### Code Snippets
+
+Based on what is selected, code snippets will be generated for individual colors, gradients, styles, shapes and shape groups. These snippets can be copied from the preview area and pasted into Visual Studio projects:
+
+![](Images/Intro10.png)
+
+### Generate Code for Multiple Platforms
+
+Source code can be generated for multiple OS platforms with support for Xamarin.Forms (cross-platform) and SkiaSharp.Views:
+
+![](Images/Intro11.png)
+
+### Use KimonoCore Support Library
+
+Source code can either be generated directly using SkiaSharp classes or by using the KimonoCore helper classes, which produces smaller source code files and provides several useful features:
+
+![](Images/Intro12.png)
+
+When using the helper classes, the developer will need to include the KimonoCore library in any project that consumes the code.
 
 ## Work in Progress
 
@@ -15,14 +87,13 @@ These known issues will all be solved in the finished apps (editors are planned 
 
 ## About this Project
 
-Kimono Designer, KimonoCore and KimonoCore.Mac were created by Kevin Mullins for Microsoft, Inc.
+Kimono Designer and the KimonoCore libraries were created by Kevin Mullins for Microsoft, Inc.
 
 The code has been fully commented and, where available, links have be provided from key technologies or methods to relevant information in the [Xamarin.Mac Guides Documentation](https://developer.xamarin.com/guides/#mac).
 
-The **APIDocs** folder includes full API documentation for the different parts of the Kimono Designer as follows:
+### API Documentation
 
-- [KimonoCore.Mac](https://github.com/xamarin/KimonoDesigner/blob/master/APIDocs/Kimono.Mac/ReadMe.md) - Provides the core Kimono classes that provides a high-level wrapper to the SkiaSharp objects for a Xamarin.Mac project.
-- [Kimono Designer Mac](https://github.com/xamarin/KimonoDesigner/blob/master/APIDocs/KimonoDesigner.mac/ReadMe.md) - The Xamarin.Mac versions of the Kimono Designer interface.
+Full API documentation is provided via a **ReadMe** file in project folder for each Visual Studio project that makes up the Kimono Designer solution.
 
 
 ## Icon Resources

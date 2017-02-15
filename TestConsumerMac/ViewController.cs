@@ -3,6 +3,7 @@ using AppKit;
 using Foundation;
 using KimonoCore;
 using SkiaSharp;
+using Kimono;
 
 namespace TestConsumerMac
 {
@@ -54,7 +55,7 @@ namespace TestConsumerMac
 		public void TestPortfolioClass(SKCanvas canvas)
 		{
 			var portfolio = new Portfolio();
-			portfolio.DrawCircle(canvas);
+			portfolio.DrawLoginButton(canvas);
 		}
 
 		public void TestSketchClass(SKCanvas canvas)
