@@ -951,11 +951,17 @@ namespace KimonoCore
 			initializers = KimonoCodeGenerator.InitializerForSupportGradients(outputLanguage, outputLibrary) + initializers;
 
 			// Assemble private variables
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) privateVariables = KimonoCodeGenerator.AddCarriageIfNeeded(privateVariables);
 			privateVariables += KimonoCodeGenerator.PrivateVariablesForSupportingGradients(outputLanguage, outputLibrary);
 
 			// Assemble computed properties
+			if (KimonoCodeGenerator.SupportingColors.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingColors(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingGradients(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingStyles.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
 
 			// Convert this portfolio to a class
@@ -974,7 +980,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Variables\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateVariables, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any computed properties?
@@ -983,17 +989,23 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Computed Properties\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(computedProperties, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Add constructors
 			sourceCode += "\t\t#region Constructors\n" +
+				"\t\t/// <summary>\n" +
+				$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
 				$"\t\tpublic {ElementName}() " + "{\n" +
 				"\t\t\tInitialize();\n" +
 				"\t\t}\n\n";
 
 			// Add initializer
-			sourceCode += "\t\tinternal void Initialize() {\n";
+			sourceCode += "\t\t/// <summary>\n" +
+				$"\t\t/// Initializes this new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
+				"\t\tinternal void Initialize() {\n";
 
 			// Any initialization code?
 			if (initializers != "")
@@ -1012,7 +1024,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any private methods?
@@ -1021,7 +1033,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Public Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(publicMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any override methods?
@@ -1030,7 +1042,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Override Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(overrideMethods, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Close class
@@ -1102,7 +1114,8 @@ namespace KimonoCore
 			{
 				// Add sketch to portfolio
 				initializers += sketch.ToKimonoCore();
-				initializers += $"Sketches.Add({sketch.ElementName});\n\n";
+				initializers = KimonoCodeGenerator.AddCarriageIfNeeded(initializers);
+				initializers += $"Sketches.Add({sketch.ElementName});\n";
 			}
 
 			// Assemble precode items in reverse order to ensure dependencies are registered first
@@ -1113,11 +1126,17 @@ namespace KimonoCore
 			initializers = baseInitializers + initializers;
 
 			// Assemble private variables
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) privateVariables = KimonoCodeGenerator.AddCarriageIfNeeded(privateVariables);
 			privateVariables += KimonoCodeGenerator.PrivateVariablesForSupportingGradients(outputLanguage, outputLibrary);
 
 			// Assemble computed properties
+			if (KimonoCodeGenerator.SupportingColors.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingColors(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingGradients(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingStyles.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
 
 			// Start class
@@ -1136,7 +1155,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Variables\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateVariables, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any computed properties?
@@ -1145,17 +1164,23 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Computed Properties\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(computedProperties, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Add constructors
 			sourceCode += "\t\t#region Constructors\n" +
+				"\t\t/// <summary>\n" +
+				$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
 				$"\t\tpublic {ElementName}() " + "{\n" +
 				"\t\t\tInitialize();\n" +
 				"\t\t}\n\n";
 
 			// Add initializer
-			sourceCode += "\t\tinternal void Initialize() {\n";
+			sourceCode += "\t\t/// <summary>\n" +
+				$"\t\t/// Initializes this new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
+				"\t\tinternal void Initialize() {\n";
 
 			// Any initialization code?
 			if (initializers != "")
@@ -1174,7 +1199,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any private methods?
@@ -1183,7 +1208,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Public Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(publicMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any override methods?
@@ -1192,7 +1217,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Override Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(overrideMethods, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Close class

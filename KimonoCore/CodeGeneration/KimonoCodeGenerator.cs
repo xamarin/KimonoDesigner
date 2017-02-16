@@ -38,6 +38,8 @@ namespace KimonoCore
 		/// source code.
 		/// </summary>
 		public static List<KimonoStyle> SupportingStyles = new List<KimonoStyle>();
+
+		public static List<string> UsedNames = new List<string>();
 		#endregion
 
 		#region Public Methods
@@ -52,6 +54,25 @@ namespace KimonoCore
 			SupportingColors.Clear();
 			SupportingGradients.Clear();
 			SupportingStyles.Clear();
+			UsedNames.Clear();
+		}
+
+		/// <summary>
+		/// Checks to see if a name has already been used in generating source code.
+		/// </summary>
+		/// <returns><c>true</c>, if the name has already been used, <c>false</c> otherwise.</returns>
+		/// <param name="name">The element name to test for.</param>
+		public static bool NameUsed(string name)
+		{
+			// Scan all names
+			foreach (string nameOnFile in UsedNames)
+			{
+				// Already used?
+				if (nameOnFile == name) return true;
+			}
+
+			// Not used
+			return false;
 		}
 
 		/// <summary>
@@ -93,8 +114,9 @@ namespace KimonoCore
 			foreach (KimonoColor supportColor in SupportingColors)
 			{
 				// Accumulate color code
+				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Create new {supportColor.Name}\n";
-				sourceCode += $"var {supportColor.ElementName} = {ColorToCode(outputLibrary, supportColor.Color)};\n\n";
+				sourceCode += $"var {supportColor.ElementName} = {ColorToCode(outputLibrary, supportColor.Color)};\n";
 			}
 
 			// Return generated source
@@ -117,10 +139,11 @@ namespace KimonoCore
 			foreach (KimonoColor supportColor in SupportingColors)
 			{
 				// Accumulate color code
+				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Global color {supportColor.Name}\n";
 				sourceCode += $"public {classType} {supportColor.ElementName} " +
 					"{get; set;} " +
-					$"= {ColorToCode(outputLibrary, supportColor.Color)};\n\n";
+					$"= {ColorToCode(outputLibrary, supportColor.Color)};\n";
 			}
 
 			// Return generated source
@@ -166,7 +189,8 @@ namespace KimonoCore
 			foreach (KimonoGradient supportingGradient in SupportingGradients)
 			{
 				// Accumulate gradient
-				sourceCode += supportingGradient.ToCSharp(outputLibrary) + "\n";
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportingGradient.ToCSharp(outputLibrary);
 			}
 
 			// Return generated source
@@ -188,6 +212,7 @@ namespace KimonoCore
 			foreach (KimonoGradient supportingGradient in SupportingGradients)
 			{
 				// Accumulate color code
+				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Private gradient {supportingGradient.Name} vairables\n";
 				sourceCode += $"private SKColor[] {supportingGradient.ElementName}Colors;\n" +
 					$"private float[] {supportingGradient.ElementName}Weights;\n";
@@ -213,9 +238,10 @@ namespace KimonoCore
 			foreach (KimonoGradient supportingGradient in SupportingGradients)
 			{
 				// Accumulate color code
+				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Global gradient {supportingGradient.Name}\n";
 				sourceCode += $"public {classType} {supportingGradient.ElementName} " +
-					"{get; set;}\n\n";
+					"{get; set;}\n";
 			}
 
 			// Return generated source
@@ -237,7 +263,8 @@ namespace KimonoCore
 			foreach (KimonoGradient supportingGradient in SupportingGradients)
 			{
 				// Accumulate gradient
-				sourceCode += supportingGradient.ToCSharpInitializer(outputLibrary) + "\n";
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportingGradient.ToCSharpInitializer(outputLibrary);
 			}
 
 			// Return generated source
@@ -283,7 +310,8 @@ namespace KimonoCore
 			foreach (KimonoStyle supportingStyle in SupportingStyles)
 			{
 				// Accumulate gradient
-				sourceCode += supportingStyle.ToCSharp(outputLibrary) + "\n";
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportingStyle.ToCSharp(outputLibrary);
 			}
 
 			// Return generated source
@@ -305,6 +333,7 @@ namespace KimonoCore
 			foreach (KimonoStyle supportingStyle in SupportingStyles)
 			{
 				// Accumulate color code
+				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Global style {supportingStyle.Name}\n";
 
 				// Take action based on library
@@ -320,12 +349,12 @@ namespace KimonoCore
 						if (supportingStyle.HasFill)
 						{
 							sourceCode += $"public SKPaint {supportingStyle.ElementName}FramePaint " +
-								"{get; set;}\n\n";
+								"{get; set;}\n";
 						}
 						break;
 					case CodeOutputLibrary.KimonoCore:
 						sourceCode += $"public KimonoStyle {supportingStyle.ElementName} " +
-							"{get; set;}\n\n";
+							"{get; set;}\n";
 						break;
 				}
 			}
@@ -349,7 +378,8 @@ namespace KimonoCore
 			foreach (KimonoStyle supportingStyle in SupportingStyles)
 			{
 				// Accumulate gradient
-				sourceCode += supportingStyle.ToCSharpInitializer(outputLibrary) + "\n";
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportingStyle.ToCSharpInitializer(outputLibrary);
 			}
 
 			// Return generated source
@@ -406,8 +436,39 @@ namespace KimonoCore
 				elementName = $"{elementName}{++NextElementNumber}";
 			}
 
+			// Has this name already been used?
+			while (NameUsed(elementName))
+			{
+				// Increment the name
+				elementName = Kimono.IncrementName(elementName).Replace(" ","");
+			}
+
+			// Save name in the collection of used names
+			UsedNames.Add(elementName);
+
 			// Return resulting name
 			return elementName;
+		}
+
+		/// <summary>
+		/// Adds a carriage return to the source code if it is required to "pretty print"
+		/// the source in a human readable format.
+		/// </summary>
+		/// <returns>The source with a carriage return if needed.</returns>
+		/// <param name="sourceCode">The source code to test for a carriage return requirement.</param>
+		public static string AddCarriageIfNeeded(string sourceCode)
+		{
+			// Is a carriage return required?
+			if (sourceCode == "")
+			{
+				// No, return string as is
+				return sourceCode;
+			}
+			else
+			{
+				// Yes, insert a blank line between items in the source code.
+				return $"{sourceCode}\n";
+			}
 		}
 
 		/// <summary>

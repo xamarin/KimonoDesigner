@@ -871,7 +871,7 @@ namespace KimonoCore
 			var sourceCode = "";
 
 			// Draw with KimonoCore
-			sourceCode += $"// Draw {Name} shape\n" +
+			sourceCode += $"// Build {Name} shape\n" +
 				$"var {ElementName} = new KimonoSketch({Name}, {Width}f, {Height}f)" + "{" +
 				$"\n\tDrawCanvas = {DrawCanvas.ToString().ToLower()}," +
 				$"\n\tCanvasColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp,CanvasColor)}" +
@@ -904,6 +904,10 @@ namespace KimonoCore
 			var sourceCode = "";
 
 			// Start method
+			sourceCode += "/// <summary>\n" +
+				$"/// Draw the {Name} sketch into the given SkiaSharp canvas.\n" +
+				"/// </summary>\n" +
+				"/// <param name=\"canvas\">The <c>SKCanvas</c> to draw the sketch into.</param>\n";
 			sourceCode += (GenerateCodeToOuputToCanvas) ? "public" : "private";
 			sourceCode += $" void Draw{ElementName}(SKCanvas canvas)" + "{\n";
 
@@ -947,6 +951,10 @@ namespace KimonoCore
 			}
 
 			// Start method
+			sourceCode += "/// <summary>\n" +
+				$"/// Convert the {Name} sketch to a png encoded SkiaSharp data object.\n" +
+				"/// </summary>\n" +
+				"/// <returns>The Sketch as a <c>SKData</c> object.</returns>\n";
 			sourceCode += (GenerateCodeToOuputSkiaData) ? "public" : "private";
 			sourceCode += $" SKData {ElementName}ToData()" + "{\n";
 
@@ -1002,6 +1010,10 @@ namespace KimonoCore
 			}
 
 			// Start method
+			sourceCode += "/// <summary>\n" +
+				$"/// Convert the {Name} sketch to a bitmap image.\n" +
+				"/// </summary>\n" +
+				"/// <returns>The sketch as a platform specific bitmap image.</returns>\n";
 			sourceCode += (GenerateCodeToOuputBitmapImage) ? "public" : "private";
 			sourceCode += $" {imageType} {ElementName}ToImage()" + "{\n" +
 				"\t// Get image data from sketch\n" +
@@ -1209,12 +1221,14 @@ namespace KimonoCore
 			if (GenerateCodeToOuputToCanvas)
 			{
 				// Expose this method
+				publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 				publicMethodsCode += BuildCsharpToCanvasMethod(outputLibrary);
 			}
 			else
 			{
 				// Always required as it does the actual work of drawing the
 				// sketch and is used by the other export methods
+				privateMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(privateMethodsCode);
 				privateMethodsCode += BuildCsharpToCanvasMethod(outputLibrary);
 			}
 
@@ -1222,12 +1236,14 @@ namespace KimonoCore
 			if (GenerateCodeToOuputSkiaData)
 			{
 				// Expose this method
+				publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 				publicMethodsCode += BuildCsharpToSkiaDataMethod(outputLibrary);
 			}
 			else if (GenerateCodeToOuputBitmapImage)
 			{
 				// Add this method if making bitmap images, as it is required to do the
 				// conversion
+				privateMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(privateMethodsCode);
 				privateMethodsCode += BuildCsharpToSkiaDataMethod(outputLibrary);
 			}
 
@@ -1239,11 +1255,13 @@ namespace KimonoCore
 				{
 					// Expose all possible versions of this method with conditional
 					// compile statements based on the OS the class is being used on.
+					publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 					publicMethodsCode += BuildCSharpCrossPlatformToImage(outputLibrary);
 				}
 				else
 				{
 					// Expose this method
+					publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 					publicMethodsCode += BuildCsharpToBitmapImage(outputOS);
 				}
 			}
@@ -1269,12 +1287,14 @@ namespace KimonoCore
 			if (GenerateCodeToOuputToCanvas)
 			{
 				// Expose this method
+				publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 				publicMethodsCode += BuildCsharpToCanvasMethod(outputLibrary);
 			}
 			else
 			{
 				// Always required as it does the actual work of drawing the
 				// sketch and is used by the other export methods
+				privateMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(privateMethodsCode);
 				privateMethodsCode += BuildCsharpToCanvasMethod(outputLibrary);
 			}
 
@@ -1282,12 +1302,14 @@ namespace KimonoCore
 			if (GenerateCodeToOuputSkiaData)
 			{
 				// Expose this method
+				publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 				publicMethodsCode += BuildCsharpToSkiaDataMethod(outputLibrary);
 			}
 			else if (GenerateCodeToOuputBitmapImage)
 			{
 				// Add this method if making bitmap images, as it is required to do the
 				// conversion
+				privateMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(privateMethodsCode);
 				privateMethodsCode += BuildCsharpToSkiaDataMethod(outputLibrary);
 			}
 
@@ -1299,11 +1321,13 @@ namespace KimonoCore
 				{
 					// Expose all possible versions of this method with conditional
 					// compile statements based on the OS the class is being used on.
+					publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 					publicMethodsCode += BuildCSharpCrossPlatformToImage(outputLibrary);
 				}
 				else
 				{
 					// Expose this method
+					publicMethodsCode = KimonoCodeGenerator.AddCarriageIfNeeded(publicMethodsCode);
 					publicMethodsCode += BuildCsharpToBitmapImage(outputOS);
 				}
 			}
@@ -1394,11 +1418,17 @@ namespace KimonoCore
 			initializers = KimonoCodeGenerator.InitializerForSupportGradients(outputLanguage, outputLibrary) + initializers;
 
 			// Assemble private variables
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) privateVariables = KimonoCodeGenerator.AddCarriageIfNeeded(privateVariables);
 			privateVariables += KimonoCodeGenerator.PrivateVariablesForSupportingGradients(outputLanguage, outputLibrary);
 
 			// Assemble computed properties
+			if (KimonoCodeGenerator.SupportingColors.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingColors(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingGradients(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingStyles.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
 
 			// Convert this Sketch to a class
@@ -1560,7 +1590,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Variables\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateVariables, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any computed properties?
@@ -1569,11 +1599,14 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Computed Properties\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(computedProperties, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Add constructors
 			sourceCode += "\t\t#region Constructors\n" +
+				"\t\t/// <summary>\n" +
+				$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
 				$"\t\tpublic {ElementName}() " + "{\n" +
 				"\t\t\tInitialize();\n" +
 				"\t\t}\n\n";
@@ -1586,12 +1619,21 @@ namespace KimonoCore
 				{
 					case CodeOutputOS.Android:
 						// Add Android specific constructors.
-						sourceCode += $"\t\tpublic {ElementName}(Context context) : base(context) " + "{\n" +
+						sourceCode += "\t\t/// <summary>\n" +
+							$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+							"\t\t/// </summary>\n" +
+							$"\t\tpublic {ElementName}(Context context) : base(context) " + "{\n" +
 							"\t\t\tInitialize();\n" +
 							"\t\t}\n\n" +
+							"\t\t/// <summary>\n" +
+							$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+							"\t\t/// </summary>\n" +
 							$"\t\tpublic {ElementName}(Context context, IAttributeSet attrs) : base(context, attrs) " + "{\n" +
 							"\t\t\tInitialize();\n" +
 							"\t\t}\n\n" +
+							"\t\t/// <summary>\n" +
+							$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+							"\t\t/// </summary>\n" +
 							$"\t\tpublic {ElementName}(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr) " + "{\n" +
 							"\t\t\tInitialize();\n" +
 							"\t\t}\n\n";
@@ -1600,7 +1642,10 @@ namespace KimonoCore
 					case CodeOutputOS.tvOS:
 					case CodeOutputOS.macOS:
 						// Add required storyboard/.xib constructor for Apple OSes.
-						sourceCode += $"\t\tpublic {ElementName}(IntPtr p) : base(p) " + "{\n" +
+						sourceCode += "\t\t/// <summary>\n" +
+							$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+							"\t\t/// </summary>\n" +
+							$"\t\tpublic {ElementName}(IntPtr p) : base(p) " + "{\n" +
 							"\t\t\tInitialize();\n" +
 							"\t\t}\n\n";
 						break;
@@ -1608,7 +1653,10 @@ namespace KimonoCore
 			}
 
 			// Add initializer
-			sourceCode += "\t\tinternal void Initialize() {\n";
+			sourceCode += "\t\t/// <summary>\n" +
+					$"\t\t/// Initialize this new instance of the {ElementName} class.\n" +
+					"\t\t/// </summary>\n" +
+					"\t\tinternal void Initialize() {\n";
 
 			// Any initialization code?
 			if (initializers != "")
@@ -1627,7 +1675,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any private methods?
@@ -1636,7 +1684,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Public Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(publicMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any override methods?
@@ -1645,7 +1693,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Override Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(overrideMethods, 2) +
-					"\n\t\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Close class
@@ -1717,7 +1765,8 @@ namespace KimonoCore
 			foreach (KimonoShape shape in Shapes)
 			{
 				var shapeCode = shape.ToCSharp(CodeOutputLibrary.KimonoCore);
-				initializers += shapeCode.Replace($"{shape.ElementName}.Draw(canvas);\n",$"Shapes.Add({shape.ElementName});\n\n");
+				initializers = KimonoCodeGenerator.AddCarriageIfNeeded(initializers);
+				initializers += shapeCode.Replace($"{shape.ElementName}.Draw(canvas);\n",$"Shapes.Add({shape.ElementName});\n");
 			}
 
 			// Assemble precode items in reverse order to ensure dependencies are registered first
@@ -1728,11 +1777,17 @@ namespace KimonoCore
 			initializers = baseInitializers + initializers;
 
 			// Assemble private variables
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) privateVariables = KimonoCodeGenerator.AddCarriageIfNeeded(privateVariables);
 			privateVariables += KimonoCodeGenerator.PrivateVariablesForSupportingGradients(outputLanguage, outputLibrary);
 
 			// Assemble computed properties
+			if (KimonoCodeGenerator.SupportingColors.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingColors(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingGradients.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingGradients(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.SupportingStyles.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
 
 			// Start class
@@ -1751,7 +1806,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Variables\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateVariables, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any computed properties?
@@ -1760,17 +1815,23 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Computed Properties\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(computedProperties, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Add constructors
 			sourceCode += "\t\t#region Constructors\n" +
+				"\t\t/// <summary>\n" +
+				$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
 				$"\t\tpublic {ElementName}() " + "{\n" +
 				"\t\t\tInitialize();\n" +
 				"\t\t}\n\n";
 
 			// Add initializer
-			sourceCode += "\t\tinternal void Initialize() {\n";
+			sourceCode += "\t\t/// <summary>\n" +
+				$"\t\t/// Initializes this new instance of the {ElementName} class.\n" +
+				"\t\t/// </summary>\n" +
+				"\t\tinternal void Initialize() {\n";
 
 			// Any initialization code?
 			if (initializers != "")
@@ -1781,7 +1842,7 @@ namespace KimonoCore
 
 			// Complete costructor
 			sourceCode += "\n\t\t}\n" +
-				"\t\t#endregion\n\n";
+				"#endregion\n\n";
 
 			// Any private methods?
 			if (privateMethodsCode != "")
@@ -1789,7 +1850,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Private Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(privateMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any private methods?
@@ -1798,7 +1859,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Public Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(publicMethodsCode, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Any override methods?
@@ -1807,7 +1868,7 @@ namespace KimonoCore
 				// Yes, emit private methods
 				sourceCode += "\t\t#region Override Methods\n" +
 					KimonoCodeGenerator.IncreaseIndentLevel(overrideMethods, 2) +
-					"\n\t\t#endregion\n\n";
+					"#endregion\n\n";
 			}
 
 			// Close class

@@ -588,7 +588,7 @@ namespace KimonoCore
 			var sourceCode = "";
 
 			// Is this shape using a custom style?
-			if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.Custom)
+			if (Style.StyleType == KimonoStyleType.Custom || Style.StyleType == KimonoStyleType.CustomText)
 			{
 				// Yes, include it in the source code
 				Style.Name = $"{Name} Style";
