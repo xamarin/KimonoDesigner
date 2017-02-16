@@ -58,6 +58,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\KimonoCodeGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\IKimonoCodeGeneration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoSketch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\IKimonoPropertyConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

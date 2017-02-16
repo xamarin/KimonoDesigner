@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// A Kimono Bezier is a collection of control and end points that define the quad sections of a
 	/// bezier shape to be drawn using SkiaSharp.
 	/// </summary>
-	public class KimonoShapeBezier : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeBezier : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
 		/// <summary>
@@ -389,6 +389,9 @@ namespace KimonoCore
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
 		public override void Draw(SKCanvas canvas)
 		{
+			// Yes, define path
+			var path = ToPath();
+
 			// Rotated?
 			if (RotationDegrees > 0)
 			{
@@ -400,9 +403,6 @@ namespace KimonoCore
 			// Anything to draw?
 			if (Points.Count > 1)
 			{
-				// Yes, define path
-				var path = ToPath();
-
 				// Draw shape
 				if (Visible)
 				{
@@ -759,6 +759,13 @@ namespace KimonoCore
 			foreach (KimonoBezierPoint point in Points)
 			{
 				newShape.Points.Add(point.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

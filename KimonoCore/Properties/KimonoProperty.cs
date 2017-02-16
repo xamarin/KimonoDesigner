@@ -37,6 +37,12 @@ namespace KimonoCore
 		public virtual bool IsObiScriptValue { get; set; } = false;
 
 		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoProperty"/> gets value from script.
+		/// </summary>
+		/// <value><c>true</c> if gets value from script; otherwise, <c>false</c>.</value>
+		public virtual bool GetsValueFromScript { get; set; } = false;
+
+		/// <summary>
 		/// Gets or sets the obi script that will be used to calculate the value of this
 		/// `KimonoProperty`.
 		/// </summary>
@@ -153,6 +159,7 @@ namespace KimonoCore
 				Name = this.Name,
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,
+				GetsValueFromScript = this.GetsValueFromScript,
 				ObiScript = this.ObiScript
 			};
 

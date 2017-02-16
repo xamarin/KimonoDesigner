@@ -653,6 +653,10 @@ namespace KimonoMac
 				 {
 					 // Display editor for the given style
 					 ShowStyleInspectors(style);
+					if (CurrentInspectorMode == InspectorViewMode.ConnectionView)
+					 {
+						 ShowConnectionInspectors(InspectingElement as IKimonoPropertyConsumer);
+					 }
 				 });
 			}
 
@@ -839,6 +843,11 @@ namespace KimonoMac
 			RoundRectInspector.Initialize();
 			PropertyInspector.Initialize();
 			PortfolioInspector.Initialize();
+			BooleanPropertyInspector.Initialize();
+			NumberPropertyInspector.Initialize();
+			RectPropertyInspector.Initialize();
+			TextPropertyInspector.Initialize();
+			ConnectionsInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -858,6 +867,11 @@ namespace KimonoMac
 			RoundRectInspector.DesignSurface = DesignSurface;
 			PropertyInspector.DesignSurface = DesignSurface;
 			PortfolioInspector.DesignSurface = DesignSurface;
+			BooleanPropertyInspector.DesignSurface = DesignSurface;
+			NumberPropertyInspector.DesignSurface = DesignSurface;
+			RectPropertyInspector.DesignSurface = DesignSurface;
+			TextPropertyInspector.DesignSurface = DesignSurface;
+			ConnectionsInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -905,6 +919,14 @@ namespace KimonoMac
 				}
 			};
 
+			// -- Connection Inspector -----------------------------------------
+			ConnectionsInspector.ConnectionModified += () =>
+			{
+				// Update UI
+				DesignSurface.RefreshView();
+				UpdateTextEditor();
+			};
+
 			// -- Property Inspector -----------------------------------------
 			PropertyInspector.PropertyModified += (property) =>
 			{
@@ -933,6 +955,34 @@ namespace KimonoMac
 				// Update UI
 				UpdatePropertyList(true);
 				ShowPropertyInspectors(newProperty);
+			};
+
+			// -- Boolean Property Inspector -----------------------------------------
+			BooleanPropertyInspector.PropertyModified += (property) =>
+			{
+				// Update UI
+				DesignSurface.RefreshView();
+			};
+
+			// -- Number Property Inspector -----------------------------------------
+			NumberPropertyInspector.PropertyModified += (property) =>
+			{
+				// Update UI
+				DesignSurface.RefreshView();
+			};
+
+			// -- Rect Property Inspector -----------------------------------------
+			RectPropertyInspector.PropertyModified += (property) =>
+			{
+				// Update UI
+				DesignSurface.RefreshView();
+			};
+
+			// -- Text Property Inspector -----------------------------------------
+			TextPropertyInspector.PropertyModified += (property) =>
+			{
+				// Update UI
+				DesignSurface.RefreshView();
 			};
 
 			// -- Group Inspector -----------------------------------------
@@ -1203,6 +1253,11 @@ namespace KimonoMac
 			RoundRectInspector.RemoveFromSuperview();
 			PropertyInspector.RemoveFromSuperview();
 			PortfolioInspector.RemoveFromSuperview();
+			BooleanPropertyInspector.RemoveFromSuperview();
+			NumberPropertyInspector.RemoveFromSuperview();
+			RectPropertyInspector.RemoveFromSuperview();
+			TextPropertyInspector.RemoveFromSuperview();
+			ConnectionsInspector.RemoveFromSuperview();
 		}
 
 		/// <summary>
@@ -1216,9 +1271,9 @@ namespace KimonoMac
 
 			// Configure Editor
 			Formatter = new LanguageFormatter(TextEditor, new ObiScriptDescriptor());
-			TextEditorMode.StringValue = (EditingProperty.IsObiScriptValue) ? "Editing" : "Showing";
+			TextEditorMode.StringValue = (EditingProperty.GetsValueFromScript) ? "Editing" : "Showing";
 			TextEditorTitle.StringValue = $"{EditingProperty.Name} Script";
-			TextEditor.Editable = EditingProperty.IsObiScriptValue;
+			TextEditor.Editable = EditingProperty.GetsValueFromScript;
 			Text = EditingProperty.ObiScript;
 
 			// Update UI
@@ -1227,6 +1282,26 @@ namespace KimonoMac
 			LanguageSelector.SelectItem(1);
 			LanguageSelector.Enabled = false;
 			LibrarySelector.SelectItem(1);
+			LibrarySelector.Enabled = false;
+		}
+
+		/// <summary>
+		/// Clears the text editor.
+		/// </summary>
+		private void ClearTextEditor()
+		{
+			KimonoPreviewElement = null;
+			EditingProperty = null;
+
+			// Configure Editor
+			TextEditorMode.StringValue = "Preview";
+			TextEditorTitle.StringValue = $"Nothing Selected";
+			Text = "";
+			TextEditor.Editable = false;
+
+			// Update UI
+			OSSelector.Enabled = false;
+			LanguageSelector.Enabled = false;
 			LibrarySelector.Enabled = false;
 		}
 
@@ -1321,6 +1396,11 @@ namespace KimonoMac
 			{
 				// Switch to the property editor mode
 				ShowPropertyObiScript(EditingProperty);
+			}
+			else
+			{
+				// Empty the text editor
+				ClearTextEditor();
 			}
 		}
 
@@ -1670,6 +1750,35 @@ namespace KimonoMac
 		}
 
 		/// <summary>
+		/// Shows the connection inspectors.
+		/// </summary>
+		/// <param name="propertyConsumer">The `IKimonoPropertyConsumer` to show property connections for.</param>
+		private void ShowConnectionInspectors(IKimonoPropertyConsumer propertyConsumer)
+		{
+			// Close any open inspectors
+			CloseAllInspectors();
+
+			// Save the gradient being inspected
+			InspectingElement = propertyConsumer;
+
+			// Get initial offset
+			var offset = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, View.Frame.Height);
+
+			// Add required inspector panels
+			ConnectionsInspector.PropertyConsumer = propertyConsumer;
+			offset = ConnectionsInspector.MoveTo(offset);
+			InspectorView.AddSubview(ConnectionsInspector);
+
+			// Adjust Side content size
+			var height = View.Frame.Height - offset;
+			if (height < View.Frame.Height) height = View.Frame.Height;
+			InspectorView.Frame = new CGRect(InspectorView.Frame.Left, InspectorView.Frame.Top, 251, height);
+			ScrollInspectorsToTop();
+
+		}
+
+		/// <summary>
 		/// Shows the property inspectors.
 		/// </summary>
 		/// <param name="property">The `KimonoProperty` to show the inspectors for.</param>
@@ -1695,6 +1804,38 @@ namespace KimonoMac
 			PropertyInspector.SelectedProperty = property;
 			offset = PropertyInspector.MoveTo(offset);
 			InspectorView.AddSubview(PropertyInspector);
+
+			// Boolean property?
+			if (property is KimonoPropertyBoolean)
+			{
+				BooleanPropertyInspector.SelectedBoolean = property as KimonoPropertyBoolean;
+				offset = BooleanPropertyInspector.MoveTo(offset);
+				InspectorView.AddSubview(BooleanPropertyInspector);
+			}
+
+			// Number property?
+			if (property is KimonoPropertyNumber)
+			{
+				NumberPropertyInspector.SelectedNumber = property as KimonoPropertyNumber;
+				offset = NumberPropertyInspector.MoveTo(offset);
+				InspectorView.AddSubview(NumberPropertyInspector);
+			}
+
+			// Rect property?
+			if (property is KimonoPropertyRect)
+			{
+				RectPropertyInspector.SelectedRect = property as KimonoPropertyRect;
+				offset = RectPropertyInspector.MoveTo(offset);
+				InspectorView.AddSubview(RectPropertyInspector);
+			}
+
+			// Text property?
+			if (property is KimonoPropertyText)
+			{
+				TextPropertyInspector.SelectedText = property as KimonoPropertyText;
+				offset = TextPropertyInspector.MoveTo(offset);
+				InspectorView.AddSubview(TextPropertyInspector);
+			}
 
 			// Adjust Side content size
 			var height = View.Frame.Height - offset;
@@ -1811,11 +1952,19 @@ namespace KimonoMac
 			else if (InspectingElement is KimonoStyle)
 			{
 				ShowStyleInspectors(InspectingElement as KimonoStyle);
+				if (CurrentInspectorMode == InspectorViewMode.ConnectionView)
+				{
+					ShowConnectionInspectors(InspectingElement as IKimonoPropertyConsumer);
+				}
 			}
 			else
 			{
 				// Default to shapes
 				ShowGeneralInspectors(InspectingElement as KimonoShape);
+				if (CurrentInspectorMode == InspectorViewMode.ConnectionView)
+				{
+					ShowConnectionInspectors(InspectingElement as IKimonoPropertyConsumer);
+				}
 			}
 		}
 
@@ -2068,10 +2217,15 @@ namespace KimonoMac
 				{
 					// Close any open inspectors
 					CloseAllInspectors();
+					ClearTextEditor();
 				} else 
 				{
 					// Show the required inspectors
 					ShowGeneralInspectors(selected);
+					if (CurrentInspectorMode == InspectorViewMode.ConnectionView)
+					{
+						ShowConnectionInspectors(InspectingElement as IKimonoPropertyConsumer);
+					}
 				}
 
 				// Inform window of change

@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a rectangle into the Design Surface.
 	/// </summary>
-	public class KimonoShapeRect : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeRect : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Constructors
 		/// <summary>
@@ -79,6 +79,9 @@ namespace KimonoCore
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
 		public override void Draw(SKCanvas canvas)
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Rotated?
 			if (RotationDegrees > 0)
 			{
@@ -90,9 +93,6 @@ namespace KimonoCore
 			// Draw shape
 			if (Visible)
 			{
-				// Update any attached properties
-				EvaluateConnectedProperties();
-
 				if (Style.HasFill)
 				{
 					ConformGradientToShape(Style.FillGradient, Style.Fill);
@@ -298,6 +298,13 @@ namespace KimonoCore
 			{
 				// Duplicate handle and add to collection
 				newShape.ControlPoints.Add(handle.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

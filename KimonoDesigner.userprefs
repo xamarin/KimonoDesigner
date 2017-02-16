@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/KimonoPortfolio.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Properties/KimonoProperty.cs">
     <Files>
-      <File FileName="KimonoCore/CodeGeneration/KimonoCodeGenerator.cs" Line="332" Column="25" />
-      <File FileName="KimonoCore/KimonoSketch.cs" Line="1791" Column="105" />
-      <File FileName="KimonoCore/KimonoPortfolio.cs" Line="1140" Column="105" />
+      <File FileName="KimonoMac/ViewController.cs" Line="646" Column="12" />
+      <File FileName="KimonoMac/KimonoInspectorPropertyRect.cs" Line="76" Column="36" />
+      <File FileName="KimonoCore/Properties/KimonoProperty.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

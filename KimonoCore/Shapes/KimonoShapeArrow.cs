@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws either an outlined or single line arrow with heads on one or both ends.
 	/// </summary>
-	public class KimonoShapeArrow : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeArrow : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
 		/// <summary>
@@ -622,6 +622,13 @@ namespace KimonoCore
 			{
 				// Duplicate handle and add to collection
 				newShape.ControlPoints.Add(handle.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

@@ -71,6 +71,8 @@ namespace KimonoMac
 		{
 			// Update fields with the current shape information
 			PropertyName.StringValue = SelectedProperty.Name;
+			ValueFromScriptCheckbox.IntValue = (SelectedProperty.GetsValueFromScript) ? 1 : 0;
+			ValueFromScriptCheckbox.Enabled = !SelectedProperty.IsObiScriptValue;
 
 			// Show Usage
 			switch (SelectedProperty.Usage)
@@ -150,6 +152,22 @@ namespace KimonoMac
 
 			// Update the UI
 			RaiseRequestDuplicateProperty();
+		}
+
+		/// <summary>
+		/// Handles the value from script changing.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ValueFromScriptChanged(Foundation.NSObject sender)
+		{
+			// Save undo point
+			DesignSurface.SaveUndoPoint();
+
+			// Save new value
+			SelectedProperty.GetsValueFromScript = (ValueFromScriptCheckbox.IntValue == 1);
+
+			// Update UI
+			RaisePropertyModified();
 		}
 
 		/// <summary>

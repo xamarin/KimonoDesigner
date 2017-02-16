@@ -8,12 +8,73 @@ namespace KimonoCore
 	/// </summary>
 	public class KimonoPropertyRect : KimonoProperty
 	{
+		#region Public Variables
+		/// <summary>
+		/// The base value of this rectangle.
+		/// </summary>
+		public SKRect Value = new SKRect();
+		#endregion
+
 		#region Computed Properties
 		/// <summary>
-		/// Gets or sets the value.
+		/// Gets or sets the left.
 		/// </summary>
-		/// <value>The value as a `SKRect`.</value>
-		public SKRect Value { get; set; } = new SKRect();
+		/// <value>The left.</value>
+		public float Left
+		{
+			get { return Value.Left; }
+			set { Value.Left = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the top.
+		/// </summary>
+		/// <value>The top.</value>
+		public float Top
+		{
+			get { return Value.Top; }
+			set { Value.Top = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the right.
+		/// </summary>
+		/// <value>The right.</value>
+		public float Right
+		{
+			get { return Value.Right; }
+			set { Value.Right = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the bottom.
+		/// </summary>
+		/// <value>The bottom.</value>
+		public float Bottom
+		{
+			get { return Value.Bottom; }
+			set { Value.Bottom = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the width.
+		/// </summary>
+		/// <value>The width.</value>
+		public float Width
+		{
+			get { return Value.Width; }
+			set { Value.Right = Value.Left + value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the height.
+		/// </summary>
+		/// <value>The height.</value>
+		public float Height
+		{
+			get { return Value.Height; }
+			set { Value.Bottom = Value.Top + value; }
+		}
 		#endregion
 
 		#region Constructors

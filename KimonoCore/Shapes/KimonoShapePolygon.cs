@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a multi-sided polygon into the Design Surface.
 	/// </summary>
-	public class KimonoShapePolygon : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapePolygon : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
 		/// <summary>
@@ -127,12 +127,14 @@ namespace KimonoCore
 		/// <param name="connection">Connection.</param>
 		public override void UpdatePropertyConnectionPoint(KimonoPropertyConnection connection)
 		{
+			var amount = 0;
 
 			// Take action based on the connection point
 			switch (connection.ConnectionPoint)
 			{
 				case KimonoPropertyConnectionPoint.NumberOfSides:
-					NumberOfSides = connection.ConnectedProperty.ToInt();
+					amount = connection.ConnectedProperty.ToInt();
+					if (amount > 2 && amount < 20) NumberOfSides = amount;
 					break;
 				default:
 					base.UpdatePropertyConnectionPoint(connection);
@@ -410,6 +412,13 @@ namespace KimonoCore
 			{
 				// Duplicate handle and add to collection
 				newShape.ControlPoints.Add(handle.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

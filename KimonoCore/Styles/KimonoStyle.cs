@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// Defines as style that can be applied to a <c>KimonoShape</c> to control its
 	/// appearance.
 	/// </summary>
-	public class KimonoStyle : IKimonoCodeGeneration
+	public class KimonoStyle : IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Static Methods
 		/// <summary>

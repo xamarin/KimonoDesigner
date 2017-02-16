@@ -8,7 +8,7 @@ namespace KimonoCore
 	/// A <c>KimonoShapeGroup</c> holds a collection of <c>KimonoShapes</c> that can be acted
 	/// upon as a group.
 	/// </summary>
-	public class KimonoShapeGroup : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeGroup : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Private Variables
 		/// <summary>
@@ -1432,6 +1432,9 @@ namespace KimonoCore
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
 		public override void Draw(SKCanvas canvas)
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Rotated?
 			if (RotationDegrees > 0)
 			{
@@ -1454,9 +1457,6 @@ namespace KimonoCore
 				// Is this a boolean construct?
 				if (IsBooleanConstruct && State != KimonoShapeState.Editing)
 				{
-					// Update any attached properties
-					EvaluateConnectedProperties();
-
 					// Apple the boolean operation to the group of
 					// shapes
 					SKPath path = null;
@@ -1490,9 +1490,6 @@ namespace KimonoCore
 				}
 				else
 				{
-					// Update any attached properties
-					EvaluateConnectedProperties();
-
 					// Draw each shape in the group
 					foreach (KimonoShape shape in Shapes)
 					{
@@ -2010,6 +2007,13 @@ namespace KimonoCore
 			{
 				// Clone the under construction shape too
 				newShape.ShapeUnderConstruction = ShapeUnderConstruction.Clone() as KimonoShape;
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

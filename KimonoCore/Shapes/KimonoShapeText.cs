@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a block of text into the Design Surface within the specifid bounds of this shape.
 	/// </summary>
-	public class KimonoShapeText : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeText : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
 		/// <summary>
@@ -311,6 +311,9 @@ namespace KimonoCore
 		/// <param name="canvas">The <c>SKCanvas</c> to draw into.</param>
 		public override void Draw(SKCanvas canvas)
 		{
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Rotated?
 			if (RotationDegrees > 0)
 			{
@@ -318,9 +321,6 @@ namespace KimonoCore
 				canvas.Save();
 				canvas.RotateDegrees(RotationDegrees, HorizontalCenter, VerticalCenter);
 			}
-
-			// Update any attached properties
-			EvaluateConnectedProperties();
 
 			// Apply gradients
 			ConformGradientToShape(Style.FillGradient, Style.Fill);
@@ -775,6 +775,13 @@ namespace KimonoCore
 			{
 				// Duplicate handle and add to collection
 				newShape.ControlPoints.Add(handle.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

@@ -16,6 +16,18 @@ namespace KimonoCore
 		public KimonoColor Value { get; set; } = new KimonoColor();
 
 		/// <summary>
+		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoProperty"/> gets value from script.
+		/// </summary>
+		/// <value><c>true</c> if gets value from script; otherwise, <c>false</c>.</value>
+		public override bool GetsValueFromScript
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoPropertyColor"/> is obi script value.
 		/// </summary>
 		/// <value><c>true</c> if is obi script value; otherwise, <c>false</c>.</value>
@@ -85,6 +97,7 @@ namespace KimonoCore
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,
 				ObiScript = this.ObiScript,
+				GetsValueFromScript = this.GetsValueFromScript,
 				Value = this.Value.Clone()
 			};
 

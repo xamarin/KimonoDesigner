@@ -228,6 +228,10 @@
     <ImageAsset Include="Assets.xcassets\IconDetailsOn.imageset\View Details Filled-50-2.png" />
     <ImageAsset Include="Assets.xcassets\IconDetailsOff.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IconDetailsOff.imageset\View Details Filled-50.png" />
+    <ImageAsset Include="Assets.xcassets\IconConnected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconConnected.imageset\Connected-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconDisconnected.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconDisconnected.imageset\Disconnected-48.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -315,6 +319,8 @@
     <Folder Include="Assets.xcassets\IconConnectionOff.imageset\" />
     <Folder Include="Assets.xcassets\IconDetailsOn.imageset\" />
     <Folder Include="Assets.xcassets\IconDetailsOff.imageset\" />
+    <Folder Include="Assets.xcassets\IconConnected.imageset\" />
+    <Folder Include="Assets.xcassets\IconDisconnected.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -430,6 +436,26 @@
       <DependentUpon>KimonoInspectorPortfolio.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\InspectorViewMode.cs" />
+    <Compile Include="KimonoInspectorPropertyRect.cs" />
+    <Compile Include="KimonoInspectorPropertyRect.designer.cs">
+      <DependentUpon>KimonoInspectorPropertyRect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorPropertyText.cs" />
+    <Compile Include="KimonoInspectorPropertyText.designer.cs">
+      <DependentUpon>KimonoInspectorPropertyText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorPropertyBoolean.cs" />
+    <Compile Include="KimonoInspectorPropertyBoolean.designer.cs">
+      <DependentUpon>KimonoInspectorPropertyBoolean.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorPropertyNumber.cs" />
+    <Compile Include="KimonoInspectorPropertyNumber.designer.cs">
+      <DependentUpon>KimonoInspectorPropertyNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KimonoInspectorConnections.cs" />
+    <Compile Include="KimonoInspectorConnections.designer.cs">
+      <DependentUpon>KimonoInspectorConnections.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

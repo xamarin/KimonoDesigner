@@ -72,6 +72,7 @@ namespace KimonoCore
 				Name = this.Name,
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,
+				GetsValueFromScript = this.GetsValueFromScript,
 				ObiScript = this.ObiScript,
 				Value = this.Value
 			};

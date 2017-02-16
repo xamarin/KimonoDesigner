@@ -16,6 +16,18 @@ namespace KimonoCore
 		public KimonoGradient Value { get; set; } = new KimonoGradient();
 
 		/// <summary>
+		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoProperty"/> gets value from script.
+		/// </summary>
+		/// <value><c>true</c> if gets value from script; otherwise, <c>false</c>.</value>
+		public override bool GetsValueFromScript
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoPropertyColor"/> is obi script value.
 		/// </summary>
 		/// <value><c>true</c> if is obi script value; otherwise, <c>false</c>.</value>
@@ -84,6 +96,7 @@ namespace KimonoCore
 				Name = this.Name,
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,
+				GetsValueFromScript = this.GetsValueFromScript,
 				ObiScript = this.ObiScript,
 				Value = this.Value.Clone()
 			};

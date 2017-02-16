@@ -21,6 +21,9 @@ namespace KimonoMac
 		[Outlet]
 		AppKit.NSPopUpButton PropertyUsage { get; set; }
 
+		[Outlet]
+		AppKit.NSButton ValueFromScriptCheckbox { get; set; }
+
 		[Action ("DeleteProperty:")]
 		partial void DeleteProperty (Foundation.NSObject sender);
 
@@ -29,22 +32,30 @@ namespace KimonoMac
 
 		[Action ("UsageChanged:")]
 		partial void UsageChanged (Foundation.NSObject sender);
+
+		[Action ("ValueFromScriptChanged:")]
+		partial void ValueFromScriptChanged (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (PropertyType != null) {
-				PropertyType.Dispose ();
-				PropertyType = null;
-			}
-
 			if (PropertyName != null) {
 				PropertyName.Dispose ();
 				PropertyName = null;
 			}
 
+			if (PropertyType != null) {
+				PropertyType.Dispose ();
+				PropertyType = null;
+			}
+
 			if (PropertyUsage != null) {
 				PropertyUsage.Dispose ();
 				PropertyUsage = null;
+			}
+
+			if (ValueFromScriptCheckbox != null) {
+				ValueFromScriptCheckbox.Dispose ();
+				ValueFromScriptCheckbox = null;
 			}
 		}
 	}

@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a triangle into the Design Surface.
 	/// </summary>
-	public class KimonoShapeTriangle : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeTriangle : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Constructors
 		/// <summary>
@@ -308,6 +308,13 @@ namespace KimonoCore
 			{
 				// Duplicate handle and add to collection
 				newShape.ControlPoints.Add(handle.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

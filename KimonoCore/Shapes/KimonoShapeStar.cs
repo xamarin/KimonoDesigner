@@ -6,7 +6,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Draws a multi-sided star shape into the Design Surface.
 	/// </summary>
-	public class KimonoShapeStar : KimonoShape, IKimonoCodeGeneration
+	public class KimonoShapeStar : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
 		/// <summary>
@@ -290,18 +290,22 @@ namespace KimonoCore
 		/// <param name="connection">Connection.</param>
 		public override void UpdatePropertyConnectionPoint(KimonoPropertyConnection connection)
 		{
+			var amount = 0;
 
 			// Take action based on the connection point
 			switch (connection.ConnectionPoint)
 			{
 				case KimonoPropertyConnectionPoint.NumberOfPoints:
-					NumberOfPoints = connection.ConnectedProperty.ToInt();
+					amount = connection.ConnectedProperty.ToInt();
+					if (amount > 3 && amount < 101) NumberOfPoints = amount;
 					break;
 				case KimonoPropertyConnectionPoint.SkipPoints:
-					SkipPoints = connection.ConnectedProperty.ToInt();
+					amount = connection.ConnectedProperty.ToInt();
+					if (amount > 13 && amount < 11) SkipPoints = amount;
 					break;
 				case KimonoPropertyConnectionPoint.DepthOffset:
-					DepthOffset = connection.ConnectedProperty.ToInt();
+					amount = connection.ConnectedProperty.ToInt();
+					if (amount > -1 && amount < 101) DepthOffset = amount;
 					break;
 				default:
 					base.UpdatePropertyConnectionPoint(connection);
@@ -601,6 +605,13 @@ namespace KimonoCore
 			{
 				// Duplicate handle and add to collection
 				newShape.ControlPoints.Add(handle.Clone());
+			}
+
+			// Clone any property connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Add duplicate connection
+				newShape.PropertyConnections.Add(connection.Clone());
 			}
 
 			// Return new shape

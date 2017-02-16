@@ -22,6 +22,9 @@ namespace KimonoMac
 		AppKit.NSButton BackButton { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorPropertyBoolean BooleanPropertyInspector { get; set; }
+
+		[Outlet]
 		AppKit.NSButton BorderInspectorsButton { get; set; }
 
 		[Outlet]
@@ -29,6 +32,9 @@ namespace KimonoMac
 
 		[Outlet]
 		AppKit.NSButton ConnectionInspectorsButton { get; set; }
+
+		[Outlet]
+		KimonoMac.KimonoInspectorConnections ConnectionsInspector { get; set; }
 
 		[Outlet]
 		KimonoCore.Mac.KimonoDesignSurface DesignSurface { get; set; }
@@ -82,6 +88,9 @@ namespace KimonoMac
 		AppKit.NSPopUpButton LibrarySelector { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorPropertyNumber NumberPropertyInspector { get; set; }
+
+		[Outlet]
 		AppKit.NSPopUpButton OSSelector { get; set; }
 
 		[Outlet]
@@ -92,6 +101,9 @@ namespace KimonoMac
 
 		[Outlet]
 		KimonoMac.KimonoInspectorProperty PropertyInspector { get; set; }
+
+		[Outlet]
+		KimonoMac.KimonoInspectorPropertyRect RectPropertyInspector { get; set; }
 
 		[Outlet]
 		KimonoMac.KimonoInspectorRoundRect RoundRectInspector { get; set; }
@@ -122,6 +134,9 @@ namespace KimonoMac
 
 		[Outlet]
 		KimonoMac.KimonoInspectorText TextInspector { get; set; }
+
+		[Outlet]
+		KimonoMac.KimonoInspectorPropertyText TextPropertyInspector { get; set; }
 
 		[Outlet]
 		AppKit.NSButton ToolArrow { get; set; }
@@ -221,24 +236,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (DetailsInspectorButton != null) {
-				DetailsInspectorButton.Dispose ();
-				DetailsInspectorButton = null;
-			}
-
-			if (FillInspectorsButton != null) {
-				FillInspectorsButton.Dispose ();
-				FillInspectorsButton = null;
-			}
-
-			if (BorderInspectorsButton != null) {
-				BorderInspectorsButton.Dispose ();
-				BorderInspectorsButton = null;
-			}
-
-			if (ConnectionInspectorsButton != null) {
-				ConnectionInspectorsButton.Dispose ();
-				ConnectionInspectorsButton = null;
+			if (ConnectionsInspector != null) {
+				ConnectionsInspector.Dispose ();
+				ConnectionsInspector = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -256,14 +256,34 @@ namespace KimonoMac
 				BackButton = null;
 			}
 
+			if (BooleanPropertyInspector != null) {
+				BooleanPropertyInspector.Dispose ();
+				BooleanPropertyInspector = null;
+			}
+
+			if (BorderInspectorsButton != null) {
+				BorderInspectorsButton.Dispose ();
+				BorderInspectorsButton = null;
+			}
+
 			if (ColorPaletteInspector != null) {
 				ColorPaletteInspector.Dispose ();
 				ColorPaletteInspector = null;
 			}
 
+			if (ConnectionInspectorsButton != null) {
+				ConnectionInspectorsButton.Dispose ();
+				ConnectionInspectorsButton = null;
+			}
+
 			if (DesignSurface != null) {
 				DesignSurface.Dispose ();
 				DesignSurface = null;
+			}
+
+			if (DetailsInspectorButton != null) {
+				DetailsInspectorButton.Dispose ();
+				DetailsInspectorButton = null;
 			}
 
 			if (DocumentScrollView != null) {
@@ -289,6 +309,11 @@ namespace KimonoMac
 			if (FillInspector != null) {
 				FillInspector.Dispose ();
 				FillInspector = null;
+			}
+
+			if (FillInspectorsButton != null) {
+				FillInspectorsButton.Dispose ();
+				FillInspectorsButton = null;
 			}
 
 			if (FontInspector != null) {
@@ -336,6 +361,11 @@ namespace KimonoMac
 				LibrarySelector = null;
 			}
 
+			if (NumberPropertyInspector != null) {
+				NumberPropertyInspector.Dispose ();
+				NumberPropertyInspector = null;
+			}
+
 			if (OSSelector != null) {
 				OSSelector.Dispose ();
 				OSSelector = null;
@@ -354,6 +384,11 @@ namespace KimonoMac
 			if (PropertyInspector != null) {
 				PropertyInspector.Dispose ();
 				PropertyInspector = null;
+			}
+
+			if (RectPropertyInspector != null) {
+				RectPropertyInspector.Dispose ();
+				RectPropertyInspector = null;
 			}
 
 			if (RoundRectInspector != null) {
@@ -404,6 +439,11 @@ namespace KimonoMac
 			if (TextInspector != null) {
 				TextInspector.Dispose ();
 				TextInspector = null;
+			}
+
+			if (TextPropertyInspector != null) {
+				TextPropertyInspector.Dispose ();
+				TextPropertyInspector = null;
 			}
 
 			if (ToolArrow != null) {

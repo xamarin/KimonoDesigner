@@ -7,7 +7,7 @@ namespace KimonoCore
 	/// <summary>
 	/// Defines the based shape that all other Kimono Shape types will inherit from.
 	/// </summary>
-	public class KimonoShape : KimonoBounds, IKimonoCodeGeneration
+	public class KimonoShape : KimonoBounds, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Private Variables
 		/// <summary>
@@ -270,27 +270,35 @@ namespace KimonoCore
 			{
 				case KimonoPropertyConnectionPoint.Rect:
 					Rect = connection.ConnectedProperty.ToRect();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.Top:
 					Top = connection.ConnectedProperty.ToFloat();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.Left:
 					Left = connection.ConnectedProperty.ToFloat();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.Bottom:
 					Bottom = connection.ConnectedProperty.ToFloat();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.Right:
 					Right = connection.ConnectedProperty.ToFloat();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.Width:
 					Width = connection.ConnectedProperty.ToFloat();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.Height:
 					Height = connection.ConnectedProperty.ToFloat();
+					BoundsChanged();
 					break;
 				case KimonoPropertyConnectionPoint.RotationDegrees:
-					RotationDegrees = connection.ConnectedProperty.ToInt();
+					var amount = connection.ConnectedProperty.ToInt();
+					if (amount > -1 && amount < 366) RotationDegrees = amount;
 					break;
 				case KimonoPropertyConnectionPoint.Style:
 					Style = connection.ConnectedProperty.ToStyle();
