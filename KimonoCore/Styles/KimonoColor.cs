@@ -629,10 +629,10 @@ namespace KimonoCore
 			switch (outputLanguage)
 			{
 				case CodeOutputLanguage.CSharp:
-					sourceCode += $"var {KimonoCodeGenerator.MakeElementName(Name)} = {KimonoCodeGenerator.ColorToCode(outputLibrary,Color)};";
+					sourceCode += $"var {KimonoCodeGenerator.MakeElementName(Name)} = {KimonoCodeGenerator.ColorToCode(outputLibrary,Color)};\n";
 					break;
 				case CodeOutputLanguage.ObiScript:
-					sourceCode += $"#Color({Color.Red}, {Color.Green}, {Color.Blue}, {Color.Alpha})";
+					sourceCode += $"Return.Color(\"{Name}\");\n";
 					break;
 			}
 

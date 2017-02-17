@@ -42,7 +42,7 @@ namespace DScript
 			}
 			if (_currentLexer.TokenType == ScriptLex.LexTypes.RFalse)
 			{
-				_currentLexer.Match(ScriptLex.LexTypes.RTrue);
+				_currentLexer.Match(ScriptLex.LexTypes.RFalse);
 				return new ScriptVarLink(new ScriptVar(0), null);
 			}
 			if (_currentLexer.TokenType == ScriptLex.LexTypes.RNull)

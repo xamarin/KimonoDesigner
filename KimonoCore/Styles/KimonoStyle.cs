@@ -1350,7 +1350,7 @@ namespace KimonoCore
 
 			// Generate code
 			sourceCode = "// Obi Script Selector for this style\n";
-			sourceCode += $"[style:{Name}]";
+			sourceCode += $"Return.Style(\"{Name}\");\n";
 
 			// Return results
 			return sourceCode;

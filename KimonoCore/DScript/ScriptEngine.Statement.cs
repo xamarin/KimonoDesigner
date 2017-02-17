@@ -51,7 +51,7 @@ namespace DScript
 			else if (_currentLexer.TokenType == ScriptLex.LexTypes.RVar)
 			{
 				//creating variables
-				//TODO: make this less shit
+				//TODO: Clean up variable generation
 
 				_currentLexer.Match(ScriptLex.LexTypes.RVar);
 

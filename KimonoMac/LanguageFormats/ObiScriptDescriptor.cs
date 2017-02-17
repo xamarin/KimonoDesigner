@@ -65,6 +65,8 @@ namespace AppKit.TextKit.Formatter
 			// Keywords.Add("", new KeywordDescriptor(KeywordType.ReferenceType, ReferenceTypeColor, ""));
 			Keywords.Add("class", new KeywordDescriptor(KeywordType.ReferenceType, ReferenceTypeColor, "Classes are declared using the keyword class."));
 			Keywords.Add("function", new KeywordDescriptor(KeywordType.ReferenceType, ReferenceTypeColor, "Defines a reusable function."));
+			Keywords.Add("true", new KeywordDescriptor(KeywordType.ReferenceType, ReferenceTypeColor, "Represents the boolean value true."));
+			Keywords.Add("false", new KeywordDescriptor(KeywordType.ReferenceType, ReferenceTypeColor, "Represents the boolean value false."));
 
 			// Generic Types
 			// Keywords.Add("", new KeywordDescriptor(KeywordType.Type, TypeColor, ""));
@@ -99,6 +101,7 @@ namespace AppKit.TextKit.Formatter
 			Keywords.Add("return", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "The return statement terminates execution of the method in which it appears and returns control to the calling method. It can also return an optional value."));
 			Keywords.Add("Return.Text", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "Returns a string result to the Kimono Property."));
 			Keywords.Add("Return.Boolean", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "Returns a boolean result to the Kimono Property."));
+			Keywords.Add("Return.Number", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "Returns a numeric result to the Kimono Property."));
 			Keywords.Add("Return.Color", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "Returns a named color to the Kimono Property."));
 			Keywords.Add("Return.Gradient", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "Returns a named gradient to the Kimono Property."));
 			Keywords.Add("Return.NoGradient", new KeywordDescriptor(KeywordType.JumpStatement, JumpStatementColor, "Removes the gradient from the Kimono Property."));
@@ -191,8 +194,8 @@ namespace AppKit.TextKit.Formatter
 
 			// Preprocessor Directive
 			// Keywords.Add("", new KeywordDescriptor(KeywordType.PreprocessorDirective, PreprocessorDirectiveColor, ""));
-			Keywords.Add("Return.RaiseError", new KeywordDescriptor(KeywordType.PreprocessorDirective, JumpStatementColor, "Raises an error in the ObiScript."));
-			Keywords.Add("Return.ClearResults", new KeywordDescriptor(KeywordType.PreprocessorDirective, JumpStatementColor, "Clears the last execution results."));
+			Keywords.Add("Return.RaiseError", new KeywordDescriptor(KeywordType.PreprocessorDirective, PreprocessorDirectiveColor, "Raises an error in the ObiScript."));
+			Keywords.Add("Return.ClearResults", new KeywordDescriptor(KeywordType.PreprocessorDirective, PreprocessorDirectiveColor, "Clears the last execution results."));
 
 			// Define formats
 			Formats.Add(new FormatDescriptor("//", CommentColor));

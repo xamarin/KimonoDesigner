@@ -2479,6 +2479,16 @@ namespace KimonoMac
 		/// Adds the property boolean.
 		/// </summary>
 		/// <param name="sender">Sender.</param>
+		[Action("addPropertyLibrary:")]
+		public void AddPropertyLibrary(NSObject sender)
+		{
+			DesignSurface.Portfolio.AddPropertyLibrary();
+		}
+
+		/// <summary>
+		/// Adds the property boolean.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
 		[Action("addPropertyBoolean:")]
 		public void AddPropertyBoolean(NSObject sender)
 		{

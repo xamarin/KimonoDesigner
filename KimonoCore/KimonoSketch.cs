@@ -1909,7 +1909,7 @@ namespace KimonoCore
 					}
 					break;
 				case CodeOutputLanguage.ObiScript:
-					// TODO: Add ObiScript output
+					sourceCode += "// Sketches are not supported in ObiScript\n";
 					break;
 			}
 

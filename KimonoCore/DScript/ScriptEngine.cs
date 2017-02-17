@@ -100,10 +100,55 @@ namespace DScript
 			Root.Trace(0, null);
 		}
 
+		private List<string> IncludedLibraries = new List<string>();
+
+		private bool LibraryIncluded(string name)
+		{
+			// Scan list of included libraries
+			foreach (string library in IncludedLibraries)
+			{
+				// Found?
+				if (library == name) return true;
+			}
+
+			// No
+			return false;
+		}
+
 		public void Execute(String code)
 		{
 			ScriptLex oldLex = _currentLexer;
 			Stack<ScriptVar> oldScopes = _scopes;
+
+			// Preprocess script and expand any libraries if needed
+			IncludedLibraries.Clear();
+			foreach (KimonoProperty property in ObiScriptPortfolio.Portfolio.Properties)
+			{
+				// Is this a script library?
+				if (property is KimonoPropertyLibrary)
+				{
+					// Yes, see if it has been included in the current script
+					var token = $"using {property.Name};";
+
+					// Included?
+					if (code.Contains(token))
+					{
+						// Yes, is the library already included?
+						if (LibraryIncluded(property.Name))
+						{
+							// Yes, just remove this call
+							code = code.Replace(token, "");
+						}
+						else
+						{
+							// No, expand the library into this script and
+							// mark library as included
+							code = code.Replace(token, property.ObiScript);
+							IncludedLibraries.Add(property.Name);
+						}
+					}
+				}
+			}
 
 			using (_currentLexer = new ScriptLex(code))
 			{

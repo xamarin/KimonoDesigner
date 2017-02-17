@@ -789,7 +789,7 @@ namespace KimonoCore
 
 			// Generate code
 			sourceCode = "// Obi Script Selector for this gradient\n";
-			sourceCode += $"[gradient:{Name}]";
+			sourceCode += $"Return.Gradient(\"{Name}\");\n";
 
 			// Return results
 			return sourceCode;

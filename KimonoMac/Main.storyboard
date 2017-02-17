@@ -439,6 +439,12 @@ CA
                                                 <action selector="addPropertyText:" target="Ady-hI-5gd" id="HP1-Rf-yMg"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Add Script Library" id="HcN-m2-ftX">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addPropertyLibrary:" target="Ady-hI-5gd" id="IN9-4K-Nqt"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

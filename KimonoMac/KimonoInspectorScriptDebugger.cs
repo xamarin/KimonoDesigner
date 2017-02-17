@@ -43,9 +43,59 @@ namespace KimonoMac
 		#endregion
 
 		#region Constructors
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KimonoMac.KimonoInspectorScriptDebugger"/> class.
+		/// </summary>
+		/// <param name="handle">Handle.</param>
 		public KimonoInspectorScriptDebugger (IntPtr handle) : base (handle)
 		{
 		}
+		#endregion
+
+		#region Private Methods
+		/// <summary>
+		/// Updates the status of a script execution.
+		/// </summary>
+		/// <param name="results">The results of the last script run.</param>
+		private void UpdateStatus(ObiScriptResult results)
+		{
+			// Display the results
+			if (results.Successful)
+			{
+				ErrorMessage.TextColor = NSColor.Black;
+				ErrorMessage.Value = "Successful!\n";
+
+				// Show named results
+				if (SelectedProperty is KimonoPropertyColor)
+				{
+					ErrorMessage.Value += $"Resutls: {((KimonoPropertyColor)SelectedProperty).Value.Name}";
+				}
+				else if (SelectedProperty is KimonoPropertyGradient)
+				{
+					var gradient = ((KimonoPropertyGradient)SelectedProperty).Value as KimonoGradient;
+
+					// Adding or removing a gradient?
+					if (gradient == null)
+					{
+						ErrorMessage.Value += $"Resutls: Clears current gradient.";
+					}
+					else
+					{
+						ErrorMessage.Value += $"Resutls: {gradient.Name}";
+					}
+				}
+				else if (SelectedProperty is KimonoPropertyStyle)
+				{
+					ErrorMessage.Value += $"Resutls: {((KimonoPropertyStyle)SelectedProperty).Value.Name}";
+				}
+			}
+			else
+			{
+				ErrorMessage.TextColor = NSColor.Red;
+				ErrorMessage.Value = results.ErrorMessage;
+			}
+		}
+
 		#endregion
 
 		#region Public Methods
@@ -62,7 +112,7 @@ namespace KimonoMac
 		/// </summary>
 		public void UpdateInspector()
 		{
-			
+			UpdateStatus(ObiScriptEngine.EvaluationResult);
 		}
 
 		/// <summary>
@@ -89,33 +139,8 @@ namespace KimonoMac
 			// Execute the script
 			var results = SelectedProperty.Evaluate();
 
-			// Display the results
-			if (results.Successful)
-			{
-				ErrorMessage.TextColor = NSColor.Black;
-				ErrorMessage.Value = "Successful!\n\n";
-
-				// Show named results
-				if (SelectedProperty is KimonoPropertyColor)
-				{
-					ErrorMessage.Value += $"Resutls: {((KimonoPropertyColor)SelectedProperty).Value.Name}";
-				}
-				else if (SelectedProperty is KimonoPropertyGradient)
-				{
-					ErrorMessage.Value += $"Resutls: {((KimonoPropertyGradient)SelectedProperty).Value.Name}";
-				}
-				else if (SelectedProperty is KimonoPropertyStyle)
-				{
-					ErrorMessage.Value += $"Resutls: {((KimonoPropertyStyle)SelectedProperty).Value.Name}";
-				}
-			}
-			else
-			{
-				ErrorMessage.TextColor = NSColor.Red;
-				ErrorMessage.Value = results.ErrorMessage;
-			}
-
 			// Update the UI
+			UpdateStatus(results);
 			RaisePropertyModified();
 		}
 		#endregion

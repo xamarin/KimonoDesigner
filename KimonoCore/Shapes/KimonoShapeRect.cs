@@ -259,7 +259,7 @@ namespace KimonoCore
 					sourceCode += ToCSharp(outputLibrary);
 					break;
 				case CodeOutputLanguage.ObiScript:
-					// TODO: Add ObiScript output
+					sourceCode += "// Shapes are not supported in ObiScript\n";
 					break;
 			}
 

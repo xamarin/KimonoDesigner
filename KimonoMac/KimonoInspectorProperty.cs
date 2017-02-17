@@ -111,7 +111,10 @@ namespace KimonoMac
 			} else if (SelectedProperty is KimonoPropertyText)
 			{
 				PropertyType.StringValue = "Text Property";
-			} 
+			} else if (SelectedProperty is KimonoPropertyLibrary)
+			{
+				PropertyType.StringValue = "Script Library";
+			}
 		}
 
 		/// <summary>

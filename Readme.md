@@ -198,6 +198,18 @@ In addition to all of the standard language features that JavaScript provides, O
 * `Math.Log10`
 * `Math.Exp`
 
+### Script Libraries
+
+If the user has a group of ObiScript functions that they want to use across all of the scripts in the portfolio, they can add a **Script Library** from the **Portfolio** menu. Unlike a typical property, a Script Library holds a collection of `function` definitions: 
+
+![](Images/Intro19.png)
+
+Any script that wants to use the functions in the library will need to add a `using library-name;` statement to the top of the script:
+
+![](Images/Intro20.png)
+
+With that line in place, the user can call any function from the library as if it was defined inside the current script.
+
 ## Work in Progress
 
 This app is very much a work-in-progress and still has several rough areas and missing features (such as drag to select and save/load portfolios). Work is currently focusing on adding the main features of the app, so several UI refinements still need to be implemented.

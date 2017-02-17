@@ -72,12 +72,12 @@ namespace KimonoCore
 		/// <returns>The boolean result from the script.</returns>
 		/// <param name="state">The boolean value to send to the property.</param>
 		/// <param name="userData">The `ScriptEngine` executing the script.</param>
-		public static void Boolean(bool state, object userData)
+		public static void Boolean(int state, object userData)
 		{
 			// Save result
 			EvaluationResult.Successful = true;
 			EvaluationResult.ErrorMessage = "";
-			EvaluationResult.Value = state;
+			EvaluationResult.Value = (state == 1);
 		}
 
 		/// <summary>

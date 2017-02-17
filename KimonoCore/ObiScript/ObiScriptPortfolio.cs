@@ -130,7 +130,7 @@ namespace KimonoCore
 		/// <param name="name">The name of the property to set.</param>
 		/// <param name="value">The new value.</param>
 		/// <param name="userData">The `ScriptEngine` executing the script.</param>
-		public static void SetBoolean(string name, bool value, object userData)
+		public static void SetBoolean(string name, int value, object userData)
 		{
 			// Get requested property
 			var property = FindProperty(name);
@@ -140,7 +140,7 @@ namespace KimonoCore
 			{
 				// Yes, return value
 				var prop = property as KimonoPropertyBoolean;
-				prop.Value = value;
+				prop.Value = (value == 1);
 			}
 		}
 

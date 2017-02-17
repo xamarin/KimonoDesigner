@@ -371,6 +371,20 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Adds a new library property.
+		/// </summary>
+		/// <returns>The new `KimonoPropertyBoolean`.</returns>
+		public KimonoPropertyLibrary AddPropertyLibrary()
+		{
+			// Add property
+			var property = new KimonoPropertyLibrary();
+			AddNewProperty(property);
+
+			// Return new property
+			return property;
+		}
+
+		/// <summary>
 		/// Adds a new color property.
 		/// </summary>
 		/// <returns>The new `KimonoPropertyColor`.</returns>
@@ -1258,7 +1272,7 @@ namespace KimonoCore
 					}
 					break;
 				case CodeOutputLanguage.ObiScript:
-					// TODO: Add ObiScript output
+					sourceCode += "// Portfolios are not supported in ObiScript\n";
 					break;
 			}
 

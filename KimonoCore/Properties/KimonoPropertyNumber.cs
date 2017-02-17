@@ -45,10 +45,10 @@ namespace KimonoCore
 				if (ObiScriptEngine.EvaluationResult.Successful)
 				{
 					// Was the right type returned?
-					if (ObiScriptEngine.EvaluationResult.Value is double || ObiScriptEngine.EvaluationResult.Value is int)
+					if (ObiScriptEngine.EvaluationResult.Value is double)
 					{
 						// Yes, save it
-						Value = (float)ObiScriptEngine.EvaluationResult.Value;
+						Value = float.Parse(ObiScriptEngine.EvaluationResult.Value.ToString());
 					}
 					else
 					{
