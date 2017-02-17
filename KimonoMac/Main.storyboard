@@ -1482,6 +1482,7 @@ CA
                         <outlet property="PropertyInspector" destination="IZC-Kc-rJm" id="piy-WC-MVa"/>
                         <outlet property="RectPropertyInspector" destination="0zM-vX-yAO" id="le0-Nq-vUw"/>
                         <outlet property="RoundRectInspector" destination="kKL-KR-JcB" id="pk4-HX-Iy1"/>
+                        <outlet property="ScriptDebuggerInspector" destination="xdl-4D-MhL" id="Kv7-TG-WeW"/>
                         <outlet property="SketchInspector" destination="1ec-AS-7vw" id="DdH-Lz-B7P"/>
                         <outlet property="SketchPath" destination="ogD-v0-5gp" id="ywG-hb-heR"/>
                         <outlet property="SourceList" destination="0yc-xJ-xPt" id="pIz-9w-8UM"/>
@@ -1981,7 +1982,7 @@ CA
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="tRh-3F-wvP">
                                 <rect key="frame" x="1" y="1" width="233" height="278"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="5" indentationMarkerFollowsCell="NO" outlineTableColumn="sdo-Lc-X6c" id="eNN-0O-gUt" customClass="SourceListView">
                                         <rect key="frame" x="0.0" y="0.0" width="233" height="278"/>
@@ -2034,7 +2035,7 @@ CA
                                                                 <rect key="frame" x="25" y="0.0" width="205" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="W9o-XR-52G">
-                                                                    <font key="font" metaFont="system" size="11"/>
+                                                                    <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
@@ -2103,6 +2104,71 @@ CA
                     <connections>
                         <outlet property="ConnectionList" destination="eNN-0O-gUt" id="RZn-FU-da5"/>
                         <outlet property="PropertyDropdown" destination="IaC-T1-kHg" id="QOq-9J-oZg"/>
+                    </connections>
+                </customView>
+                <customView id="xdl-4D-MhL" customClass="KimonoInspectorScriptDebugger">
+                    <rect key="frame" x="0.0" y="0.0" width="251" height="140"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <button toolTip="Evaluate script" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YxQ-yq-NHl">
+                            <rect key="frame" x="221" y="109" width="24" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconAccept" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="uXh-ib-Cnj">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="EvalScript:" target="xdl-4D-MhL" id="ZIR-cy-Ufm"/>
+                            </connections>
+                        </button>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VkO-rC-ReE">
+                            <rect key="frame" x="4" y="113" width="211" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Test Script" id="ovd-2d-OUL">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="80N-Z8-SCU">
+                            <rect key="frame" x="0.0" y="101" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
+                        <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ium-IP-Wbj">
+                            <rect key="frame" x="5" y="15" width="241" height="82"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <clipView key="contentView" ambiguous="YES" id="Y7W-vU-hB8">
+                                <rect key="frame" x="1" y="1" width="239" height="80"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <textView ambiguous="YES" editable="NO" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="eK1-GJ-XhI" customClass="KimonoTextView">
+                                        <rect key="frame" x="0.0" y="0.0" width="239" height="80"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <size key="minSize" width="239" height="80"/>
+                                        <size key="maxSize" width="463" height="10000000"/>
+                                        <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </clipView>
+                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="mCQ-3O-8Md">
+                                <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                            <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Vks-7l-CM2">
+                                <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                        </scrollView>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Zn5-iF-aUM">
+                            <rect key="frame" x="0.0" y="4" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
+                    </subviews>
+                    <connections>
+                        <outlet property="ErrorMessage" destination="eK1-GJ-XhI" id="db7-CP-ld0"/>
+                        <outlet property="EvalButton" destination="YxQ-yq-NHl" id="vnS-ze-SSX"/>
                     </connections>
                 </customView>
                 <customView id="0zM-vX-yAO" customClass="KimonoInspectorPropertyRect">
@@ -2224,7 +2290,7 @@ CA
                             <autoresizingMask key="autoresizingMask"/>
                             <clipView key="contentView" ambiguous="YES" id="Ujo-dg-Fu8">
                                 <rect key="frame" x="1" y="1" width="239" height="80"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView ambiguous="YES" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Dcp-Rt-Bvg" customClass="KimonoTextView">
                                         <rect key="frame" x="0.0" y="0.0" width="239" height="80"/>
@@ -2242,7 +2308,7 @@ CA
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="YOI-5g-9Fh">
-                                <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                                <rect key="frame" x="224" y="1" width="16" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -2265,7 +2331,7 @@ CA
                             </textFieldCell>
                         </textField>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="kye-H2-q4Y">
-                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="118"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KCB-J0-fhU">
@@ -2930,7 +2996,7 @@ CA
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="y7D-lo-tRM">
-                            <rect key="frame" x="0.0" y="159" width="251" height="4"/>
+                            <rect key="frame" x="0.0" y="159" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L62-Oq-4jU">
@@ -3482,7 +3548,7 @@ CA
                             <autoresizingMask key="autoresizingMask"/>
                             <clipView key="contentView" ambiguous="YES" id="lkQ-jz-dmy">
                                 <rect key="frame" x="1" y="1" width="239" height="80"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView ambiguous="YES" importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="hFb-9P-9Ug" customClass="KimonoTextView">
                                         <rect key="frame" x="0.0" y="0.0" width="239" height="80"/>
@@ -3500,7 +3566,7 @@ CA
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="jSD-NN-tgo">
-                                <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                                <rect key="frame" x="224" y="1" width="16" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -5464,6 +5530,7 @@ CA
         </scene>
     </scenes>
     <resources>
+        <image name="IconAccept" width="48" height="48"/>
         <image name="IconAdd" width="48" height="48"/>
         <image name="IconAddColor" width="48" height="48"/>
         <image name="IconAddGradient" width="50" height="50"/>

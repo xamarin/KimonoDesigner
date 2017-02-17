@@ -13,7 +13,7 @@ namespace KimonoCore
 		/// Gets or sets the value.
 		/// </summary>
 		/// <value>The `KimonoGradient` value.</value>
-		public KimonoGradient Value { get; set; } = new KimonoGradient();
+		public KimonoGradient Value { get; set; } = null;
 
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoProperty"/> gets value from script.
@@ -59,16 +59,38 @@ namespace KimonoCore
 		/// <returns>The result of the Obi Script execution as a `ObiScriptResult`.</returns>
 		public override ObiScriptResult Evaluate()
 		{
-			var scriptResult = new ObiScriptResult();
-
 			// Is there a script attached?
-			if (IsObiScriptValue)
+			if (GetsValueFromScript)
 			{
-				// TODO: Execute the script to get the new value
+				// Execute the script to get the new value
+				ObiScriptEngine.Runtime.Execute(ObiScript);
+
+				// Was the script successful?
+				if (ObiScriptEngine.EvaluationResult.Successful)
+				{
+					// Was the right type returned?
+					if (ObiScriptEngine.EvaluationResult.Value == null) {
+						// Remove gradient
+						Value = null;
+					} 
+					else if (ObiScriptEngine.EvaluationResult.Value is KimonoGradient)
+					{
+						// Yes, save it
+						Value = ObiScriptEngine.EvaluationResult.Value as KimonoGradient;
+					}
+					else
+					{
+						// Report this as an error
+						ObiScriptEngine.EvaluationResult.Successful = false;
+						ObiScriptEngine.EvaluationResult.ErrorMessage = "Error: Script did not return a named gradient. " +
+							"Call `Return.Gradient(\"name\");` to return the required value or `Return.NoGradient();` to " +
+							"remove the current gradient.";
+					}
+				}
 			}
 
 			// Return the result of executing the script
-			return scriptResult;
+			return ObiScriptEngine.EvaluationResult;
 		}
 		#endregion
 
@@ -98,7 +120,7 @@ namespace KimonoCore
 				IsObiScriptValue = this.IsObiScriptValue,
 				GetsValueFromScript = this.GetsValueFromScript,
 				ObiScript = this.ObiScript,
-				Value = this.Value.Clone()
+				Value = (this.Value == null) ? null : this.Value.Clone()
 			};
 
 			// Return clone

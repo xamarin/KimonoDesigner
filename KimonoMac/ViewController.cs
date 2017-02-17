@@ -848,6 +848,7 @@ namespace KimonoMac
 			RectPropertyInspector.Initialize();
 			TextPropertyInspector.Initialize();
 			ConnectionsInspector.Initialize();
+			ScriptDebuggerInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -872,6 +873,7 @@ namespace KimonoMac
 			RectPropertyInspector.DesignSurface = DesignSurface;
 			TextPropertyInspector.DesignSurface = DesignSurface;
 			ConnectionsInspector.DesignSurface = DesignSurface;
+			ScriptDebuggerInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -934,6 +936,7 @@ namespace KimonoMac
 				UpdatePropertyList(true);
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
+				ShowPropertyInspectors(property);
 			};
 
 			PropertyInspector.RequestDeleteProperty += (property) =>
@@ -955,6 +958,15 @@ namespace KimonoMac
 				// Update UI
 				UpdatePropertyList(true);
 				ShowPropertyInspectors(newProperty);
+			};
+
+			// -- Script Debug Inspector -----------------------------------------
+			ScriptDebuggerInspector.PropertyModified += (property) =>
+			{
+				// Update UI
+				DesignSurface.RefreshView();
+				UpdateTextEditor();
+				ShowPropertyInspectors(property);
 			};
 
 			// -- Boolean Property Inspector -----------------------------------------
@@ -1258,6 +1270,7 @@ namespace KimonoMac
 			RectPropertyInspector.RemoveFromSuperview();
 			TextPropertyInspector.RemoveFromSuperview();
 			ConnectionsInspector.RemoveFromSuperview();
+			ScriptDebuggerInspector.RemoveFromSuperview();
 		}
 
 		/// <summary>
@@ -1837,6 +1850,15 @@ namespace KimonoMac
 				InspectorView.AddSubview(TextPropertyInspector);
 			}
 
+			// Scripting?
+			if (property.GetsValueFromScript)
+			{
+				// Yes, add debug inspector
+				ScriptDebuggerInspector.SelectedProperty = property;
+				offset = ScriptDebuggerInspector.MoveTo(offset);
+				InspectorView.AddSubview(ScriptDebuggerInspector);
+			}
+
 			// Adjust Side content size
 			var height = View.Frame.Height - offset;
 			if (height < View.Frame.Height) height = View.Frame.Height;
@@ -1995,6 +2017,9 @@ namespace KimonoMac
 
 			// Configure editor from user preferences
 			ConfigureEditor();
+
+			// Attach to script engine
+			ObiScriptPortfolio.Portfolio = DesignSurface.Portfolio;
 
 			// Highligh the syntax of the text after an edit has been made
 			TextEditor.TextStorage.DidProcessEditing += (sender, e) =>

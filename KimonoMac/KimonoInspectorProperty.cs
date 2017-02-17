@@ -87,6 +87,7 @@ namespace KimonoMac
 					PropertyUsage.SelectItem(2);
 					break;
 			}
+			PropertyUsage.Enabled = !SelectedProperty.GetsValueFromScript;
 
 			// Show property type
 			if (SelectedProperty is KimonoPropertyBoolean)
@@ -165,6 +166,8 @@ namespace KimonoMac
 
 			// Save new value
 			SelectedProperty.GetsValueFromScript = (ValueFromScriptCheckbox.IntValue == 1);
+			ObiScriptEngine.ClearResults();
+			if (SelectedProperty.GetsValueFromScript) SelectedProperty.Usage = KimonoPropertyUsage.GlobalVariable;
 
 			// Update UI
 			RaisePropertyModified();

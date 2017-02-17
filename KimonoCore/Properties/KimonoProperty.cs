@@ -1,5 +1,6 @@
 ﻿using System;
 using SkiaSharp;
+using DScript;
 
 namespace KimonoCore
 {
@@ -70,9 +71,9 @@ namespace KimonoCore
 			var scriptResult = new ObiScriptResult();
 
 			// Is there a script attached?
-			if (IsObiScriptValue)
+			if (GetsValueFromScript)
 			{
-				// TODO: Execute the script to get the new value
+				// This needs to be implemented in each individual property type
 			}
 
 			// Return the result of executing the script

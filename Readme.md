@@ -49,6 +49,32 @@ When this class is included in a cross-platform application, the developer can u
 
 ![](Images/Intro08.png)
 
+### Linked Properties
+
+The user can define several different types of named properties in a portfolio and attach those properties to values for colors, gradients, styles and shapes. Use the Portfolio menu to define a new property of a given type. Next, configure the new property in the Property Inspector:
+
+![](Images/Intro13.png)
+
+After the property has been defined, select a color, gradient, style or shape, switch to the Connection Inspector and attach the property to the desired value of the selected item:
+
+![](Images/Intro14.png)
+
+When the value of the property changes, any item in the sketch using the property will be instantly updated with the new value:
+
+![](Images/Intro15.png)
+
+The following property types can be defined:
+
+* **Boolean** - Holds a `true` or `false` value.
+* **Number** - Holds a numeric value.
+* **Text** - Holds a string value.
+* **Rect** - Holds a rectangular value.
+* **Color** - Returns a named color stored in the portfolio.
+* **Gradient** - Returns a named gradient stored in the portfolio.
+* **Style** -Returns a named style stored in the portfolio.
+
+In addition to being constant values, properties can derive their values from an attached ObiScript (see ObiScript section below) and dynamically change based on the state of other properties or user interaction.
+
 ## Source Code Generation
 
 The main purpose of the Kimono Designer is to allow the developer to graphically define SkiaSharp objects that will be converted to source code that can be used in any cross-platform application that supports SkiaSharp.
@@ -76,6 +102,101 @@ Source code can either be generated directly using SkiaSharp classes or by using
 ![](Images/Intro12.png)
 
 When using the helper classes, the developer will need to include the KimonoCore library in any project that consumes the code.
+
+## ObiScript
+
+As stated above, portfolio properties can derive their values by executing an attached script written in the ObiScript language. ObiScript is a powerful and easy scripting language built on top of the [DScript](https://github.com/bizzehdee/DScript) language (by Darren Horrocks). Because of this, ObiScript's syntax is nearly identical to JavaScript:
+
+![](Images/Intro16.png)
+
+When developing or editing an ObiScript, the user can instantly test the script using the Debugging Inspector:
+
+![](Images/Intro17.png)
+
+In the event of an error, the Debugger Inspector will give helpful error messages:
+
+![](Images/Intro18.png)
+
+In addition to all of the standard language features that JavaScript provides, ObiScript provides the following:
+
+### Return Functions
+
+* `Return.Text` - Returns a string value to the property.
+* `Return.Boolean` - Returns a boolean value to the property.
+* `Return.Color` - Returns a named color to the property.
+* `Return.Gradient` - Returns a named gradient to the property.
+* `Return.NoGradient` - Removes the gradient from the property.
+* `Return.Style` - Returns a named style to the property.
+* `Return.NoStyle` - Removes the style from the property.
+* `Return.Property` - Returns the value of another property to the property.
+* `Return.Rect` - Returns a rectangular value to the property.
+* `Return.RaiseError` - Raises an error message in the Kimono Designer.
+* `Return.ClearResults` - Erases the results of the last ObiScript executed.
+
+### Portfolio Functions
+
+* `Portfolio.GetBoolean` - Gets the value of a boolean property.
+* `Portfolio.SetBoolean` - Sets the value of a boolean property.
+* `Portfolio.GetNumber` - Gets the value of a numeric property.
+* `Portfolio.SetNumber` - Sets the value of a numeric property.
+* `Portfolio.GetText` - Gets the value of a text property.
+* `Portfolio.SetText` - Sets the value of a text property.
+* `Portfolio.SetRect` - Sets the value of a rect property.
+* `Portfolio.SetColor` - Sets the RGBa value of a color property.
+* `Portfolio.SetNamedColor` - Sets the RGBa value of a named color in the portfolio.
+* `Portfolio.HasColor` - Returns `true` if the portfolio contains the given named color.
+* `Portfolio.HasGradient` - Returns `true` if the portfolio contains the given gradient.
+* `Portfolio.HasStyle` - Returns `true` if the portfolio contains the given style.
+* `Portfolio.HasProperty` - Returns `true` if the portfolio contains the given property.
+
+### Console Functions
+
+* `Console.WriteLine` - Writes the given string to the Visual Studio output pane and performs a newline.
+* `Console.Write` - Writes the given string to the Visual Studio output.
+
+### Conversion Functions
+
+* `Convert.IntToString`
+* `Convert.FloatToString`
+* `Convert.FloatToInt`
+* `Convert.StringToFloat`
+* `Convert.StringToInt`
+
+### Random Number Functions
+
+* `Random.Next`
+* `Random.NextMax`
+* `Random.NextMinMax`
+
+### Math Functions
+
+* `Math.Pi`
+* `Math.E`
+* `Math.Abs`
+* `Math.Round`
+* `Math.Ceil`
+* `Math.Floor`
+* `Math.Min`
+* `Math.Max`
+* `Math.Range`
+* `Math.Sign`
+* `Math.Sin`
+* `Math.Cos`
+* `Math.Tan`
+* `Math.Sinh`
+* `Math.Cosh`
+* `Math.Tanh`
+* `Math.ASin`
+* `Math.ACos`
+* `Math.ATan`
+* `Math.ASinh`
+* `Math.ACosh`
+* `Math.ATan2`
+* `Math.Pow`
+* `Math.Sqrt`
+* `Math.Log`
+* `Math.Log10`
+* `Math.Exp`
 
 ## Work in Progress
 

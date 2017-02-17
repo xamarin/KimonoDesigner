@@ -456,6 +456,10 @@
     <Compile Include="KimonoInspectorConnections.designer.cs">
       <DependentUpon>KimonoInspectorConnections.cs</DependentUpon>
     </Compile>
+    <Compile Include="KimonoInspectorScriptDebugger.cs" />
+    <Compile Include="KimonoInspectorScriptDebugger.designer.cs">
+      <DependentUpon>KimonoInspectorScriptDebugger.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

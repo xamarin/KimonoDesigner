@@ -18,6 +18,12 @@ namespace KimonoCore
 		/// </summary>
 		/// <value>The error message or "" if the script ran successfully.</value>
 		public string ErrorMessage { get; set; } = "";
+
+		/// <summary>
+		/// Gets or sets the value of a ObiScript result.
+		/// </summary>
+		/// <value>The value.</value>
+		public object Value { get; set; } = null;
 		#endregion
 
 		#region Constructors

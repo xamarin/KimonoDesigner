@@ -9,15 +9,15 @@ using SkiaSharp;
 namespace KimonoMac
 {
 	/// <summary>
-	/// Handles the boolean property inspector.
+	/// Handles the script debugger inspector.
 	/// </summary>
-	public partial class KimonoInspectorPropertyBoolean : NSView
+	public partial class KimonoInspectorScriptDebugger : NSView
 	{
 		#region Private Variables
 		/// <summary>
-		/// The selected boolean.
+		/// The selected property.
 		/// </summary>
-		private KimonoPropertyBoolean _selectedBoolean = null;
+		private KimonoProperty _selectedProperty = null;
 		#endregion
 
 		#region Computed Properties
@@ -28,22 +28,22 @@ namespace KimonoMac
 		public KimonoDesignSurface DesignSurface { get; set; }
 
 		/// <summary>
-		/// Gets or sets the selected round rect.
+		/// Gets or sets the selected property.
 		/// </summary>
-		/// <value>The selected round rect.</value>
-		public KimonoPropertyBoolean SelectedBoolean
+		/// <value>The selected property.</value>
+		public KimonoProperty SelectedProperty
 		{
-			get { return _selectedBoolean; }
+			get { return _selectedProperty; }
 			set
 			{
-				_selectedBoolean = value;
+				_selectedProperty = value;
 				UpdateInspector();
 			}
 		}
 		#endregion
 
 		#region Constructors
-		public KimonoInspectorPropertyBoolean (IntPtr handle) : base (handle)
+		public KimonoInspectorScriptDebugger (IntPtr handle) : base (handle)
 		{
 		}
 		#endregion
@@ -54,7 +54,7 @@ namespace KimonoMac
 		/// </summary>
 		public void Initialize()
 		{
-
+			
 		}
 
 		/// <summary>
@@ -62,16 +62,7 @@ namespace KimonoMac
 		/// </summary>
 		public void UpdateInspector()
 		{
-			// Update UI
-			if (SelectedBoolean.Value)
-			{
-				ValueDropdown.SelectItem(0);
-			}
-			else
-			{
-				ValueDropdown.SelectItem(1);
-			}
-			ValueDropdown.Enabled = !SelectedBoolean.GetsValueFromScript;
+			
 		}
 
 		/// <summary>
@@ -90,16 +81,39 @@ namespace KimonoMac
 
 		#region Custom Actions
 		/// <summary>
-		/// Handles the value changing.
+		/// Evaluate the current script
 		/// </summary>
 		/// <param name="sender">Sender.</param>
-		partial void ValueChanged(Foundation.NSObject sender)
+		partial void EvalScript(Foundation.NSObject sender)
 		{
-			// Save undo point
-			DesignSurface.SaveUndoPoint();
+			// Execute the script
+			var results = SelectedProperty.Evaluate();
 
-			// Save value
-			SelectedBoolean.Value = (ValueDropdown.IndexOfSelectedItem == 0);
+			// Display the results
+			if (results.Successful)
+			{
+				ErrorMessage.TextColor = NSColor.Black;
+				ErrorMessage.Value = "Successful!\n\n";
+
+				// Show named results
+				if (SelectedProperty is KimonoPropertyColor)
+				{
+					ErrorMessage.Value += $"Resutls: {((KimonoPropertyColor)SelectedProperty).Value.Name}";
+				}
+				else if (SelectedProperty is KimonoPropertyGradient)
+				{
+					ErrorMessage.Value += $"Resutls: {((KimonoPropertyGradient)SelectedProperty).Value.Name}";
+				}
+				else if (SelectedProperty is KimonoPropertyStyle)
+				{
+					ErrorMessage.Value += $"Resutls: {((KimonoPropertyStyle)SelectedProperty).Value.Name}";
+				}
+			}
+			else
+			{
+				ErrorMessage.TextColor = NSColor.Red;
+				ErrorMessage.Value = results.ErrorMessage;
+			}
 
 			// Update the UI
 			RaisePropertyModified();
@@ -108,17 +122,17 @@ namespace KimonoMac
 
 		#region Events
 		/// <summary>
-		/// Occurs when shape modified.
+		/// Occurs when property modified.
 		/// </summary>
 		public event Kimono.PropertyEventDelegate PropertyModified;
 
 		/// <summary>
-		/// Raises the shape modified event.
+		/// Raises the property modified event.
 		/// </summary>
 		internal void RaisePropertyModified()
 		{
 			// Inform caller of event
-			if (PropertyModified != null) PropertyModified(SelectedBoolean);
+			if (PropertyModified != null) PropertyModified(SelectedProperty);
 		}
 		#endregion
 	}

@@ -74,6 +74,7 @@ namespace KimonoMac
 		{
 			// Update UI
 			ValueField.FloatValue = SelectedNumber.Value;
+			ValueField.Enabled = !SelectedNumber.GetsValueFromScript;
 		}
 
 		/// <summary>

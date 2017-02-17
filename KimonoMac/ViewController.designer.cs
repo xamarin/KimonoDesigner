@@ -109,6 +109,9 @@ namespace KimonoMac
 		KimonoMac.KimonoInspectorRoundRect RoundRectInspector { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorScriptDebugger ScriptDebuggerInspector { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorSketch SketchInspector { get; set; }
 
 		[Outlet]
@@ -236,9 +239,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ConnectionsInspector != null) {
-				ConnectionsInspector.Dispose ();
-				ConnectionsInspector = null;
+			if (ScriptDebuggerInspector != null) {
+				ScriptDebuggerInspector.Dispose ();
+				ScriptDebuggerInspector = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -274,6 +277,11 @@ namespace KimonoMac
 			if (ConnectionInspectorsButton != null) {
 				ConnectionInspectorsButton.Dispose ();
 				ConnectionInspectorsButton = null;
+			}
+
+			if (ConnectionsInspector != null) {
+				ConnectionsInspector.Dispose ();
+				ConnectionsInspector = null;
 			}
 
 			if (DesignSurface != null) {

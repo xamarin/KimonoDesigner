@@ -114,6 +114,12 @@ namespace KimonoMac
 			YField.FloatValue = SelectedRect.Top;
 			WidthField.FloatValue = SelectedRect.Width;
 			HeightField.FloatValue = SelectedRect.Height;
+
+			// Configure
+			XField.Enabled = !SelectedRect.GetsValueFromScript;
+			YField.Enabled = !SelectedRect.GetsValueFromScript;
+			WidthField.Enabled = !SelectedRect.GetsValueFromScript;
+			HeightField.Enabled = !SelectedRect.GetsValueFromScript;
 		}
 
 		/// <summary>

@@ -85,6 +85,7 @@ namespace KimonoMac
 		{
 			// Update UI
 			Contents.Value = SelectedText.Value;
+			Contents.Editable = !SelectedText.GetsValueFromScript;
 		}
 
 		/// <summary>

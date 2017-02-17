@@ -59,9 +59,36 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\IKimonoCodeGeneration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoSketch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\IKimonoPropertyConsumer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\ConsoleFunctionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\ConvertFunctionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\EngineFunctionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\MathFunctionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\RNGFunctionProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptClassAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Condition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Expression.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Factor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.FunctionCall.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Logic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Shift.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Statement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Term.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Ternary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptEngine.Unary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptLex.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptVar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\ScriptVarLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DScript\Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObiScript\ObiScriptEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObiScript\ObiScriptPortfolio.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />
+    <None Include="$(MSBuildThisFileDirectory)DScript\License.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Shapes\" />
@@ -71,5 +98,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)Effects\" />
     <Folder Include="$(MSBuildThisFileDirectory)Styles\" />
     <Folder Include="$(MSBuildThisFileDirectory)CodeGeneration\" />
+    <Folder Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\" />
+    <Folder Include="$(MSBuildThisFileDirectory)DScript\" />
   </ItemGroup>
 </Project>

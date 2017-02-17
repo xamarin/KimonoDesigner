@@ -59,16 +59,33 @@ namespace KimonoCore
 		/// <returns>The result of the Obi Script execution as a `ObiScriptResult`.</returns>
 		public override ObiScriptResult Evaluate()
 		{
-			var scriptResult = new ObiScriptResult();
-
 			// Is there a script attached?
-			if (IsObiScriptValue)
+			if (GetsValueFromScript)
 			{
-				// TODO: Execute the script to get the new value
+				// Execute the script to get the new value
+				ObiScriptEngine.Runtime.Execute(ObiScript);
+
+				// Was the script successful?
+				if (ObiScriptEngine.EvaluationResult.Successful)
+				{
+					// Was the right type returned?
+					if (ObiScriptEngine.EvaluationResult.Value is KimonoStyle)
+					{
+						// Yes, save it
+						Value = ObiScriptEngine.EvaluationResult.Value as KimonoStyle;
+					}
+					else
+					{
+						// Report this as an error
+						ObiScriptEngine.EvaluationResult.Successful = false;
+						ObiScriptEngine.EvaluationResult.ErrorMessage = "Error: Script did not return a named style. " +
+							"Call `Return.Style(\"name\");` to return the required value.";
+					}
+				}
 			}
 
 			// Return the result of executing the script
-			return scriptResult;
+			return ObiScriptEngine.EvaluationResult;
 		}
 		#endregion
 
