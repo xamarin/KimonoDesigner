@@ -418,9 +418,6 @@ namespace KimonoCore
 			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
 			var pathName = $"{ElementName}Path";
 
-			// Update any attached properties
-			EvaluateConnectedProperties();
-
 			// Define star points
 			var points = MakeStarPoints(-Math.PI / 2, NumberOfPoints, SkipPoints, Rect, DepthOffset * .01f);
 
@@ -448,6 +445,9 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
 
 			// Visible?
 			if (Visible)
@@ -501,7 +501,7 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 
-			// Draw with KimonoCore
+			// Build with KimonoCore
 			sourceCode += $"// Draw {Name} shape\n" +
 				$"var {ElementName} = new KimonoShapeStar({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
 				$"\n\tRotationDegrees = {RotationDegrees}," +
@@ -510,8 +510,17 @@ namespace KimonoCore
 				$"\n\tNumberOfPoints = {NumberOfPoints}" +
 				$"\n\tSkipPoints = {SkipPoints}" +
 				$"\n\tDepthOffset = {DepthOffset}" +
-				"};\n" +
-				$"{ElementName}.Draw(canvas);\n";
+				"};\n";
+
+			// Add any connections
+			var connections = ConnectionsToKimonoCore();
+			if (connections != null)
+			{
+				sourceCode += $"\n{connections}\n";
+			}
+
+			// Draw shape
+			sourceCode += $"{ElementName}.Draw(canvas);\n";
 
 			// Return code
 			return sourceCode;

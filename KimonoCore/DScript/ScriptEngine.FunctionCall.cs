@@ -132,7 +132,7 @@ namespace DScript
 
 			_currentLexer.Match((ScriptLex.LexTypes)')');
 
-			if (_currentLexer.TokenType == (ScriptLex.LexTypes) '{') //WTF?
+			if (_currentLexer.TokenType == (ScriptLex.LexTypes) '{') // Unknon issue encountered
 			{
 				Block(ref execute);
 			}

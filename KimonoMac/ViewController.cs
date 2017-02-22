@@ -1970,6 +1970,10 @@ namespace KimonoMac
 			else if (InspectingElement is KimonoColor)
 			{
 				ShowPaletteColorInspectors(InspectingElement as KimonoColor);
+				if (CurrentInspectorMode == InspectorViewMode.ConnectionView)
+				{
+					ShowConnectionInspectors(InspectingElement as IKimonoPropertyConsumer);
+				}
 			}
 			else if (InspectingElement is KimonoStyle)
 			{

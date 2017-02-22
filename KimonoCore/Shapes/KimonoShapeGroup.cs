@@ -1700,6 +1700,9 @@ namespace KimonoCore
 			var sourceCode = "";
 			var pathName = $"{ElementName}Path";
 
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Draw with Skia
 			sourceCode += "//-----------------------------------------------------------------------------\n" +
 				$"// Draw {Name} shape group\n";
@@ -1734,9 +1737,6 @@ namespace KimonoCore
 				// Is this a boolean construct?
 				if (IsBooleanConstruct && State != KimonoShapeState.Editing)
 				{
-					// Update any attached properties
-					EvaluateConnectedProperties();
-
 					// Apple the boolean operation to the group of
 					// shapes
 					var firstPath = true;
@@ -1782,9 +1782,6 @@ namespace KimonoCore
 				}
 				else
 				{
-					// Update any attached properties
-					EvaluateConnectedProperties();
-
 					// Draw each shape in the group
 					foreach (KimonoShape shape in Shapes)
 					{
@@ -1849,6 +1846,13 @@ namespace KimonoCore
 				$"{ElementName}.IsBooleanConstruct = {IsBooleanConstruct.ToString().ToLower()};\n" +
 				$"{ElementName}.BooleanOperation = SKPathOp.{BooleanOperation};\n" +
 				$"{ElementName}.IsMaskedGroup = {IsMaskedGroup.ToString().ToLower()};\n";
+
+			// Add any connections
+			var connections = ConnectionsToKimonoCore();
+			if (connections != null)
+			{
+				sourceCode += $"\n{connections}";
+			}
 
 			// Draw group
 			sourceCode += $"\n// Draw {Name} shape group\n" +

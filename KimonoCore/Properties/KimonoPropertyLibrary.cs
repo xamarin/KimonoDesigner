@@ -63,6 +63,89 @@ namespace KimonoCore
 		}
 		#endregion
 
+		#region Conversion Routines
+		/// <summary>
+		/// Converts to KimonoCore based source code
+		/// </summary>
+		/// <returns>The property as a KimonoCore object.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "new KimonoPropertyBoolean() {\n" +
+				$"\tName = \"{Name}\",\n" +
+				$"\tGetsValueFromScript = {GetsValueFromScript.ToString().ToLower()},\n" +
+				$"\tObiScript = \"{ScriptToString()}\"\n" +
+				"};\n";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Global scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpGlobal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $"// Global property {Name}\n" +
+						$"public static KimonoPropertyLibrary {ElementName} " +
+						"{get; set;}" +
+						$" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Local scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpLocal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $"// Local property {Name}\n" +
+						$"var {ElementName} = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Parameter scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpParameter(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = $"KimonoPropertyLibrary {ElementName}";
+
+			// Return results
+			return sourceCode;
+		}
+		#endregion
+
 		#region Cloning
 		/// <summary>
 		/// Clone this instance.
@@ -73,6 +156,7 @@ namespace KimonoCore
 			// Make copy
 			var newProperty = new KimonoPropertyLibrary()
 			{
+				UniqueID = this.UniqueID,
 				Name = this.Name,
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,

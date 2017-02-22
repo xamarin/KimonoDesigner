@@ -585,6 +585,58 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Checks to see if a property is attached to the given connection point. If so, the
+		/// property is used in code generation, else the default code is used.
+		/// </summary>
+		/// <returns>The source code for the possible connection point.</returns>
+		/// <param name="connectionPoint">The `KimonoPropertyConnectionPoint` to test for a connection.</param>
+		/// <param name="defaultCode">The default source code that will be used if no code is attached to the given point.</param>
+		public virtual string CheckForConnection(KimonoPropertyConnectionPoint connectionPoint, string defaultCode)
+		{
+			// Scan for used properties
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Is there an active connection to the given point?
+				if (connection.ConnectionPoint == connectionPoint)
+				{
+					// Yes, add this property and return its name
+					return KimonoCodeGenerator.AddSupportingProperty(connection.ConnectedProperty);
+				}
+			}
+
+			// Not found, use the default code
+			return defaultCode;
+		}
+
+		/// <summary>
+		/// Converts all connected points to KimonoCore source code objects.
+		/// </summary>
+		/// <returns>The code to rebuild the connections are source code.</returns>
+		public virtual string ConnectionsToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Anything to process?
+			if (PropertyConnections.Count < 1) return "";
+
+			// Start list
+			sourceCode += $"// Property connections for {Name}.\n";
+
+			// Process all connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Accumulate the connection point
+				KimonoCodeGenerator.AddSupportingProperty(connection.ConnectedProperty);
+
+				// Add code for point
+				sourceCode += $"{ElementName}.PropertyConnections.Add(new KimonoPropertyConnection(KimonoPropertyConnectionPoint.{connection.ConnectionPoint} , {connection.ConnectedProperty.ElementName}));\n";
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>
 		/// <returns>The object represented as source code in a `string`.</returns>
@@ -619,6 +671,7 @@ namespace KimonoCore
 				KimonoCodeGenerator.AddSupportingStyle(Style);
 			}
 
+			// Return results
 			return sourceCode;
 		}
 		#endregion

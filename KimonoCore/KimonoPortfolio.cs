@@ -1087,7 +1087,8 @@ namespace KimonoCore
 
 			// Assemble using statements
 			usingStatements = "using System;\n" +
-				"using SkiaSharp;\n";
+				"using SkiaSharp;\n" +
+				"using KimonoCore;\n";
 
 			// Take action based on the outputOS
 			switch (outputOS)
@@ -1121,20 +1122,31 @@ namespace KimonoCore
 				$"Name = \"{Name}\";\n" +
 				$"Namespace = \"{Namespace}\";\n" +
 				$"Author = \"{Author}\";\n" +
-				$"Copyright = \"{Copyright}\";\n\n";
+				$"Copyright = \"{Copyright}\";\n" +
+				$"ObiScriptPortfolio.Portfolio = this;\n\n";
 
 			// Add sketches
 			foreach (KimonoSketch sketch in Sketches)
 			{
 				// Add sketch to portfolio
-				initializers += sketch.ToKimonoCore();
+				initializers += sketch.ToKimonoCore().Replace("var ","");
 				initializers = KimonoCodeGenerator.AddCarriageIfNeeded(initializers);
 				initializers += $"Sketches.Add({sketch.ElementName});\n";
 			}
 
 			// Assemble precode items in reverse order to ensure dependencies are registered first
 			var baseInitializers = KimonoCodeGenerator.InitializerForSupportStyles(outputLanguage, outputLibrary);
+			baseInitializers = KimonoCodeGenerator.InitializerForSupportColors(outputLanguage, outputLibrary) + baseInitializers;
 			baseInitializers = KimonoCodeGenerator.InitializerForSupportGradients(outputLanguage, outputLibrary) + baseInitializers;
+			baseInitializers = KimonoCodeGenerator.CodeForSupportLocalProperties(outputLanguage, outputLibrary) + baseInitializers;
+
+			// Accumulate objects for portfolio
+			var accumulation = KimonoCodeGenerator.CodeToAccumulatePortfolioElements("Portfolio.");
+			if (accumulation != "")
+			{
+				// Include accumulators
+				initializers += "\n" + accumulation;
+			}
 
 			// Assemble full initializer code
 			initializers = baseInitializers + initializers;
@@ -1152,6 +1164,12 @@ namespace KimonoCore
 
 			if (KimonoCodeGenerator.SupportingStyles.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
 			computedProperties += KimonoCodeGenerator.PropertyForSupportingStyles(outputLanguage, outputLibrary);
+
+			if (KimonoCodeGenerator.GlobalProperties.Count > 0) computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
+			computedProperties += KimonoCodeGenerator.CodeForSupportGlobalProperties(outputLanguage, outputLibrary);
+
+			computedProperties = KimonoCodeGenerator.AddCarriageIfNeeded(computedProperties);
+			computedProperties += KimonoCodeGenerator.PropertyForSketches(outputLanguage, outputLibrary);
 
 			// Start class
 			sourceCode += $"{usingStatements}\n" +
@@ -1181,20 +1199,24 @@ namespace KimonoCore
 					"#endregion\n\n";
 			}
 
+			// Make parameter list
+			var parameters = KimonoCodeGenerator.CodeForSupportParameterProperties(outputLanguage, outputLibrary);
+			var paramList = KimonoCodeGenerator.CodeForInitializeParameterProperties(outputLanguage, outputLibrary);
+
 			// Add constructors
 			sourceCode += "\t\t#region Constructors\n" +
 				"\t\t/// <summary>\n" +
 				$"\t\t/// Creates a new instance of the {ElementName} class.\n" +
 				"\t\t/// </summary>\n" +
-				$"\t\tpublic {ElementName}() " + "{\n" +
-				"\t\t\tInitialize();\n" +
+				$"\t\tpublic {ElementName}({parameters}) " + "{\n" +
+				$"\t\t\tInitialize({paramList});\n" +
 				"\t\t}\n\n";
 
 			// Add initializer
 			sourceCode += "\t\t/// <summary>\n" +
 				$"\t\t/// Initializes this new instance of the {ElementName} class.\n" +
 				"\t\t/// </summary>\n" +
-				"\t\tinternal void Initialize() {\n";
+				$"\t\tinternal void Initialize({parameters}) " +"{\n";
 
 			// Any initialization code?
 			if (initializers != "")
@@ -1378,6 +1400,9 @@ namespace KimonoCore
 		/// <param name="sketch">The <c>KimonoSketch</c> to relink.</param>
 		internal void RelinkSketch(KimonoSketch sketch)
 		{
+			// Reconnect property
+			sketch.Portfolio = this;
+
 			// Is this the selected sketch?
 			if (SelectedSketch.UniqueID == sketch.UniqueID)
 			{

@@ -90,6 +90,7 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />
     <None Include="$(MSBuildThisFileDirectory)DScript\License.txt" />
+    <None Include="$(MSBuildThisFileDirectory)DScriptFunctionProviders\License.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Shapes\" />

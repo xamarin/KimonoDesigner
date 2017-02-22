@@ -234,6 +234,9 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Draw with Skia
 			sourceCode += $"// Draw {Name} shape\n";
 
@@ -248,9 +251,6 @@ namespace KimonoCore
 			// Draw shape
 			if (Visible)
 			{
-				// Update any attached properties
-				EvaluateConnectedProperties();
-
 				if (Style.HasFill)
 				{
 					sourceCode += ConformedFillGradientCode(CodeOutputLibrary.SkiaSharp) +
@@ -289,8 +289,17 @@ namespace KimonoCore
 				$"\n\tVisible = {Visible.ToString().ToLower()}," +
 				$"\n\tStyle = {Style.ElementName}," +
 				$"\n\tCornerRadius = {CornerRadius}f" +
-				"};\n" +
-				$"{ElementName}.Draw(canvas);\n";
+				"};\n";
+
+			// Add any connections
+			var connections = ConnectionsToKimonoCore();
+			if (connections != null)
+			{
+				sourceCode += $"\n{connections}\n";
+			}
+
+			// Draw shape
+			sourceCode += $"{ElementName}.Draw(canvas);\n";
 
 			// Return code
 			return sourceCode;

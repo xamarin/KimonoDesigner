@@ -135,6 +135,97 @@ namespace KimonoCore
 		{
 			return Value;
 		}
+
+		/// <summary>
+		/// Converts to KimonoCore based source code
+		/// </summary>
+		/// <returns>The property as a KimonoCore object.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "new KimonoPropertyRect() {\n" +
+				$"\tName = \"{Name}\",\n" +
+				$"\tGetsValueFromScript = {GetsValueFromScript.ToString().ToLower()},\n" +
+				$"\tObiScript = \"{ScriptToString()}\",\n" +
+				$"\tValue = new SKRect({Value.Left}f, {Value.Top}f, {Value.Right}f, {Value.Bottom}f)\n" +
+				"};\n";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Global scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpGlobal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Make base
+			sourceCode += $"// Global property {Name}\n";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += $"public static SKRect {ElementName} " +
+						"{get; set;}" +
+						$" = new SKRect({Value.Left}f, {Value.Top}f, {Value.Right}f, {Value.Bottom}f);\n";
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $"public static KimonoPropertyRect {ElementName} " +
+						"{get; set;}" +
+						$" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Local scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpLocal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Make base
+			sourceCode += $"// Local property {Name}\n" +
+				$"var {ElementName}";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += $" = new SKRect({Value.Left}f, {Value.Top}f, {Value.Right}f, {Value.Bottom}f);\n";
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Parameter scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpParameter(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = $"KimonoPropertyRect {ElementName}";
+
+			// Return results
+			return sourceCode;
+		}
 		#endregion
 
 		#region Cloning
@@ -147,6 +238,7 @@ namespace KimonoCore
 			// Make copy
 			var newProperty = new KimonoPropertyRect()
 			{
+				UniqueID = this.UniqueID,
 				Name = this.Name,
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,

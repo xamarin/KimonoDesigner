@@ -41,7 +41,7 @@ namespace DScript
 					}
 					else
 					{
-						//?wtf?
+						// Hit an unknow error here
 						System.Diagnostics.Trace.TraceWarning("Trying to assign to an unnamed type...");
 					}
 				}

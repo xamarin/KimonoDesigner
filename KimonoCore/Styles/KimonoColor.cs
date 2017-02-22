@@ -9,7 +9,7 @@ namespace KimonoCore
 	/// <c>KimonoColor</c>. A <c>KimonoColor</c> can be attached directly to a <c>KimonoShape</c>
 	/// or be used in a <c>KimonoStyle<c>.
 	/// </summary>
-	public class KimonoColor : IKimonoCodeGeneration
+	public class KimonoColor : IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Static Properties
 		// Primary colors
@@ -328,7 +328,10 @@ namespace KimonoCore
 		/// <value>The color.</value>
 		public SKColor Color
 		{
-			get { return _color; }
+			get {
+				RemixColor();
+				return _color; 
+			}
 			set
 			{
 				// Save new values
@@ -512,31 +515,31 @@ namespace KimonoCore
 			switch (connection.ConnectionPoint)
 			{
 				case KimonoPropertyConnectionPoint.BaseColor:
-					BaseColor = connection.ConnectedProperty.ToColor();
+					_baseColor = connection.ConnectedProperty.ToColor();
 					break;
 				case KimonoPropertyConnectionPoint.AdjustsHue:
-					AdjustsHue = connection.ConnectedProperty.ToBool();
+					_adjustHue = connection.ConnectedProperty.ToBool();
 					break;
 				case KimonoPropertyConnectionPoint.HueAdjustment:
-					HueAdjustment = connection.ConnectedProperty.ToFloat();
+					_hueAdjustment = connection.ConnectedProperty.ToFloat();
 					break;
 				case KimonoPropertyConnectionPoint.AdjustsSaturation:
-					AdjustsSaturation = connection.ConnectedProperty.ToBool();
+					_adjustSaturation = connection.ConnectedProperty.ToBool();
 					break;
 				case KimonoPropertyConnectionPoint.SaturationAdjustment:
-					SaturationAdjustment = connection.ConnectedProperty.ToFloat();
+					_saturationAdjustment = connection.ConnectedProperty.ToFloat();
 					break;
 				case KimonoPropertyConnectionPoint.AdjustsBrightness:
-					AdjustsBrightness = connection.ConnectedProperty.ToBool();
+					_adjustBrightness = connection.ConnectedProperty.ToBool();
 					break;
 				case KimonoPropertyConnectionPoint.BrightnessAdjustment:
-					BrightnessAdjustment = connection.ConnectedProperty.ToFloat();
+					_brightnessAdjustment = connection.ConnectedProperty.ToFloat();
 					break;
 				case KimonoPropertyConnectionPoint.AdjustsAlpha:
-					AdjustsAlpha = connection.ConnectedProperty.ToBool();
+					_adjustAlpha = connection.ConnectedProperty.ToBool();
 					break;
 				case KimonoPropertyConnectionPoint.AlphaAdjustment:
-					AlphaAdjustment = connection.ConnectedProperty.ToInt();
+					_alphaAdjustment = connection.ConnectedProperty.ToInt();
 					break;
 			}
 		}
@@ -544,10 +547,10 @@ namespace KimonoCore
 
 		#region Private Methods
 		/// <summary>
-		/// Mixes the color based on the base values and any adjustment that
-		/// have been applied.
+		/// Reapplies the color mix properties to take into account the 
+		/// effect of any connected properties.
 		/// </summary>
-		private void MixColor()
+		private void RemixColor()
 		{
 			// Update connected properties
 			EvaluateConnectedProperties();
@@ -560,6 +563,17 @@ namespace KimonoCore
 
 			// Blend new color
 			_color = SKColor.FromHsv(h, s, v, (byte)a);
+		}
+
+		/// <summary>
+		/// Mixes the color based on the base values and any adjustment that
+		/// have been applied.
+		/// </summary>
+		private void MixColor()
+		{
+			// Call remix color to do the work of actually blending
+			// the color
+			RemixColor();
 
 			// Inform caller of change
 			RaiseColorChanged();
@@ -592,7 +606,7 @@ namespace KimonoCore
 		/// <returns>The shape as code.</returns>
 		public virtual string ToSkiaSharp()
 		{
-			return "";
+			return $"new SKColor({Color.Red}, {Color.Green}, {Color.Blue}, {Color.Alpha})";
 		}
 
 		/// <summary>
@@ -601,7 +615,31 @@ namespace KimonoCore
 		/// <returns>The kimono core.</returns>
 		public virtual string ToKimonoCore()
 		{
-			return "";
+			var sourceCode = "";
+			var baseColorCode = "null";
+
+			// Is there a base color?
+			if (BaseColor != null)
+			{
+				// Yes, use it
+				baseColorCode = BaseColor.ElementName;
+			}
+
+			// Assemble class
+			sourceCode = $"new KimonoColor({Color.Red}, {Color.Green}, {Color.Blue}, {Color.Alpha})" + "{\n" +
+				$"\tBaseColor = {baseColorCode},\n" +
+				$"\tName = \"{Name}\",\n" +
+				$"\tAdjustsHue = {_adjustHue.ToString().ToLower()},\n" +
+				$"\tAdjustsSaturation = {_adjustSaturation.ToString().ToLower()},\n" +
+				$"\tAdjustsBrightness = {_adjustBrightness.ToString().ToLower()},\n" +
+				$"\tAdjustsAlpha = {_adjustAlpha.ToString().ToLower()},\n" +
+				$"\tHueAdjustment = {_hueAdjustment}f,\n" +
+				$"\tSaturationAdjustment = {_saturationAdjustment}f,\n" +
+				$"\tBrightnessAdjustment = {_brightnessAdjustment}f,\n" +
+				$"\tAlphaAdjustment = {_alphaAdjustment}\n" +
+				"}";
+
+			return sourceCode;
 		}
 
 		/// <summary>
@@ -611,7 +649,49 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
 		public virtual string ToCSharp(CodeOutputLibrary outputLibrary)
 		{
-			return "";
+			var sourceCode = "";
+
+			// Take action based on the output library
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += ToSkiaSharp();
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += ToKimonoCore();
+					break;
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts all connected points to KimonoCore source code objects.
+		/// </summary>
+		/// <returns>The code to rebuild the connections are source code.</returns>
+		public virtual string ConnectionsToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Anything to process?
+			if (PropertyConnections.Count < 1) return "";
+
+			// Start list
+			sourceCode += $"// Property connections for {Name}.\n";
+
+			// Process all connections
+			foreach (KimonoPropertyConnection connection in PropertyConnections)
+			{
+				// Accumulate the connection point
+				KimonoCodeGenerator.AddSupportingProperty(connection.ConnectedProperty);
+
+				// Add code for point
+				sourceCode += $"{ElementName}.PropertyConnections.Add(new KimonoPropertyConnection(KimonoPropertyConnectionPoint.{connection.ConnectionPoint} , {connection.ConnectedProperty.ElementName}));\n";
+			}
+
+			// Return results
+			return sourceCode;
 		}
 
 		/// <summary>
@@ -629,7 +709,9 @@ namespace KimonoCore
 			switch (outputLanguage)
 			{
 				case CodeOutputLanguage.CSharp:
-					sourceCode += $"var {KimonoCodeGenerator.MakeElementName(Name)} = {KimonoCodeGenerator.ColorToCode(outputLibrary,Color)};\n";
+					sourceCode += $"var {KimonoCodeGenerator.MakeElementName(Name)} = " +
+						ToCSharp(outputLibrary) +
+						";\n";
 					break;
 				case CodeOutputLanguage.ObiScript:
 					sourceCode += $"Return.Color(\"{Name}\");\n";

@@ -659,6 +659,13 @@ namespace KimonoCore
 				sourceCode += $"{ElementName}.AddPoint({point.ControlPoint.X}f, {point.ControlPoint.Y}f, {point.EndPoint.X}f, {point.EndPoint.Y}f);\n";
 			}
 
+			// Add any connections
+			var connections = ConnectionsToKimonoCore();
+			if (connections != null)
+			{
+				sourceCode += $"\n{connections}";
+			}
+
 			// Draw shape
 			sourceCode += $"\n// Draw {Name} shape\n" +
 				$"{ElementName}.Draw(canvas);\n";

@@ -98,6 +98,127 @@ namespace KimonoCore
 		{
 			return Value;
 		}
+
+		/// <summary>
+		/// Converts to KimonoCore based source code
+		/// </summary>
+		/// <returns>The property as a KimonoCore object.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "new KimonoPropertyColor() {\n" +
+				$"\tName = \"{Name}\",\n" +
+				$"\tGetsValueFromScript = {GetsValueFromScript.ToString().ToLower()},\n" +
+				$"\tObiScript = \"{ScriptToString()}\",\n" +
+				$"\tValue = {Value.ElementName}\n" +
+				"};\n";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Global scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpGlobal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Make base
+			sourceCode += $"// Global property {Name}\n";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += $"public static SKColor {ElementName} " +
+						"{get; set;}" +
+						$" = {Value.ElementName};\n";
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $"public static KimonoPropertyColor {ElementName} " +
+						"{get; set;}" +
+						$" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Local scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpLocal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Make base
+			sourceCode += $"// Local property {Name}\n" +
+				$"var {ElementName}";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += $" = {Value.ElementName};\n";
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Parameter scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpParameter(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = $"KimonoPropertyColor {ElementName}";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public override string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Accumulate color
+			if (Value != null)
+			{
+				// Yes, add as a supporting color
+				KimonoCodeGenerator.AddSupportingColor(Value);
+			}
+
+			// Take action based on the output language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode = ToCSharp(outputLibrary);
+					break;
+			}
+
+			// Return results
+			return sourceCode;
+		}
 		#endregion
 
 		#region Cloning

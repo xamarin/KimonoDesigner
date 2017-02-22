@@ -193,6 +193,7 @@ namespace KimonoMac
 					case KimonoPropertyConnectionPoint.NumberOfSides:
 					case KimonoPropertyConnectionPoint.Right:
 					case KimonoPropertyConnectionPoint.RotationDegrees:
+					case KimonoPropertyConnectionPoint.SaturationAdjustment:
 					case KimonoPropertyConnectionPoint.SkipPoints:
 					case KimonoPropertyConnectionPoint.TextScaleX:
 					case KimonoPropertyConnectionPoint.TextSize:

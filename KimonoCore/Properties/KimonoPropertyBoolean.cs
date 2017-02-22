@@ -69,10 +69,101 @@ namespace KimonoCore
 		/// <summary>
 		/// Converts this `KimonoProperty` to a `bool`.
 		/// </summary>
-		/// <returns><c>true</c>, if bool was toed, <c>false</c> otherwise.</returns>
+		/// <returns>The value for the property.</returns>
 		public override bool ToBool()
 		{
 			return Value;
+		}
+
+		/// <summary>
+		/// Converts to KimonoCore based source code
+		/// </summary>
+		/// <returns>The property as a KimonoCore object.</returns>
+		public override string ToKimonoCore()
+		{
+			var sourceCode = "new KimonoPropertyBoolean() {\n" +
+				$"\tName = \"{Name}\",\n" +
+				$"\tGetsValueFromScript = {GetsValueFromScript.ToString().ToLower()},\n" +
+				$"\tObiScript = \"{ScriptToString()}\",\n" +
+				$"\tValue = {Value.ToString().ToLower()}\n" +
+				"};\n";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Global scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpGlobal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Make base
+			sourceCode += $"// Global property {Name}\n";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += $"public static string {ElementName} " +
+						"{get; set;}" +
+						$" = {Value.ToString().ToLower()};\n";
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $"public static KimonoPropertyBoolean {ElementName} " +
+						"{get; set;}" +
+						$" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Local scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpLocal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Make base
+			sourceCode += $"// Local property {Name}\n" +
+				$"var {ElementName}";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					sourceCode += $" = {Value.ToString().ToLower()};\n";
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					sourceCode += $" = {ToKimonoCore()}\n";
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Parameter scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public override string ToCSharpParameter(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = $"KimonoPropertyBoolean {ElementName}";
+
+			// Return results
+			return sourceCode;
 		}
 		#endregion
 
@@ -86,6 +177,7 @@ namespace KimonoCore
 			// Make copy
 			var newProperty = new KimonoPropertyBoolean()
 			{
+				UniqueID = this.UniqueID,
 				Name = this.Name,
 				Usage = this.Usage,
 				IsObiScriptValue = this.IsObiScriptValue,

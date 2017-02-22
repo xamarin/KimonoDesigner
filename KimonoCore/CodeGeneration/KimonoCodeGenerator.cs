@@ -39,7 +39,25 @@ namespace KimonoCore
 		/// </summary>
 		public static List<KimonoStyle> SupportingStyles = new List<KimonoStyle>();
 
+		/// <summary>
+		/// A collection of all of the object and varaible names currently used in code generation.
+		/// </summary>
 		public static List<string> UsedNames = new List<string>();
+
+		/// <summary>
+		/// List of all the supporting Global scoped properties used in code generation.
+		/// </summary>
+		public static List<KimonoProperty> GlobalProperties = new List<KimonoProperty>();
+
+		/// <summary>
+		/// List of all the supporting Local scoped properties used in code generation.
+		/// </summary>
+		public static List<KimonoProperty> LocalProperties = new List<KimonoProperty>();
+
+		/// <summary>
+		/// List of all the supporting Parameter scoped properties used in code generation.
+		/// </summary>
+		public static List<KimonoProperty> ParameterProperties = new List<KimonoProperty>();
 		#endregion
 
 		#region Public Methods
@@ -54,6 +72,9 @@ namespace KimonoCore
 			SupportingColors.Clear();
 			SupportingGradients.Clear();
 			SupportingStyles.Clear();
+			GlobalProperties.Clear();
+			LocalProperties.Clear();
+			ParameterProperties.Clear();
 			UsedNames.Clear();
 		}
 
@@ -76,6 +97,63 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// For Sketchs or Portfolios being output using the KimonoCore library,
+		/// accumulate all of the supporting elements into a master Portfolio
+		/// so that scripting will still work in the emitted object.
+		/// </summary>
+		/// <returns>The code to accumulate portfolio elements.</returns>
+		/// <param name="portfolio">The name of the portfolio to accumulate into.</param>
+		public static string CodeToAccumulatePortfolioElements(string portfolio)
+		{
+			var sourceCode = "// Accumulate Kimono objects into the portfolio\n";
+
+			// Accumulate colors
+			foreach (KimonoColor color in SupportingColors)
+			{
+				// Accumulate
+				sourceCode += $"{portfolio}Colors.Add({color.ElementName});\n";
+			}
+
+			// Accumulate gradients
+			foreach (KimonoGradient gradient in SupportingGradients)
+			{
+				// Accumulate
+				sourceCode += $"{portfolio}Gradients.Add({gradient.ElementName});\n";
+			}
+
+			// Accumulate styles
+			foreach (KimonoStyle style in SupportingStyles)
+			{
+				// Accumulate
+				sourceCode += $"{portfolio}Styles.Add({style.ElementName});\n";
+			}
+
+			// Accumulate global properties
+			foreach (KimonoProperty property in GlobalProperties)
+			{
+				// Accumulate
+				sourceCode += $"{portfolio}Properties.Add({property.ElementName});\n";
+			}
+
+			// Accumulate local properties
+			foreach (KimonoProperty property in LocalProperties)
+			{
+				// Accumulate
+				sourceCode += $"{portfolio}Properties.Add({property.ElementName});\n";
+			}
+
+			// Accumulate parameter properties
+			foreach (KimonoProperty property in ParameterProperties)
+			{
+				// Accumulate
+				sourceCode += $"{portfolio}Properties.Add({property.ElementName});\n";
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
 		/// Adds the given color to the collection of named colors that are used
 		/// in the generation of other Kimono Objects. If a color is already in
 		/// the collection, its `ElementName` is returned.
@@ -84,6 +162,13 @@ namespace KimonoCore
 		/// <param name="color">The `KimonoColor` to add to the collection.</param>
 		public static string AddSupportingColor(KimonoColor color)
 		{
+			// Is there a supporting color?
+			if (color.BaseColor != null)
+			{
+				// Yes, add it to the supporting colors first
+				AddSupportingColor(color.BaseColor);
+			}
+
 			// Scan all colors
 			foreach (KimonoColor supportColor in SupportingColors)
 			{
@@ -116,7 +201,7 @@ namespace KimonoCore
 				// Accumulate color code
 				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Create new {supportColor.Name}\n";
-				sourceCode += $"var {supportColor.ElementName} = {ColorToCode(outputLibrary, supportColor.Color)};\n";
+				sourceCode += $"var {supportColor.ElementName} = {supportColor.ToCSharp(outputLibrary)};\n";
 			}
 
 			// Return generated source
@@ -141,9 +226,293 @@ namespace KimonoCore
 				// Accumulate color code
 				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Global color {supportColor.Name}\n";
-				sourceCode += $"public {classType} {supportColor.ElementName} " +
+				sourceCode += $"public static {classType} {supportColor.ElementName} " +
 					"{get; set;} " +
-					$"= {ColorToCode(outputLibrary, supportColor.Color)};\n";
+					$"= {supportColor.ToCSharp(outputLibrary)};\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the sketches used in generating
+		/// a higher level Kimono object as a public computed propert.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string PropertyForSketches(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process sketches
+			foreach (KimonoSketch sketch in ObiScriptPortfolio.Portfolio.Sketches)
+			{
+				// Accumulate color code
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += $"// Global sketch {sketch.Name}\n";
+				sourceCode += $"public static KimonoSketch {sketch.ElementName} " +
+					"{get; set;}\n";
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting colors used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoColors`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string InitializerForSupportColors(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Only valid for KimonoCode generation
+			if (outputLibrary != CodeOutputLibrary.KimonoCore) return "";
+
+			// Process all colors
+			foreach (KimonoColor supportColor in SupportingColors)
+			{
+				// Accumulate gradient
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportColor.ConnectionsToKimonoCore();
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Adds the supporting property to the correct list based on its usage.
+		/// </summary>
+		/// <returns>The element name of the newly added supporting property.</returns>
+		/// <param name="property">The `KimonoProperty` to add.</param>
+		public static string AddSupportingProperty(KimonoProperty property)
+		{
+			var elementName = "";
+
+			// Does this property have a script?
+			if (property.ObiScript != "")
+			{
+				// Is this property's script using any sub colors?
+				foreach (KimonoColor color in ObiScriptPortfolio.Portfolio.Colors)
+				{
+					// Test for script
+					if (property.ObiScript.Contains(color.Name))
+					{
+						// Yes, add as supporting
+						AddSupportingColor(color);
+					}
+				}
+
+				// Is this property's script using any sub gradients?
+				foreach (KimonoGradient gradient in ObiScriptPortfolio.Portfolio.Gradients)
+				{
+					// Test for script
+					if (property.ObiScript.Contains(gradient.Name))
+					{
+						// Yes, add as supporting
+						AddSupportingGradient(gradient);
+					}
+				}
+
+				// Is this property's script using any sub styles?
+				foreach (KimonoStyle style in ObiScriptPortfolio.Portfolio.Styles)
+				{
+					// Test for script
+					if (property.ObiScript.Contains(style.Name))
+					{
+						// Yes, add as supporting
+						AddSupportingStyle(style);
+					}
+				}
+
+				// Is this property's script using any sub properties?
+				foreach (KimonoProperty scanProperty in ObiScriptPortfolio.Portfolio.Properties)
+				{
+					// Test for script
+					if (property.ObiScript.Contains(scanProperty.Name))
+					{
+						// Yes, add this as a supporting property
+						AddSupportingProperty(scanProperty);
+					}
+				}
+			}
+
+			// Take action based on the property's scope
+			switch (property.Usage)
+			{
+				case KimonoPropertyUsage.GlobalVariable:
+					elementName = AddSupportingGlobalProperty(property);
+					break;
+				case KimonoPropertyUsage.LocalVariable:
+					elementName = AddSupportingLocalProperty(property);
+					break;
+				case KimonoPropertyUsage.Parameter:
+					elementName = AddSupportingParameterProperty(property);
+					break;
+			}
+
+			// Return the new element name
+			return elementName;
+		}
+
+		/// <summary>
+		/// Adds a new global scoped supporting property.
+		/// </summary>
+		/// <returns>The element name of the newly added supporting property.</returns>
+		/// <param name="property">The `KimonoProperty` to add.</param>
+		public static string AddSupportingGlobalProperty(KimonoProperty property)
+		{
+			// Scan all properties
+			foreach (KimonoProperty supportProperty in GlobalProperties)
+			{
+				// Already in collection?
+				if (supportProperty == property) return supportProperty.ElementName;
+			}
+
+			// Generate element name and add to collection
+			property.ElementName = MakeElementName(property.Name);
+			GlobalProperties.Add(property);
+
+			// Return the new element name
+			return property.ElementName;
+		}
+
+		/// <summary>
+		/// Adds a new local scoped supporting property.
+		/// </summary>
+		/// <returns>The element name of the newly added supporting property.</returns>
+		/// <param name="property">The `KimonoProperty` to add.</param>
+		public static string AddSupportingLocalProperty(KimonoProperty property)
+		{
+			// Scan all properties
+			foreach (KimonoProperty supportProperty in LocalProperties)
+			{
+				// Already in collection?
+				if (supportProperty == property) return supportProperty.ElementName;
+			}
+
+			// Generate element name and add to collection
+			property.ElementName = MakeElementName(property.Name);
+			LocalProperties.Add(property);
+
+			// Return the new element name
+			return property.ElementName;
+		}
+
+		/// <summary>
+		/// Adds a new parameter scoped supporting property.
+		/// </summary>
+		/// <returns>The element name of the newly added supporting property.</returns>
+		/// <param name="property">The `KimonoProperty` to add.</param>
+		public static string AddSupportingParameterProperty(KimonoProperty property)
+		{
+			// Scan all properties
+			foreach (KimonoProperty supportProperty in ParameterProperties)
+			{
+				// Already in collection?
+				if (supportProperty == property) return supportProperty.ElementName;
+			}
+
+			// Generate element name and add to collection
+			property.ElementName = MakeElementName(property.Name);
+			ParameterProperties.Add(property);
+
+			// Return the new element name
+			return property.ElementName;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting properties used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoProperty`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForSupportGlobalProperties(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all properties
+			foreach (KimonoProperty supportProperty in GlobalProperties)
+			{
+				// Accumulate property
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportProperty.ToCode(CodeOutputOS.CrossPlatform, outputLanguage, outputLibrary);
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting properties used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoProperty`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForSupportLocalProperties(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all properties
+			foreach (KimonoProperty supportProperty in LocalProperties)
+			{
+				// Accumulate property
+				sourceCode = AddCarriageIfNeeded(sourceCode);
+				sourceCode += supportProperty.ToCode(CodeOutputOS.CrossPlatform, outputLanguage, outputLibrary);
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the source code for all of the supporting properties used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoProperty`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForSupportParameterProperties(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all properties
+			foreach (KimonoProperty supportProperty in ParameterProperties)
+			{
+				// Accumulate property
+				if (sourceCode != "") sourceCode += ", ";
+				sourceCode += supportProperty.ToCode(CodeOutputOS.CrossPlatform, outputLanguage, outputLibrary);
+			}
+
+			// Return generated source
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Returns the initializers for all of the supporting properties used in generating
+		/// a higher level Kimono object.
+		/// </summary>
+		/// <returns>The source code for the supporting `KimonoProperty`.</returns>
+		/// <param name="outputLanguage">The `CodeOutputLanguage` for the generated code.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` of the generated code.</param>
+		public static string CodeForInitializeParameterProperties(CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Process all properties
+			foreach (KimonoProperty supportProperty in ParameterProperties)
+			{
+				// Accumulate property
+				if (sourceCode != "") sourceCode += ", ";
+				sourceCode += supportProperty.ElementName;
 			}
 
 			// Return generated source
@@ -240,7 +609,7 @@ namespace KimonoCore
 				// Accumulate color code
 				sourceCode = AddCarriageIfNeeded(sourceCode);
 				sourceCode += $"// Global gradient {supportingGradient.Name}\n";
-				sourceCode += $"public {classType} {supportingGradient.ElementName} " +
+				sourceCode += $"public static {classType} {supportingGradient.ElementName} " +
 					"{get; set;}\n";
 			}
 
@@ -342,18 +711,18 @@ namespace KimonoCore
 					case CodeOutputLibrary.SkiaSharp:
 						if (supportingStyle.HasFill)
 						{
-							sourceCode += $"public SKPaint {supportingStyle.ElementName}FillPaint " +
+							sourceCode += $"public static SKPaint {supportingStyle.ElementName}FillPaint " +
 								"{get; set;}\n";
 						}
 
 						if (supportingStyle.HasFill)
 						{
-							sourceCode += $"public SKPaint {supportingStyle.ElementName}FramePaint " +
+							sourceCode += $"public static SKPaint {supportingStyle.ElementName}FramePaint " +
 								"{get; set;}\n";
 						}
 						break;
 					case CodeOutputLibrary.KimonoCore:
-						sourceCode += $"public KimonoStyle {supportingStyle.ElementName} " +
+						sourceCode += $"public static KimonoStyle {supportingStyle.ElementName} " +
 							"{get; set;}\n";
 						break;
 				}

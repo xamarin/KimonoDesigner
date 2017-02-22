@@ -351,9 +351,6 @@ namespace KimonoCore
 			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
 			var pathName = $"{ElementName}Path";
 
-			// Update any attached properties
-			EvaluateConnectedProperties();
-
 			// Define path with Skia
 			sourceCode += $"// Define {Name} shape path\n"+
 				$"var {pathName} = new SKPath();\n";
@@ -462,6 +459,9 @@ namespace KimonoCore
 			var sourceCode = "";
 			var pathName = $"{ElementName}Path";
 
+			// Update any attached properties
+			EvaluateConnectedProperties();
+
 			// Visible?
 			if (Visible)
 			{
@@ -514,7 +514,7 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 
-			// Draw with Skia
+			// Build with Skia
 			sourceCode += $"// Draw {Name} shape\n" +
 				$"var {ElementName} = new KimonoShapeArrow({Left}f, {Top}f, {Right}f, {Bottom}f)" + "{" +
 				$"\n\tRotationDegrees = {RotationDegrees}," +
@@ -525,8 +525,17 @@ namespace KimonoCore
 				$"\n\tHeadInnerRatio = {HeadInnerRatio}," +
 				$"\n\tHeadOuterRatio = {HeadOuterRatio}," +
 				$"\n\tIsStreamlined = {IsStreamlined.ToString().ToLower()}" +
-				"};\n" +
-				$"{ElementName}.Draw(canvas);\n";
+				"};\n";
+
+			// Add any connections
+			var connections = ConnectionsToKimonoCore();
+			if (connections != null)
+			{
+				sourceCode += $"\n{connections}\n";
+			}
+
+			// Draw shape
+			sourceCode += $"{ElementName}.Draw(canvas);\n";
 
 			// Return code
 			return sourceCode;

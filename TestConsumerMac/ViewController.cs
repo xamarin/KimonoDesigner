@@ -45,7 +45,8 @@ namespace TestConsumerMac
 				canvas.Clear(KimonoColor.White);
 
 				// Draw all shapes into the canvas
-				TestPortfolioClass(canvas);
+				// TestPortfolioClass(canvas);
+				TestSketchClass(canvas);
 
 				// Return data from sketch
 				return surface.Snapshot().Encode();
@@ -61,7 +62,9 @@ namespace TestConsumerMac
 		public void TestSketchClass(SKCanvas canvas)
 		{
 			var sketch = new Sketch();
-			sketch.DrawSketch(canvas);
+			//sketch.DrawSketch(canvas);
+			Sketch.UseOrange.Value = false;
+			sketch.Draw(canvas);
 		}
 
 		public void TestGeneratedShape(SKCanvas canvas)

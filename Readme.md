@@ -75,6 +75,10 @@ The following property types can be defined:
 
 In addition to being constant values, properties can derive their values from an attached ObiScript (see ObiScript section below) and dynamically change based on the state of other properties or user interaction.
 
+> ⚠️ WARNING:
+> 
+> In the current version of Kimono Designer, Linked Properties will be flattened to their current values when source code is generated or exported. To maintain mutable properties, use the **KimonoCore Support Library** when exporting code (see below for more details).
+
 ## Source Code Generation
 
 The main purpose of the Kimono Designer is to allow the developer to graphically define SkiaSharp objects that will be converted to source code that can be used in any cross-platform application that supports SkiaSharp.
@@ -91,13 +95,13 @@ Based on what is selected, code snippets will be generated for individual colors
 
 ### Generate Code for Multiple Platforms
 
-Source code can be generated for multiple OS platforms with support for Xamarin.Forms (cross-platform) and SkiaSharp.Views:
+Source code can be generated for multiple OS platforms with support for Xamarin.Forms (cross-platform) and SkiaSharp.Views (set at the Sketch level):
 
 ![](Images/Intro11.png)
 
 ### Use KimonoCore Support Library
 
-Source code can either be generated directly using SkiaSharp classes or by using the KimonoCore helper classes, which produces smaller source code files and provides several useful features:
+Source code can either be generated directly using SkiaSharp classes or by using the KimonoCore helper classes, which produces smaller source code files and provides several useful features (such as mutable linked properties and ObiScript functionality):
 
 ![](Images/Intro12.png)
 
@@ -209,6 +213,10 @@ Any script that wants to use the functions in the library will need to add a `us
 ![](Images/Intro20.png)
 
 With that line in place, the user can call any function from the library as if it was defined inside the current script.
+
+> ⚠️ WARNING:
+> 
+> In the current version of Kimono Designer, Linked Properties and ObiScripts will be flattened to their current values when source code is generated or exported. To maintain mutable properties and ObiScripts, use the **KimonoCore Support Library** when exporting code (see above for more details).
 
 ## Work in Progress
 

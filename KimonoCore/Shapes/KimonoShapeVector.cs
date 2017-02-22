@@ -455,9 +455,6 @@ namespace KimonoCore
 			if (ElementName == "") KimonoCodeGenerator.MakeElementName(Name);
 			var pathName = $"{ElementName}Path";
 
-			// Update any attached properties
-			EvaluateConnectedProperties();
-
 			// Define path with Skia
 			sourceCode += $"// Define {Name} shape path\n" +
 				$"var {pathName} = new SKPath();\n";
@@ -482,6 +479,9 @@ namespace KimonoCore
 		{
 			var sourceCode = "";
 			var pathName = $"{ElementName}Path";
+
+			// Update any attached properties
+			EvaluateConnectedProperties();
 
 			// Visible?
 			if (Visible)
@@ -549,6 +549,13 @@ namespace KimonoCore
 			foreach (SKPoint point in Points)
 			{
 				sourceCode += $"{ElementName}.AddPoint({point.X}f, {point.Y}f);\n";
+			}
+
+			// Add any connections
+			var connections = ConnectionsToKimonoCore();
+			if (connections != null)
+			{
+				sourceCode += $"\n{connections}";
 			}
 
 			// Draw shape

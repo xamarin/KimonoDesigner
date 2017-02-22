@@ -131,7 +131,7 @@ namespace DScript
 					}
 					else
 					{
-						throw new ScriptException("WTF?");
+						throw new ScriptException("Hit an unknown error while factoring.");
 					}
 				}
 

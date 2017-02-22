@@ -19,6 +19,13 @@ namespace KimonoCore
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
+		/// Gets or sets the name of the element as it will be called in generated source
+		/// code.
+		/// </summary>
+		/// <value>The name of the element.</value>
+		internal string ElementName { get; set; } = "";
+
+		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name as a `string`.</value>
@@ -143,6 +150,152 @@ namespace KimonoCore
 		public virtual KimonoGradient ToGradient()
 		{
 			return null;
+		}
+
+		/// <summary>
+		/// Converts the ObiScript to a quoted string.
+		/// </summary>
+		/// <returns>The script converted to a string.</returns>
+		public virtual string ScriptToString()
+		{
+			// Make required adjustments
+			var sourceCode = ObiScript.Replace("\"", @"\" + "\"");
+			sourceCode = sourceCode.Replace("\t", @"\t");
+			sourceCode = sourceCode.Replace("\n", @"\n");
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts to KimonoCore based source code
+		/// </summary>
+		/// <returns>The property as a KimonoCore object.</returns>
+		public virtual string ToKimonoCore()
+		{
+			var sourceCode = "";
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Global scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharpGlobal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					break;
+	
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Local scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharpLocal(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to Parameter scoped C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharpParameter(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on usage
+			switch (outputLibrary)
+			{
+				case CodeOutputLibrary.SkiaSharp:
+					break;
+				case CodeOutputLibrary.KimonoCore:
+					break;
+
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this property to C# code.
+		/// </summary>
+		/// <returns>The property as C# code.</returns>
+		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
+		public virtual string ToCSharp(CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on usage
+			switch (Usage)
+			{
+				case KimonoPropertyUsage.GlobalVariable:
+					sourceCode = ToCSharpGlobal(outputLibrary);
+					break;
+				case KimonoPropertyUsage.LocalVariable:
+					sourceCode = ToCSharpLocal(outputLibrary);
+					break;
+				case KimonoPropertyUsage.Parameter:
+					sourceCode = ToCSharpParameter(outputLibrary);
+					break;
+			}
+
+			// Return results
+			return sourceCode;
+		}
+
+		/// <summary>
+		/// Converts this object to source code for the given OS, Language and Library.
+		/// </summary>
+		/// <returns>The object represented as source code in a `string`.</returns>
+		/// <param name="outputOS">The `CodeOutputOS`.</param>
+		/// <param name="outputLanguage">The `CodeOutputLanguage`.</param>
+		/// <param name="outputLibrary">The `CodeOutputLibrary`.</param>
+		public virtual string ToCode(CodeOutputOS outputOS, CodeOutputLanguage outputLanguage, CodeOutputLibrary outputLibrary)
+		{
+			var sourceCode = "";
+
+			// Take action based on the output language
+			switch (outputLanguage)
+			{
+				case CodeOutputLanguage.CSharp:
+					sourceCode = ToCSharp(outputLibrary);
+					break;
+			}
+
+			// Return results
+			return sourceCode;
 		}
 		#endregion
 
