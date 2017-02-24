@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines a `KimonoProperty` that represents a `KimonoColor` value.
 	/// </summary>
+	[Table("ColorProperty")]
 	public class KimonoPropertyColor : KimonoProperty
 	{
 		#region Computed Properties
@@ -13,12 +15,14 @@ namespace KimonoCore
 		/// Gets or sets the value.
 		/// </summary>
 		/// <value>The `KimonoColor` value.</value>
+		[Child]
 		public KimonoColor Value { get; set; } = new KimonoColor();
 
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoProperty"/> gets value from script.
 		/// </summary>
 		/// <value><c>true</c> if gets value from script; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool GetsValueFromScript
 		{
 			get
@@ -31,6 +35,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoPropertyColor"/> is obi script value.
 		/// </summary>
 		/// <value><c>true</c> if is obi script value; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool IsObiScriptValue
 		{
 			get

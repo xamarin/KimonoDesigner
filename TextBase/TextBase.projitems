@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{B107A17F-D016-43AD-B859-CEA311A48800}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>TextBase</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Attributes\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Classes\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\AsStringAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\ChildAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\ChildrenAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\ColumnAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\ForeignKeyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\IgnoreAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\PrimaryKeyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\SerializerAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\TableAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TableColumn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TableSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\DatabaseUnavailableException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\MissingForeignKeyException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\MissingSerializerException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseRecordField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseRecord.cs" />
+  </ItemGroup>
+</Project>

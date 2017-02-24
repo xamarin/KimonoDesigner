@@ -1,6 +1,7 @@
 ﻿using System;
 using SkiaSharp;
 using DScript;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -9,6 +10,7 @@ namespace KimonoCore
 	/// `KimonoStyle` or `KimonoShape`) and be used as a local variable, global variable or a 
 	/// parameter or be the result of a calculation using the Obi Simple Scripting Language.
 	/// </summary>
+	[Table("Property")]
 	public class KimonoProperty
 	{
 		#region Computed Properties
@@ -16,6 +18,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>

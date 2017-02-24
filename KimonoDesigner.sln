@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsumerWinWPF", "TestC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimonoCore.Forms", "KimonoCore.Forms\KimonoCore.Forms.csproj", "{C25E1E33-DEDA-4520-A5E4-BD1B6C72ADCE}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TextBase", "TextBase\TextBase.shproj", "{B107A17F-D016-43AD-B859-CEA311A48800}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		KimonoCore\KimonoCore.projitems*{2ac0bc35-2b78-4782-babb-e1754b9878aa}*SharedItemsImports = 4

@@ -64,6 +64,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\TextBase\TextBase.projitems" Label="Shared" Condition="Exists('..\TextBase\TextBase.projitems')" />
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" Condition="Exists('..\KimonoCore\KimonoCore.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\TVOS\Xamarin.TVOS.CSharp.targets" />
 </Project>

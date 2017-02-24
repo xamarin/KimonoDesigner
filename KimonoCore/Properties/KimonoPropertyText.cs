@@ -1,12 +1,14 @@
 ﻿using System;
 using SkiaSharp;
 using DScript;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines a `KimonoProperty` that represents a `string` value.
 	/// </summary>
+	[Table("TextProperty")]
 	public class KimonoPropertyText : KimonoProperty
 	{
 		#region Computed Properties

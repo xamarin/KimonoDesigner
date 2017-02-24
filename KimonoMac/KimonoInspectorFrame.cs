@@ -348,7 +348,7 @@ namespace KimonoMac
 				case SKStrokeJoin.Bevel:
 					JoinType.SelectItem(0);
 					break;
-				case SKStrokeJoin.Mitter:
+				case SKStrokeJoin.Miter:
 					JoinType.SelectItem(1);
 					break;
 				case SKStrokeJoin.Round:
@@ -1088,7 +1088,7 @@ namespace KimonoMac
 					SelectedStyle.Frame.StrokeJoin = SKStrokeJoin.Bevel;
 					break;
 				case 1:
-					SelectedStyle.Frame.StrokeJoin = SKStrokeJoin.Mitter;
+					SelectedStyle.Frame.StrokeJoin = SKStrokeJoin.Miter;
 					break;
 				case 2:
 					SelectedStyle.Frame.StrokeJoin = SKStrokeJoin.Round;

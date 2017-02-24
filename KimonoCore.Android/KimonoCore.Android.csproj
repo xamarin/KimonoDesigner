@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>__Android__;DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\KimonoCore.Android.xml</DocumentationFile>
@@ -62,6 +62,7 @@
   <ItemGroup>
     <Folder Include="Classes\" />
   </ItemGroup>
+  <Import Project="..\TextBase\TextBase.projitems" Label="Shared" Condition="Exists('..\TextBase\TextBase.projitems')" />
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" Condition="Exists('..\KimonoCore\KimonoCore.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

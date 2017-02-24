@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -8,6 +9,7 @@ namespace KimonoCore
 	/// Defines as style that can be applied to a <c>KimonoShape</c> to control its
 	/// appearance.
 	/// </summary>
+	[Table("Style")]
 	public class KimonoStyle : IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Static Methods
@@ -163,6 +165,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -188,7 +191,79 @@ namespace KimonoCore
 		/// Gets or sets the frame paint style.
 		/// </summary>
 		/// <value>The <c>SKPaint</c> style for the frame.</value>
+		[Ignore]
 		public SKPaint Frame { get; set; } = new SKPaint();
+
+		/// <summary>
+		/// Gets or sets the frame blend mode.
+		/// </summary>
+		/// <value>The frame blend mode.</value>
+		public SKBlendMode FrameBlendMode
+		{
+			get { return Frame.BlendMode; }
+			set { Frame.BlendMode = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> frame is antialias.
+		/// </summary>
+		/// <value><c>true</c> if frame is antialias; otherwise, <c>false</c>.</value>
+		public bool FrameIsAntialias
+		{
+			get { return Frame.IsAntialias; }
+			set { Frame.IsAntialias = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the frame base.
+		/// </summary>
+		/// <value>The color of the frame base.</value>
+		[Serializer("SKColor")]
+		public SKColor FrameBaseColor
+		{
+			get { return Frame.Color; }
+			set { Frame.Color = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the width of the frame stroke.
+		/// </summary>
+		/// <value>The width of the frame stroke.</value>
+		public float FrameStrokeWidth
+		{
+			get { return Frame.StrokeWidth; }
+			set { Frame.StrokeWidth = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame stroke miter.
+		/// </summary>
+		/// <value>The frame stroke miter.</value>
+		public float FrameStrokeMiter
+		{
+			get { return Frame.StrokeMiter; }
+			set { Frame.StrokeMiter = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame stroke join.
+		/// </summary>
+		/// <value>The frame stroke join.</value>
+		public SKStrokeJoin FrameStrokeJoin
+		{
+			get { return Frame.StrokeJoin; }
+			set { Frame.StrokeJoin = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame stroke cap.
+		/// </summary>
+		/// <value>The frame stroke cap.</value>
+		public SKStrokeCap FrameStrokeCap
+		{
+			get { return Frame.StrokeCap; }
+			set { Frame.StrokeCap = value; }
+		}
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> has frame blur.
@@ -208,6 +283,7 @@ namespace KimonoCore
 		/// Gets or sets the frame blur.
 		/// </summary>
 		/// <value>The <c>KimonoBlur</c> applied to the frame.</value>
+		[Child]
 		public KimonoBlur FrameBlur
 		{
 			get { return _frameBlur; }
@@ -232,6 +308,28 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Gets or sets the frame blur horizontal amount.
+		/// </summary>
+		/// <value>The frame blur horizontal amount.</value>
+		[Ignore]
+		public float FrameBlurHorizontalAmount
+		{
+			get { return FrameBlur.HorizontalBlurAmount; }
+			set { FrameBlur.HorizontalBlurAmount = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame blur vertical amount.
+		/// </summary>
+		/// <value>The frame blur vertical amount.</value>
+		[Ignore]
+		public float FrameBlurVerticalAmount
+		{
+			get { return FrameBlur.VerticalBlurAmount; }
+			set { FrameBlur.VerticalBlurAmount = value; }
+		}
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> has frame shadow.
 		/// </summary>
 		/// <value><c>true</c> if has frame shadow; otherwise, <c>false</c>.</value>
@@ -249,6 +347,7 @@ namespace KimonoCore
 		/// Gets or sets the frame shadow.
 		/// </summary>
 		/// <value>The frame shadow as a <c>KimonoShadow</c>.</value>
+		[Child]
 		public KimonoShadow FrameShadow
 		{
 			get { return _frameShadow; }
@@ -273,6 +372,72 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Gets or sets the frame shadow horizontal offset.
+		/// </summary>
+		/// <value>The frame shadow horizontal offset.</value>
+		[Ignore]
+		public float FrameShadowHorizontalOffset
+		{
+			get { return FrameShadow.HorizontalOffset; }
+			set { FrameShadow.HorizontalOffset = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame shadow vertical offset.
+		/// </summary>
+		/// <value>The frame shadow vertical offset.</value>
+		[Ignore]
+		public float FrameShadowVerticalOffset
+		{
+			get { return FrameShadow.VerticalOffset; }
+			set { FrameShadow.VerticalOffset = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame shadow horizontal blur.
+		/// </summary>
+		/// <value>The frame shadow horizontal blur.</value>
+		[Ignore]
+		public float FrameShadowHorizontalBlur
+		{
+			get { return FrameShadow.HorizontalBlurAmount; }
+			set { FrameShadow.HorizontalBlurAmount = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the frame shadow vertical blur.
+		/// </summary>
+		/// <value>The frame shadow vertical blur.</value>
+		[Ignore]
+		public float FrameShadowVerticalBlur
+		{
+			get { return FrameShadow.VerticalBlurAmount; }
+			set { FrameShadow.VerticalBlurAmount = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the frame shadow base.
+		/// </summary>
+		/// <value>The color of the frame shadow base.</value>
+		[Ignore]
+		public SKColor FrameShadowBaseColor
+		{
+			get { return FrameShadow.Color; }
+			set { FrameShadow.Color = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the frame shadow linked.
+		/// </summary>
+		/// <value>The color of the frame shadow linked.</value>
+		[Ignore]
+		public KimonoColor FrameShadowLinkedColor
+		{
+			get { return FrameShadow.LinkedColor; }
+			set { FrameShadow.LinkedColor = value; }
+		}
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> has fill blur.
 		/// </summary>
 		/// <value><c>true</c> if has fill blur; otherwise, <c>false</c>.</value>
@@ -290,6 +455,7 @@ namespace KimonoCore
 		/// Gets or sets the fill blur.
 		/// </summary>
 		/// <value>The <c>KimonoBlur</c> applied to the fill.</value>
+		[Child]
 		public KimonoBlur FillBlur
 		{
 			get { return _fillBlur; }
@@ -314,6 +480,28 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Gets or sets the Fill blur horizontal amount.
+		/// </summary>
+		/// <value>The Fill blur horizontal amount.</value>
+		[Ignore]
+		public float FillBlurHorizontalAmount
+		{
+			get { return FillBlur.HorizontalBlurAmount; }
+			set { FillBlur.HorizontalBlurAmount = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the Fill blur vertical amount.
+		/// </summary>
+		/// <value>The Fill blur vertical amount.</value>
+		[Ignore]
+		public float FillBlurVerticalAmount
+		{
+			get { return FillBlur.VerticalBlurAmount; }
+			set { FillBlur.VerticalBlurAmount = value; }
+		}
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> has fill shadow.
 		/// </summary>
 		/// <value><c>true</c> if has fill shadow; otherwise, <c>false</c>.</value>
@@ -331,6 +519,7 @@ namespace KimonoCore
 		/// Gets or sets the fill shadow.
 		/// </summary>
 		/// <value>The fill shadow.</value>
+		[Child]
 		public KimonoShadow FillShadow
 		{
 			get { return _fillShadow; }
@@ -355,9 +544,76 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Gets or sets the Fill shadow horizontal offset.
+		/// </summary>
+		/// <value>The Fill shadow horizontal offset.</value>
+		[Ignore]
+		public float FillShadowHorizontalOffset
+		{
+			get { return FillShadow.HorizontalOffset; }
+			set { FillShadow.HorizontalOffset = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the Fill shadow vertical offset.
+		/// </summary>
+		/// <value>The Fill shadow vertical offset.</value>
+		[Ignore]
+		public float FillShadowVerticalOffset
+		{
+			get { return FillShadow.VerticalOffset; }
+			set { FillShadow.VerticalOffset = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the Fill shadow horizontal blur.
+		/// </summary>
+		/// <value>The Fill shadow horizontal blur.</value>
+		[Ignore]
+		public float FillShadowHorizontalBlur
+		{
+			get { return FillShadow.HorizontalBlurAmount; }
+			set { FillShadow.HorizontalBlurAmount = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the Fill shadow vertical blur.
+		/// </summary>
+		/// <value>The Fill shadow vertical blur.</value>
+		[Ignore]
+		public float FillShadowVerticalBlur
+		{
+			get { return FillShadow.VerticalBlurAmount; }
+			set { FillShadow.VerticalBlurAmount = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the Fill shadow base.
+		/// </summary>
+		/// <value>The color of the Fill shadow base.</value>
+		[Ignore]
+		public SKColor FillShadowBaseColor
+		{
+			get { return FillShadow.Color; }
+			set { FillShadow.Color = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the Fill shadow linked.
+		/// </summary>
+		/// <value>The color of the Fill shadow linked.</value>
+		[Ignore]
+		public KimonoColor FillShadowLinkedColor
+		{
+			get { return FillShadow.LinkedColor; }
+			set { FillShadow.LinkedColor = value; }
+		}
+
+		/// <summary>
 		/// Gets or sets the color of the frame as a named Kimono Color.
 		/// </summary>
 		/// <value>The color of the frame.</value>
+		[Child]
 		public KimonoColor FrameColor
 		{
 			get { return _frameColor; }
@@ -385,6 +641,7 @@ namespace KimonoCore
 		/// Gets or sets the frame gradient.
 		/// </summary>
 		/// <value>The frame gradient.</value>
+		[Child]
 		public KimonoGradient FrameGradient
 		{
 			get { return _frameGradient; }
@@ -422,12 +679,45 @@ namespace KimonoCore
 		/// Gets or sets the fill paint style.
 		/// </summary>
 		/// <value>The <c>SKPaint</c> style for the fill.</value>
+		[Ignore]
 		public SKPaint Fill { get; set; } = new SKPaint();
+
+		/// <summary>
+		/// Gets or sets the fill blend mode.
+		/// </summary>
+		/// <value>The fill blend mode.</value>
+		public SKBlendMode FillBlendMode
+		{
+			get { return Fill.BlendMode; }
+			set { Fill.BlendMode = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="T:KimonoCore.KimonoStyle"/> fill is anti alias.
+		/// </summary>
+		/// <value><c>true</c> if fill is anti alias; otherwise, <c>false</c>.</value>
+		public bool FillIsAntiAlias
+		{
+			get { return Fill.IsAntialias; }
+			set { Fill.IsAntialias = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the color of the fill base.
+		/// </summary>
+		/// <value>The color of the fill base.</value>
+		[Serializer("SKColor")]
+		public SKColor FillBaseColor
+		{
+			get { return Fill.Color; }
+			set { Fill.Color = value; }
+		}
 
 		/// <summary>
 		/// Gets or sets the color of the fill as a named Kimono Color.
 		/// </summary>
 		/// <value>The color of the fill.</value>
+		[Child]
 		public KimonoColor FillColor
 		{
 			get { return _fillColor; }
@@ -455,6 +745,7 @@ namespace KimonoCore
 		/// Gets or sets the fill gradient.
 		/// </summary>
 		/// <value>The fill gradient.</value>
+		[Child]
 		public KimonoGradient FillGradient
 		{
 			get { return _fillGradient; }
@@ -492,6 +783,7 @@ namespace KimonoCore
 		/// Gets the font metrics.
 		/// </summary>
 		/// <value>The font metrics.</value>
+		[Ignore]
 		public SKFontMetrics FontMetrics
 		{
 			get { return Fill.FontMetrics; }
@@ -613,6 +905,7 @@ namespace KimonoCore
 		/// Gets or sets the typeface.
 		/// </summary>
 		/// <value>The typeface.</value>
+		[Ignore]
 		public SKTypeface Typeface
 		{
 			get { return Fill.Typeface; }
@@ -765,6 +1058,7 @@ namespace KimonoCore
 		/// Gets or sets the dash pattern.
 		/// </summary>
 		/// <value>The dash pattern.</value>
+		[Children]
 		public bool[] DashPattern { get; set; } = { true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false };
 
 		/// <summary>
@@ -772,6 +1066,7 @@ namespace KimonoCore
 		/// `KimonoStyle`.
 		/// </summary>
 		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		[Ignore]
 		public virtual KimonoPropertyConnectionPoint[] ConnectionPoints
 		{
 			get
@@ -826,6 +1121,7 @@ namespace KimonoCore
 		/// this `KimonoShape`.
 		/// </summary>
 		/// <value>The property connections.</value>
+		[Children]
 		public List<KimonoPropertyConnection> PropertyConnections { get; set; } = new List<KimonoPropertyConnection>();
 		#endregion
 
@@ -1602,6 +1898,7 @@ namespace KimonoCore
 
 			var action = (constructor) ? "New" : "Initialize";
 			var prefix = (constructor) ? "var " : "";
+			var joinType = (Frame.StrokeJoin == SKStrokeJoin.Miter) ? "Miter" : Frame.StrokeJoin.ToString();
 
 			// Assemble paint
 			sourceCode += $"// {action} {Name} frame paint\n" +
@@ -1612,7 +1909,7 @@ namespace KimonoCore
 				$",\n\tIsAntialias = {Frame.IsAntialias.ToString().ToLower()}" +
 				$",\n\tStrokeWidth = {Frame.StrokeWidth}f" +
 				$",\n\tStrokeMiter = {Frame.StrokeMiter}f" +
-				$",\n\tStrokeJoin = SKStrokeJoin.{Frame.StrokeJoin}" +
+				$",\n\tStrokeJoin = SKStrokeJoin.{joinType}" +
 				$",\n\tStrokeCap = SKStrokeCap.{Frame.StrokeCap}";
 			
 			// Has gradient?
@@ -1790,6 +2087,54 @@ namespace KimonoCore
 						$",\n\tFillJitterLength = {FillJitterLength}f" +
 						$",\n\tFillJitterDeviation = {FillJitterDeviation}f";
 				}
+
+				// Assemble parts
+				sourceCode += $",\n\tFillBlendMode = SKBlendMode.{FillBlendMode}" +
+					$",\n\tFillIsAntiAlias = {FillIsAntiAlias.ToString().ToLower()}";
+
+				// Linked color?
+				if (FillColor == null)
+				{
+					// Add direct color
+					sourceCode += $",\n\tFillBaseColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FillBaseColor)}";
+				}
+				else
+				{
+					// Accumulate supporting color
+					sourceCode += $",\n\tFillColor = {KimonoCodeGenerator.AddSupportingColor(FillColor)}";
+				}
+
+				// Has Blur?
+				if (HasFillBlur)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFillBlur = true" +
+						$",\n\tFillBlurHorizontalAmount = {FillBlurHorizontalAmount}f" +
+						$",\n\tFillBlurVerticalAmount = {FillBlurVerticalAmount}f";
+				}
+
+				// Has shadow?
+				if (HasFillShadow)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFillShadow = true" +
+						$",\n\tFillShadowHorizontalOffset = {FillShadowHorizontalOffset}f" +
+						$",\n\tFillShadowVerticalOffset = {FillShadowVerticalOffset}f" +
+						$",\n\tFillShadowHorizontalBlur = {FillShadowHorizontalBlur}f" +
+						$",\n\tFillShadowVerticalBlur = {FillShadowVerticalBlur}f";
+
+					// Linked color?
+					if (FillShadow.LinkedColor == null)
+					{
+						// Add direct color
+						sourceCode += $",\n\tFillShadowBaseColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FillShadowBaseColor)}";
+					}
+					else
+					{
+						// Accumulate supporting color
+						sourceCode += $",\n\tFillShadowLinkedColor = {KimonoCodeGenerator.AddSupportingColor(FillShadowLinkedColor)}";
+					}
+				}
 			}
 
 			// Has Frame?
@@ -1813,6 +2158,65 @@ namespace KimonoCore
 						$",\n\tFrameJitterLength = {FrameJitterLength}f" +
 						$",\n\tFrameJitterDeviation = {FrameJitterDeviation}f";
 				}
+
+				// Assemble parts
+				sourceCode += $",\n\tFrameBlendMode = SKBlendMode.{FrameBlendMode}" +
+					$",\n\tFrameIsAntialias = {FrameIsAntialias.ToString().ToLower()}" +
+					$",\n\tFrameStrokeWidth = {FrameStrokeWidth}f" +
+					$",\n\tFrameStrokeMiter = {FrameStrokeMiter}f" +
+					$",\n\tFrameStrokeJoin = SKStrokeJoin.{FrameStrokeJoin}" +
+					$",\n\tFrameStrokeCap = SKStrokeCap.{FrameStrokeCap}";
+
+				// Has dash effect?
+				if (HasFrameDash)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFrameDash = true";
+				}
+
+				// Linked color?
+				if (FrameColor == null)
+				{
+					// Add direct color
+					sourceCode += $",\n\tFrameBaseColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FrameBaseColor)}";
+				}
+				else
+				{
+					// Accumulate supporting color
+					sourceCode += $",\n\tFrameColor = {KimonoCodeGenerator.AddSupportingColor(FrameColor)};\n";
+				}
+
+				// Has Blur?
+				if (HasFrameBlur)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFrameBlur = true" +
+						$",\n\tFrameBlurHorizontalAmount = {FrameBlurHorizontalAmount}f" +
+						$",\n\tFrameBlurHorizontalAmount = {FrameBlurHorizontalAmount}f";
+				}
+
+				// Has shadow?
+				if (HasFrameShadow)
+				{
+					// Yes, include
+					sourceCode += $",\n\tHasFrameShadow = true" +
+						$",\n\tFrameShadowHorizontalOffset = {FrameShadowHorizontalOffset}f" +
+						$",\n\tFrameShadowVerticalOffset = {FrameShadowVerticalOffset}f" +
+						$",\n\tFrameShadowHorizontalBlur = {FrameShadowHorizontalBlur}f" +
+						$",\n\tFrameShadowVerticalBlur = {FrameShadowVerticalBlur}f";
+
+					// Linked color?
+					if (FrameShadow.LinkedColor == null)
+					{
+						// Add direct color
+						sourceCode += $",\n\tFrameShadowBaseColor = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FrameShadowBaseColor)}";
+					}
+					else
+					{
+						// Accumulate supporting color
+						sourceCode += $",\n\tFrameShadowLinkedColor = {KimonoCodeGenerator.AddSupportingColor(FrameShadowLinkedColor)}";
+					}
+				}
 			}
 
 			// Is text Style?
@@ -1833,128 +2237,15 @@ namespace KimonoCore
 			// Finalize style
 			sourceCode += "};\n";
 
-			// Requires configuration?
-			if (HasFill || HasFrame)
+			// Has dash effect?
+			if (HasFrame && HasFrameDash)
 			{
-				sourceCode += $"\n// Configure new {Name}\n";
-			}
-
-			// Add items that cannot be in an initializer
-			if (HasFill)
-			{
-				// Assemble parts
-				sourceCode += $"{ElementName}.Fill.BlendMode = SKBlendMode.{Fill.BlendMode};\n" +
-					$"{ElementName}.Fill.IsAntialias = {Fill.IsAntialias.ToString().ToLower()};\n";
-
-				// Linked color?
-				if (FillColor == null)
+				// Yes, include
+				sourceCode += $"// Dash pattern for {Name} frame\n";
+				for (int n = 0; n < DashPattern.Length; ++n)
 				{
-					// Add direct color
-					sourceCode += $"{ElementName}.Fill.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Fill.Color)};\n";
-				}
-				else
-				{
-					// Accumulate supporting color
-					sourceCode += $"{ElementName}.FillColor = {KimonoCodeGenerator.AddSupportingColor(FillColor)};\n";
-				}
-
-				// Has Blur?
-				if (HasFillBlur)
-				{
-					// Yes, include
-					sourceCode += $"{ElementName}.HasFillBlur = true;\n" +
-						$"{ElementName}.FillBlur.HorizontalBlurAmount = {FillBlur.HorizontalBlurAmount}f;\n" +
-						$"{ElementName}.FillBlur.VerticalBlurAmount = {FillBlur.VerticalBlurAmount}f;\n";
-				}
-
-				// Has shadow?
-				if (HasFillShadow)
-				{
-					// Yes, include
-					sourceCode += $"{ElementName}.HasFillShadow = true;\n" +
-						$"{ElementName}.FillShadow.HorizontalOffset = {FillShadow.HorizontalOffset}f;\n" +
-						$"{ElementName}.FillShadow.VerticalOffset = {FillShadow.VerticalOffset}f;\n" +
-						$"{ElementName}.FillShadow.HorizontalBlurAmount = {FillShadow.HorizontalBlurAmount}f;\n" +
-						$"{ElementName}.FillShadow.VerticalBlurAmount = {FillShadow.VerticalBlurAmount}f;\n";
-
-					// Linked color?
-					if (FillShadow.LinkedColor == null)
-					{
-						// Add direct color
-						sourceCode += $"{ElementName}.FillShadow.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FillShadow.Color)};\n";
-					}
-					else
-					{
-						// Accumulate supporting color
-						sourceCode += $"{ElementName}.FillShadow.LinkedColor = {KimonoCodeGenerator.AddSupportingColor(FillShadow.LinkedColor)};\n";
-					}
-				}
-			}
-
-			if (HasFrame)
-			{
-				// Assemble parts
-				sourceCode += $"{ElementName}.Frame.BlendMode = SKBlendMode.{Frame.BlendMode};\n" +
-					$"{ElementName}.Frame.IsAntialias = {Frame.IsAntialias.ToString().ToLower()};\n" +
-					$"{ElementName}.Frame.StrokeWidth = {Frame.StrokeWidth}f;\n" +
-					$"{ElementName}.Frame.StrokeMiter = {Frame.StrokeMiter}f;\n" +
-					$"{ElementName}.Frame.StrokeJoin = SKStrokeJoin.{Frame.StrokeJoin};\n" +
-					$"{ElementName}.Frame.StrokeCap = SKStrokeCap.{Frame.StrokeCap};\n";
-
-				// Has dash effect?
-				if (HasFrameDash)
-				{
-					// Yes, include
-					sourceCode += $"{ElementName}.HasFrameDash = true;\n";
-					for (int n = 0; n < DashPattern.Length; ++n)
-					{
-						// Accumulate pattern
-						sourceCode += $"{ElementName}.DashPattern[{n}] = {DashPattern[n].ToString().ToLower()};\n";
-					}
-				}
-
-				// Linked color?
-				if (FrameColor == null)
-				{
-					// Add direct color
-					sourceCode += $"{ElementName}.Frame.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, Frame.Color)};\n";
-				}
-				else
-				{
-					// Accumulate supporting color
-					sourceCode += $"{ElementName}.FrameColor = {KimonoCodeGenerator.AddSupportingColor(FrameColor)};\n";
-				}
-
-				// Has Blur?
-				if (HasFrameBlur)
-				{
-					// Yes, include
-					sourceCode += $"{ElementName}.HasFrameBlur = true;\n" +
-						$"{ElementName}.FrameBlur.HorizontalBlurAmount = {FrameBlur.HorizontalBlurAmount}f;\n" +
-						$"{ElementName}.FrameBlur.VerticalBlurAmount = {FrameBlur.VerticalBlurAmount}f;\n";
-				}
-
-				// Has shadow?
-				if (HasFrameShadow)
-				{
-					// Yes, include
-					sourceCode += $"{ElementName}.HasFrameShadow = true;\n" +
-						$"{ElementName}.FrameShadow.HorizontalOffset = {FrameShadow.HorizontalOffset}f;\n" +
-						$"{ElementName}.FrameShadow.VerticalOffset = {FrameShadow.VerticalOffset}f;\n" +
-						$"{ElementName}.FrameShadow.HorizontalBlurAmount = {FrameShadow.HorizontalBlurAmount}f;\n" +
-						$"{ElementName}.FrameShadow.VerticalBlurAmount = {FrameShadow.VerticalBlurAmount}f;\n";
-
-					// Linked color?
-					if (FrameShadow.LinkedColor == null)
-					{
-						// Add direct color
-						sourceCode += $"{ElementName}.FrameShadow.Color = {KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, FrameShadow.Color)};\n";
-					}
-					else
-					{
-						// Accumulate supporting color
-						sourceCode += $"{ElementName}.FrameShadow.LinkedColor = {KimonoCodeGenerator.AddSupportingColor(FrameShadow.LinkedColor)};\n";
-					}
+					// Accumulate pattern
+					sourceCode += $"{ElementName}.DashPattern[{n}] = {DashPattern[n].ToString().ToLower()};\n";
 				}
 			}
 

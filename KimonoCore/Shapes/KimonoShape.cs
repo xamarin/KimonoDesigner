@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines the based shape that all other Kimono Shape types will inherit from.
 	/// </summary>
+	[Table("Shape")]
 	public class KimonoShape : KimonoBounds, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Private Variables
@@ -31,7 +33,7 @@ namespace KimonoCore
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
-		public string Name
+		public override string Name
 		{
 			get { return _name; }
 			set
@@ -59,6 +61,7 @@ namespace KimonoCore
 		/// Gets or sets the style.
 		/// </summary>
 		/// <value>The <c>KimonoStyle</c> that will be used to draw this shape.</value>
+		[Child]
 		public virtual KimonoStyle Style
 		{
 			get { return _style; }
@@ -69,6 +72,7 @@ namespace KimonoCore
 		/// Gets or sets the control points that define the path of the shape.
 		/// </summary>
 		/// <value>A collection of <c>KimonoHandle</c> objects.</value>
+		[Ignore]
 		public List<KimonoHandle> ControlPoints { get; set; } = new List<KimonoHandle>();
 
 		/// <summary>
@@ -87,6 +91,7 @@ namespace KimonoCore
 		/// <remarks>An "Editable Shape" is one that is composed of a set of data points (such as
 		/// <c>KimonoVector</c> or <c>KimonoBezier</c>) or a group of objects (such as <c>KimonoShapeGroup</c>).</remarks>
 		/// <value><c>true</c> if is editable; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public virtual bool IsEditable
 		{
 			get { return false; }
@@ -104,6 +109,7 @@ namespace KimonoCore
 		/// `KimonoShape`.
 		/// </summary>
 		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		[Ignore]
 		public virtual KimonoPropertyConnectionPoint[] ConnectionPoints
 		{
 			get { 
@@ -129,6 +135,7 @@ namespace KimonoCore
 		/// this `KimonoShape`.
 		/// </summary>
 		/// <value>The property connections.</value>
+		[Children]
 		public List<KimonoPropertyConnection> PropertyConnections { get; set; } = new List<KimonoPropertyConnection>();
 		#endregion
 

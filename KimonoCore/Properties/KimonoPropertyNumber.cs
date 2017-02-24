@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines a `KimonoProperty` that represents a `float` or `int` value.
 	/// </summary>
+	[Table("NumberProperty")]
 	public class KimonoPropertyNumber : KimonoProperty
 	{
 		#region Computed Properties

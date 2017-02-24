@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -8,6 +9,7 @@ namespace KimonoCore
 	/// A Kimono Portfolio holds a collection of <c>KimonoSketches</c>, <c>KimonoStyles</c> and <c>KimonoColors</c>
 	/// that define a given Kimono Designer project.
 	/// </summary>
+	[Table("Portfolio")]
 	public class KimonoPortfolio : IKimonoCodeGeneration
 	{
 		#region Private Variables
@@ -28,6 +30,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -65,36 +68,42 @@ namespace KimonoCore
 		/// Gets or sets the sketches.
 		/// </summary>
 		/// <value>The sketches.</value>
+		[Children]
 		public List<KimonoSketch> Sketches { get; set; } = new List<KimonoSketch>();
 
 		/// <summary>
 		/// Gets or sets the styles.
 		/// </summary>
 		/// <value>The styles.</value>
+		[Children]
 		public List<KimonoStyle> Styles { get; set; } = new List<KimonoStyle>();
 
 		/// <summary>
 		/// Gets or sets the colors.
 		/// </summary>
 		/// <value>The colors.</value>
+		[Children]
 		public List<KimonoColor> Colors { get; set; } = new List<KimonoColor>();
 
 		/// <summary>
 		/// Gets or sets the gradients.
 		/// </summary>
 		/// <value>The gradients.</value>
+		[Children]
 		public List<KimonoGradient> Gradients { get; set; } = new List<KimonoGradient>();
 
 		/// <summary>
 		/// Gets or sets the properties.
 		/// </summary>
 		/// <value>The properties.</value>
+		[Children]
 		public List<KimonoProperty> Properties { get; set; } = new List<KimonoProperty>();
 
 		/// <summary>
 		/// Gets or sets the selected sketch.
 		/// </summary>
 		/// <value>The selected sketch.</value>
+		[Ignore]
 		public KimonoSketch SelectedSketch
 		{
 			get { return _selectedSketch; }
@@ -108,6 +117,24 @@ namespace KimonoCore
 		#endregion
 
 		#region Constructors
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoPortfolio"/> class.
+		/// </summary>
+		public KimonoPortfolio()
+		{
+			
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoPortfolio"/> class.
+		/// </summary>
+		/// <param name="data">The TextBase data stream to initialize this instance with.</param>
+		public KimonoPortfolio(string data)
+		{
+			// Initialize from the TextBase stream.
+			LoadFromTextBase(data);
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoPortfolio"/> class.
 		/// </summary>
@@ -1476,6 +1503,58 @@ namespace KimonoCore
 
 			// Return new object
 			return newPortfolio;
+		}
+		#endregion
+
+		#region Save and Load 
+		/// <summary>
+		/// Saves this portfolio to a TextBase formatted data stream.
+		/// </summary>
+		/// <returns>The TextBase stream representing this `KimonoPortfolio`.</returns>
+		public string SaveToTextBase()
+		{
+			var database = new KimonoTextBase();
+
+			return database.Save(this);
+		}
+
+		/// <summary>
+		/// Loads this portfolio from a TextBase formatted data stream.
+		/// </summary>
+		/// <param name="data">The TextBase data stream to load.</param>
+		public void LoadFromTextBase(string data)
+		{
+			var database = new KimonoTextBase();
+
+			// Restore object from data
+			database.Load(data, this);
+
+			var x = this;
+
+			// Set selected sketch
+			SelectedSketch = Sketches[0];
+
+			// Relink colors
+			RelinkColors();
+
+			// Relink gradients
+			foreach (KimonoGradient gradient in Gradients)
+			{
+				RelinkGradient(gradient);
+			}
+
+			// Relink styles
+			foreach (KimonoStyle style in Styles)
+			{
+				RelinkStyle(style);
+			}
+
+			// Relink sketches
+			foreach (KimonoSketch sketch in Sketches)
+			{
+				sketch.Portfolio = this;
+				RelinkSketch(sketch);
+			}
 		}
 		#endregion
 

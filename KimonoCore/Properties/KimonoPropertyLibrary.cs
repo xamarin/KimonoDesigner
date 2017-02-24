@@ -1,8 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
+	/// <summary>
+	/// Kimono property library stores shared ObiScript functions that can be used in other scripts.
+	/// </summary>
+	[Table("LibraryProperty")]
 	public class KimonoPropertyLibrary : KimonoProperty
 	{
 		#region Computed Properties
@@ -10,6 +15,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoProperty"/> gets value from script.
 		/// </summary>
 		/// <value><c>true</c> if gets value from script; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool GetsValueFromScript
 		{
 			get
@@ -22,6 +28,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoPropertyColor"/> is obi script value.
 		/// </summary>
 		/// <value><c>true</c> if is obi script value; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool IsObiScriptValue
 		{
 			get

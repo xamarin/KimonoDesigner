@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines a `KimonoProperty` that represents a `SKRect`.
 	/// </summary>
+	[Table("RectProperty")]
 	public class KimonoPropertyRect : KimonoProperty
 	{
 		#region Public Variables
@@ -60,6 +62,7 @@ namespace KimonoCore
 		/// Gets or sets the width.
 		/// </summary>
 		/// <value>The width.</value>
+		[Ignore]
 		public float Width
 		{
 			get { return Value.Width; }
@@ -70,6 +73,7 @@ namespace KimonoCore
 		/// Gets or sets the height.
 		/// </summary>
 		/// <value>The height.</value>
+		[Ignore]
 		public float Height
 		{
 			get { return Value.Height; }

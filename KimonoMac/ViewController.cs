@@ -44,6 +44,15 @@ namespace KimonoMac
 
 		#region Computed Properties
 		/// <summary>
+		/// Gets the design surface surface.
+		/// </summary>
+		/// <value>The currently active Kimono Design Surface.</value>
+		public KimonoDesignSurface Surface
+		{
+			get { return DesignSurface; }
+		}
+
+		/// <summary>
 		/// Gets or sets the inspector view mode.
 		/// </summary>
 		/// <value>The `InspectorViewMode`.</value>
@@ -102,6 +111,12 @@ namespace KimonoMac
 		public int DefaultLanguage { get; set; } = 0; //App.Preferences.DefaultLanguage;
 
 		/// <summary>
+		/// Gets or sets the parent window controller.
+		/// </summary>
+		/// <value>The parent window controller.</value>
+		public MainWindowController ParentWindowController { get; set; } = null;
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this `ViewController` document 
 		/// has been edited.
 		/// </summary>
@@ -137,7 +152,6 @@ namespace KimonoMac
 			{
 				TextEditor.Value = value;
 				Formatter.Reformat();
-				DocumentEdited = false;
 			}
 		}
 
@@ -880,6 +894,7 @@ namespace KimonoMac
 			GeneralInfoInspector.SketchModified += () =>
 			{
 				// Update the UI
+				DocumentEdited = true;
 				UpdateShapesList(true);
 				UpdateTextEditor();
 			};
@@ -887,6 +902,7 @@ namespace KimonoMac
 			GeneralInfoInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -925,6 +941,7 @@ namespace KimonoMac
 			ConnectionsInspector.ConnectionModified += () =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -933,6 +950,7 @@ namespace KimonoMac
 			PropertyInspector.PropertyModified += (property) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				UpdatePropertyList(true);
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
@@ -945,6 +963,7 @@ namespace KimonoMac
 				DesignSurface.Portfolio.DeleteProperty(property);
 
 				// Update UI
+				DocumentEdited = true;
 				CloseAllInspectors();
 				UpdatePropertyList(true);
 				DesignSurface.RefreshView();
@@ -956,6 +975,7 @@ namespace KimonoMac
 				var newProperty = DesignSurface.Portfolio.DuplicateProperty(property);
 
 				// Update UI
+				DocumentEdited = true;
 				UpdatePropertyList(true);
 				ShowPropertyInspectors(newProperty);
 			};
@@ -964,6 +984,7 @@ namespace KimonoMac
 			ScriptDebuggerInspector.PropertyModified += (property) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 				ShowPropertyInspectors(property);
@@ -973,6 +994,7 @@ namespace KimonoMac
 			BooleanPropertyInspector.PropertyModified += (property) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 			};
 
@@ -980,6 +1002,7 @@ namespace KimonoMac
 			NumberPropertyInspector.PropertyModified += (property) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 			};
 
@@ -987,6 +1010,7 @@ namespace KimonoMac
 			RectPropertyInspector.PropertyModified += (property) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 			};
 
@@ -994,6 +1018,7 @@ namespace KimonoMac
 			TextPropertyInspector.PropertyModified += (property) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 			};
 
@@ -1005,6 +1030,7 @@ namespace KimonoMac
 				ShowGeneralInspectors(group);
 
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 
 			};
@@ -1013,6 +1039,7 @@ namespace KimonoMac
 			StarInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1021,6 +1048,7 @@ namespace KimonoMac
 			RoundRectInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1029,6 +1057,7 @@ namespace KimonoMac
 			PolygonInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1037,6 +1066,7 @@ namespace KimonoMac
 			FillInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1056,6 +1086,7 @@ namespace KimonoMac
 
 			FrameInspector.MakeNewColor += (color) =>
 			{
+				DocumentEdited = true;
 				AddNewColor(color);
 			};
 
@@ -1063,12 +1094,14 @@ namespace KimonoMac
 			StyleInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 			};
 
 			StyleInspector.StyleModified += () =>
 			{
 				// Update style and design surface
+				DocumentEdited = true;
 				UpdateStyleList(true);
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
@@ -1077,12 +1110,14 @@ namespace KimonoMac
 			StyleInspector.MakeDuplicate += (style) =>
 			{
 				// Duplicate style
+				DocumentEdited = true;
 				DuplicateStyle(style);
 			};
 
 			StyleInspector.RemoveStyle += (style) =>
 			{
 				// Delete style
+				DocumentEdited = true;
 				DeleteStyle(style);
 			};
 
@@ -1095,6 +1130,7 @@ namespace KimonoMac
 			StyleInspector.StyleTypeChanged += (style) =>
 			{
 				// Update the inspector view to reflect change
+				DocumentEdited = true;
 				ShowStyleInspectors(style);
 			};
 
@@ -1102,6 +1138,7 @@ namespace KimonoMac
 			GradientInspector.GradientModified += (gradient) =>
 			{
 				// Update list and design view
+				DocumentEdited = true;
 				UpdateGradientList(true);
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
@@ -1110,6 +1147,7 @@ namespace KimonoMac
 			GradientInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1117,12 +1155,14 @@ namespace KimonoMac
 			GradientInspector.MakeDuplicate += (gradient) =>
 			{
 				// Duplicate style
+				DocumentEdited = true;
 				DuplicateGradient(gradient);
 			};
 
 			GradientInspector.RemoveGradient += (gradient) =>
 			{
 				// Delete style
+				DocumentEdited = true;
 				DeleteGradient(gradient);
 			};
 
@@ -1136,6 +1176,7 @@ namespace KimonoMac
 			ColorPaletteInspector.ColorModified += (color) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				UpdateColorList(true);
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
@@ -1143,11 +1184,13 @@ namespace KimonoMac
 
 			ColorPaletteInspector.RemoveColor += (color) =>
 			{
+				DocumentEdited = true;
 				DeleteColor(color);
 			};
 
 			ColorPaletteInspector.MakeDuplicate += (color) =>
 			{
+				DocumentEdited = true;
 				DuplicateColor(color);
 			};
 
@@ -1161,23 +1204,27 @@ namespace KimonoMac
 			AttachedStyleInspector.RemoveStyle += (style) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				ShowGeneralInspectors(DesignSurface.DeeplySelectedShape);
 			};
 
 			AttachedStyleInspector.EditAttachedStyle += (style) =>
 			{
 				// Update UI
+				DocumentEdited = true;
 				ShowStyleInspectors(style);
 			};
 
 			AttachedStyleInspector.ConvertToStyle += () =>
 			{
+				DocumentEdited = true;
 				DesignSurface.Portfolio.ConvertSelectedShapeToStyle();
 			};
 
 			AttachedStyleInspector.ShapeModified += (shape) =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				ShowGeneralInspectors(shape);
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
@@ -1187,6 +1234,7 @@ namespace KimonoMac
 			ArrowInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1195,6 +1243,7 @@ namespace KimonoMac
 			TextInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1203,6 +1252,7 @@ namespace KimonoMac
 			FontInspector.ShapeModified += () =>
 			{
 				// Update design surface
+				DocumentEdited = true;
 				DesignSurface.RefreshView();
 				UpdateTextEditor();
 			};
@@ -1210,6 +1260,7 @@ namespace KimonoMac
 			FontInspector.StyleModified += () =>
 			{
 				// Update style and design surface
+				DocumentEdited = true;
 				UpdateStyleList(true);
 				DesignSurface.RefreshView();
 			};
@@ -1218,6 +1269,7 @@ namespace KimonoMac
 			SketchInspector.SketchModified += () =>
 			{
 				// Update sketch list
+				DocumentEdited = true;
 				UpdateSketchesList(true);
 				UpdateTextEditor();
 			};
@@ -1225,12 +1277,14 @@ namespace KimonoMac
 			SketchInspector.MakeDuplicate += () =>
 			{
 				// Duplicate current sketch
+				DocumentEdited = true;
 				DesignSurface.Portfolio.DuplicateSelectedSketch();
 			};
 
 			SketchInspector.RemoveSketch += () =>
 			{
 				// Remove current sketch
+				DocumentEdited = true;
 				DesignSurface.Portfolio.DeleteSelectedSketch();
 			};
 
@@ -1238,6 +1292,7 @@ namespace KimonoMac
 			PortfolioInspector.PortfolioModified += () =>
 			{
 				// Update the code generation
+				DocumentEdited = true;
 				UpdateTextEditor();
 			};
 		}
@@ -2175,17 +2230,20 @@ namespace KimonoMac
 
 			DesignSurface.SketchModified += () =>
 			{
+				DocumentEdited = true;
 				UpdateShapesList(true);
 			};
 
 			DesignSurface.SketchesModified += () =>
 			{
+				DocumentEdited = true;
 				UpdateSketchesList(true);
 			};
 
 			DesignSurface.StylesModified += (style) =>
 			{
 				// Refresh style list
+				DocumentEdited = true;
 				UpdateStyleList(true);
 
 				// Was a specific style modified?
@@ -2199,6 +2257,7 @@ namespace KimonoMac
 			DesignSurface.ColorsModified += (color) =>
 			{
 				// Refresh colors list
+				DocumentEdited = true;
 				UpdateColorList(true);
 
 				// Was a specific color modified?
@@ -2213,6 +2272,7 @@ namespace KimonoMac
 			{
 
 				// Refresh gradients list
+				DocumentEdited = true;
 				UpdateGradientList(true);
 
 				// Was a specific gradient modified?
@@ -2228,6 +2288,7 @@ namespace KimonoMac
 			{
 
 				// Refresh properties list
+				DocumentEdited = true;
 				UpdatePropertyList(true);
 
 				// Was a specific property modified?
@@ -2263,6 +2324,7 @@ namespace KimonoMac
 
 			DesignSurface.SketchSizeChanged += () =>
 			{
+				DocumentEdited = true;
 				SetDocumentSize();
 			};
 
@@ -2294,13 +2356,16 @@ namespace KimonoMac
 			base.ViewDidAppear();
 
 			// Set Window Title
-			if (++App.NewWindowNumber == 0)
+			if (View.Window.Title == "Window")
 			{
-				this.View.Window.Title = "untitled";
-			}
-			else
-			{
-				this.View.Window.Title = string.Format("untitled {0}", App.NewWindowNumber);
+				if (++App.NewWindowNumber == 0)
+				{
+					View.Window.Title = "untitled";
+				}
+				else
+				{
+					View.Window.Title = string.Format("untitled {0}", App.NewWindowNumber);
+				}
 			}
 
 			// Configure

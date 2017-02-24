@@ -86,6 +86,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ObiScript\ObiScriptEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObiScript\ObiScriptPortfolio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KimonoTextBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

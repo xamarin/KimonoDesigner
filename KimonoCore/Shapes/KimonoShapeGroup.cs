@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -8,6 +9,7 @@ namespace KimonoCore
 	/// A <c>KimonoShapeGroup</c> holds a collection of <c>KimonoShapes</c> that can be acted
 	/// upon as a group.
 	/// </summary>
+	[Table("Group")]
 	public class KimonoShapeGroup : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Private Variables
@@ -55,6 +57,7 @@ namespace KimonoCore
 		/// this <c>KimonoShapeGroup</c> belongs to.
 		/// </summary>
 		/// <value>The parent <c>KimonoSketch</c> or <c>KimonoShapeGroup</c>.</value>
+		[Child]
 		public object Parent { get; set; } = null;
 
 		/// <summary>
@@ -62,6 +65,7 @@ namespace KimonoCore
 		/// objects until a <c>KimonoSketch</c> is reached.
 		/// </summary>
 		/// <value>The parent <c>KimonoSketch</c>.</value>
+		[Ignore]
 		public KimonoSketch ParentSketch
 		{
 			get
@@ -86,6 +90,7 @@ namespace KimonoCore
 		/// Gets the full path from this group back to the parent <c>KimonoSketch</c>.
 		/// </summary>
 		/// <value>The path representing the nesting level of this group.</value>
+		[Ignore]
 		public string Path
 		{
 			get
@@ -109,12 +114,14 @@ namespace KimonoCore
 		/// Gets or sets the shapes.
 		/// </summary>
 		/// <value>The shapes.</value>
+		[Children]
 		public List<KimonoShape> Shapes { get; set; } = new List<KimonoShape>();
 
 		/// <summary>
 		/// Gets or sets the selected shape.
 		/// </summary>
 		/// <value>The selected shape.</value>
+		[Ignore]
 		public KimonoShape SelectedShape
 		{
 			get { return _selectedShape; }
@@ -125,6 +132,7 @@ namespace KimonoCore
 		/// Gets the deepest selected shape in a chain of groups.
 		/// </summary>
 		/// <value>The deeply selected shape.</value>
+		[Ignore]
 		public KimonoShape DeeplySelectedShape
 		{
 			get
@@ -146,6 +154,7 @@ namespace KimonoCore
 		/// Gets the deepest selected group in a chain of groups that is in the edit mode.
 		/// </summary>
 		/// <value>The deeply selected group.</value>
+		[Ignore]
 		public KimonoShapeGroup DeeplySelectedGroup
 		{
 			get
@@ -169,6 +178,7 @@ namespace KimonoCore
 		/// Gets or sets the style of this group.
 		/// </summary>
 		/// <value>The style as a <c>KimonoStyle</c>.</value>
+		[Child]
 		public override KimonoStyle Style
 		{
 			get
@@ -215,6 +225,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoShapeGroup"/> is editable.
 		/// </summary>
 		/// <value><c>true</c> if is editable; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool IsEditable
 		{
 			get { return true; }
@@ -224,6 +235,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether the selected shape is at the bottom.
 		/// </summary>
 		/// <value><c>true</c> if selected shape at bottom; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool SelectedShapeAtBottom
 		{
 			get { return (SelectedShape?.LayerDepth == 0); }
@@ -233,6 +245,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether the selected shape is at the top.
 		/// </summary>
 		/// <value><c>true</c> if selected shape at top; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool SelectedShapeAtTop
 		{
 			get { return (SelectedShape?.LayerDepth == Shapes.Count - 1); }
@@ -254,6 +267,7 @@ namespace KimonoCore
 		/// Gets or sets the <c>KimonoShape</c> that is acting as a mask for this group.
 		/// </summary>
 		/// <value>The mask as a <c>KimonoShape</c>.</value>
+		[Child]
 		public KimonoShape Mask { get; set; } = null;
 
 		/// <summary>

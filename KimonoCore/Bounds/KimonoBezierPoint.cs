@@ -1,5 +1,6 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -7,6 +8,7 @@ namespace KimonoCore
 	/// Holds the control and end point for a <c>KimonoShapeBezier</c> that define a quad
 	/// section of the Bezier.
 	/// </summary>
+	[Table("BezierPoint")]
 	public class KimonoBezierPoint
 	{
 		#region Computed Properties
@@ -14,12 +16,14 @@ namespace KimonoCore
 		/// Gets or sets the control point.
 		/// </summary>
 		/// <value>The control point.</value>
+		[Child]
 		public SKPoint ControlPoint { get; set; } = new SKPoint();
 
 		/// <summary>
 		/// Gets or sets the end point.
 		/// </summary>
 		/// <value>The end point.</value>
+		[Child]
 		public SKPoint EndPoint { get; set; } = new SKPoint();
 		#endregion
 

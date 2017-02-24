@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Draws a rounded rectangle into the Design Surface.
 	/// </summary>
+	[Table("RoundRect")]
 	public class KimonoShapeRoundRect : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
@@ -20,6 +22,7 @@ namespace KimonoCore
 		/// `KimonoShape`.
 		/// </summary>
 		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		[Ignore]
 		public override KimonoPropertyConnectionPoint[] ConnectionPoints
 		{
 			get

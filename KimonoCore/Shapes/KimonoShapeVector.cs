@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// A vector is a hard edged shape consisting of a set of datapoints that will be drawn into the Desing Surface.
 	/// </summary>
+	[Table("Vector")]
 	public class KimonoShapeVector : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
@@ -14,6 +16,7 @@ namespace KimonoCore
 		/// Gets or sets the points that define the shape.
 		/// </summary>
 		/// <value>The points.</value>
+		[Children]
 		public List<SKPoint> Points { get; set; } = new List<SKPoint>();
 
 		/// <summary>
@@ -26,6 +29,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoShapeVector"/> is editable.
 		/// </summary>
 		/// <value><c>true</c> if is editable; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool IsEditable
 		{
 			get { return true; }

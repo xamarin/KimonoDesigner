@@ -1,5 +1,6 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -7,6 +8,7 @@ namespace KimonoCore
 	/// Defines a blur effect that can be attached to the fill or the frame of a
 	/// <c>KimonoShape</c>.
 	/// </summary>
+	[Table("Blur")]
 	public class KimonoBlur : IKimonoCodeGeneration
 	{
 		#region Private Variables
@@ -60,6 +62,7 @@ namespace KimonoCore
 		/// Gets the blur filter represented by this blur effect.
 		/// </summary>
 		/// <value>The <c>SKImageFilter</c> for the blur filter.</value>
+		[Ignore]
 		public SKImageFilter BlurFilter
 		{
 			get { return SKImageFilter.CreateBlur(HorizontalBlurAmount, VerticalBlurAmount, null, null); }

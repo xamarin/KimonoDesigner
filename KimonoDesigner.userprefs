@@ -1,7 +1,11 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/ViewController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/WelcomeViewController.designer.cs">
     <Files>
-      <File FileName="KimonoMac/ViewController.cs" Line="903" Column="41" />
+      <File FileName="KimonoMac/AppDelegate.cs" Line="225" Column="5" />
+      <File FileName="KimonoMac/MainWindowController.cs" Line="120" Column="32" />
+      <File FileName="KimonoMac/ViewController.cs" Line="2075" Column="23" />
+      <File FileName="KimonoMac/WelcomeViewController.cs" Line="148" Column="4" />
+      <File FileName="KimonoMac/WelcomeViewController.designer.cs" Line="28" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

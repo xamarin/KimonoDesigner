@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\KimonoCore.Mac.xml</DocumentationFile>
@@ -69,6 +69,7 @@
     <None Include="License.txt" />
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\TextBase\TextBase.projitems" Label="Shared" Condition="Exists('..\TextBase\TextBase.projitems')" />
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" Condition="Exists('..\KimonoCore\KimonoCore.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets')" />

@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Draws a line on the design surface.
 	/// </summary>
+	[Table("Line")]
 	public class KimonoShapeLine : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Constructors

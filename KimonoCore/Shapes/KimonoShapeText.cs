@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Draws a block of text into the Design Surface within the specifid bounds of this shape.
 	/// </summary>
+	[Table("Text")]
 	public class KimonoShapeText : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
@@ -19,6 +21,7 @@ namespace KimonoCore
 		/// Gets the font metrics.
 		/// </summary>
 		/// <value>The font metrics.</value>
+		[Ignore]
 		public SKFontMetrics FontMetrics
 		{
 			get { return Style.Fill.FontMetrics; }
@@ -140,6 +143,7 @@ namespace KimonoCore
 		/// Gets or sets the typeface.
 		/// </summary>
 		/// <value>The typeface.</value>
+		[Ignore]
 		public SKTypeface Typeface
 		{
 			get { return Style.Fill.Typeface; }
@@ -195,6 +199,7 @@ namespace KimonoCore
 		/// `KimonoShape`.
 		/// </summary>
 		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		[Ignore]
 		public override KimonoPropertyConnectionPoint[] ConnectionPoints
 		{
 			get

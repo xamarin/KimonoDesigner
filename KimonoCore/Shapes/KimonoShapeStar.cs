@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Draws a multi-sided star shape into the Design Surface.
 	/// </summary>
+	[Table("Star")]
 	public class KimonoShapeStar : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
@@ -32,6 +34,7 @@ namespace KimonoCore
 		/// `KimonoShape`.
 		/// </summary>
 		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		[Ignore]
 		public override KimonoPropertyConnectionPoint[] ConnectionPoints
 		{
 			get

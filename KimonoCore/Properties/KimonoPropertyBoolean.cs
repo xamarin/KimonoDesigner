@@ -1,11 +1,13 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines a `KimonoProperty` that represents a `bool` value.
 	/// </summary>
+	[Table("BooleanProperty")]
 	public class KimonoPropertyBoolean : KimonoProperty
 	{
 		#region Computed Properties

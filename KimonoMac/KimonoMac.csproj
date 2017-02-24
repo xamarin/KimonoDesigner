@@ -232,6 +232,8 @@
     <ImageAsset Include="Assets.xcassets\IconConnected.imageset\Connected-48.png" />
     <ImageAsset Include="Assets.xcassets\IconDisconnected.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IconDisconnected.imageset\Disconnected-48.png" />
+    <ImageAsset Include="Assets.xcassets\KimonoDocIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\KimonoDocIcon.imageset\DOC-96.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -321,6 +323,7 @@
     <Folder Include="Assets.xcassets\IconDetailsOff.imageset\" />
     <Folder Include="Assets.xcassets\IconConnected.imageset\" />
     <Folder Include="Assets.xcassets\IconDisconnected.imageset\" />
+    <Folder Include="Assets.xcassets\KimonoDocIcon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -460,6 +463,15 @@
     <Compile Include="KimonoInspectorScriptDebugger.designer.cs">
       <DependentUpon>KimonoInspectorScriptDebugger.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\MainWindowDelegate.cs" />
+    <Compile Include="WelcomeWindowController.cs" />
+    <Compile Include="WelcomeWindowController.designer.cs">
+      <DependentUpon>WelcomeWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WelcomeViewController.cs" />
+    <Compile Include="WelcomeViewController.designer.cs">
+      <DependentUpon>WelcomeViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -469,6 +481,9 @@
       <Project>{53D7038F-63F7-4A9A-BCF7-857F93FE0E5C}</Project>
       <Name>KimonoCore.Mac</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\DOC-96.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets')" />

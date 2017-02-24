@@ -1,5 +1,6 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -7,6 +8,7 @@ namespace KimonoCore
 	/// Defines a shadow effect that can be attached to the fill or the frame of a
 	/// <c>KimonoShape</c>.
 	/// </summary>
+	[Table("Shadow")]
 	public class KimonoShadow : IKimonoCodeGeneration
 	{
 		#region Private Variables
@@ -108,6 +110,7 @@ namespace KimonoCore
 		/// Gets or sets the color of the shadow.
 		/// </summary>
 		/// <value>The color.</value>
+		[Serializer("SKColor")]
 		public SKColor Color
 		{
 			get { return _color; }
@@ -122,6 +125,7 @@ namespace KimonoCore
 		/// Gets or sets the color of the linked.
 		/// </summary>
 		/// <value>The color of the linked.</value>
+		[Child]
 		public KimonoColor LinkedColor
 		{
 			get { return _linkedColor; }
@@ -152,6 +156,7 @@ namespace KimonoCore
 		/// <remarks>Returns either the custom color attached to this shadow or a linked color
 		/// if it is being used.</remarks>
 		/// <value>The color of the shadow as a <c>SKColor</c>.</value>
+		[Ignore]
 		public SKColor ShadowColor
 		{
 			get
@@ -174,6 +179,7 @@ namespace KimonoCore
 		/// Gets the shadoe filter represented by this shadow effect.
 		/// </summary>
 		/// <value>The <c>SKImageFilter</c> for the blur filter.</value>
+		[Ignore]
 		public SKImageFilter ShadowFilter
 		{
 			get { return SKImageFilter.CreateDropShadow(HorizontalOffset, 

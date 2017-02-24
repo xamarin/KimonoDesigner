@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -8,6 +9,7 @@ namespace KimonoCore
 	/// Holds a collection of <c>KimonoShapes</c> that are used to create a given
 	/// image using Skia.
 	/// </summary>
+	[Table("Sketch")]
 	public partial class KimonoSketch : IKimonoCodeGeneration
 	{
 
@@ -64,12 +66,14 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
 		/// Gets or sets the portfolio that this sketch belongs to.
 		/// </summary>
 		/// <value>The parent `KimonoPortfolio`.</value>
+		[Ignore]
 		public KimonoPortfolio Portfolio { get; set; } = null;
 
 		/// <summary>
@@ -151,6 +155,7 @@ namespace KimonoCore
 		/// Gets or sets the color of the canvas.
 		/// </summary>
 		/// <value>The color of the canvas.</value>
+		[Serializer("SKColor")]
 		public SKColor CanvasColor
 		{
 			get { return _canvasColor; }
@@ -172,12 +177,14 @@ namespace KimonoCore
 		/// Gets or sets the shapes.
 		/// </summary>
 		/// <value>The shapes.</value>
+		[Children]
 		public List<KimonoShape> Shapes { get; set; } = new List<KimonoShape>();
 
 		/// <summary>
 		/// Gets or sets the tool.
 		/// </summary>
 		/// <value>The tool.</value>
+		[Ignore]
 		public KimonoTool Tool
 		{
 			get { return _tool; }
@@ -192,6 +199,7 @@ namespace KimonoCore
 		/// Gets or sets the selected shape.
 		/// </summary>
 		/// <value>The selected shape.</value>
+		[Ignore]
 		public KimonoShape SelectedShape
 		{
 			get {return _selectedShape;}
@@ -202,6 +210,7 @@ namespace KimonoCore
 		/// Gets the deepest selected shape in a chain of groups.
 		/// </summary>
 		/// <value>The deeply selected shape.</value>
+		[Ignore]
 		public KimonoShape DeeplySelectedShape
 		{
 			get
@@ -223,6 +232,7 @@ namespace KimonoCore
 		/// Gets the deepest selected group in a chain of groups that is in the edit mode.
 		/// </summary>
 		/// <value>The deeply selected group.</value>
+		[Ignore]
 		public KimonoShapeGroup DeeplySelectedGroup
 		{
 			get
@@ -240,6 +250,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether the selected shape is at the bottom.
 		/// </summary>
 		/// <value><c>true</c> if selected shape at bottom; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool SelectedShapeAtBottom
 		{
 			get 
@@ -260,6 +271,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether the selected shape is at the top.
 		/// </summary>
 		/// <value><c>true</c> if selected shape at top; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool SelectedShapeAtTop
 		{
 			get 
@@ -280,6 +292,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether alignment can be applied on a set of shapes.
 		/// </summary>
 		/// <value><c>true</c> if can align shapes; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool CanAlignShapes
 		{
 			get { return (DeeplySelectedShape is KimonoShapeGroup && DeeplySelectedShape.State == KimonoShapeState.Constructing);}
@@ -289,6 +302,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether the selection of shapes can be grouped.
 		/// </summary>
 		/// <value><c>true</c> if can group shapes; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool CanGroupShapes
 		{
 			get { return (DeeplySelectedShape is KimonoShapeGroup && DeeplySelectedShape.State == KimonoShapeState.Constructing); }
@@ -298,6 +312,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether the selection of shapes can be ungrouped.
 		/// </summary>
 		/// <value><c>true</c> if can group shapes; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public bool CanUngroupShapes
 		{
 			get { return (DeeplySelectedShape is KimonoShapeGroup && DeeplySelectedShape.State == KimonoShapeState.Selected); }

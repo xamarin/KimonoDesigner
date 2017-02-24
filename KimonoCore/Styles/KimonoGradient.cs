@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -9,6 +10,7 @@ namespace KimonoCore
 	/// Defines a gradient as a collection of either <c>SKColor</c> or linked <c>KimonoColors</c>
 	/// that can be applied to a <c>KimonoStyle</c> and used when drawing a <c>KimonoShape</c>.
 	/// </summary>
+	[Table("Gradient")]
 	public class KimonoGradient : IKimonoCodeGeneration
 	{
 		#region Private Variables
@@ -73,6 +75,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -116,6 +119,7 @@ namespace KimonoCore
 		/// Gets or sets the start point.
 		/// </summary>
 		/// <value>The start point.</value>
+		[Child]
 		public KimonoHandle StartPoint
 		{
 			get { return _startPoint; }
@@ -131,6 +135,7 @@ namespace KimonoCore
 		/// Gets or sets the end point.
 		/// </summary>
 		/// <value>The end point.</value>
+		[Child]
 		public KimonoHandle EndPoint
 		{
 			get { return _endPoint; }
@@ -173,12 +178,14 @@ namespace KimonoCore
 		/// Gets or sets the control points that define the color.
 		/// </summary>
 		/// <value>The control points.</value>
+		[Children]
 		public List<KimonoHandle> ControlPoints { get; set; } = new List<KimonoHandle>();
 
 		/// <summary>
 		/// Gets or sets the selected handle.
 		/// </summary>
 		/// <value>The selected handle.</value>
+		[Ignore]
 		public KimonoHandle SelectedHandle
 		{
 			get { return _selectedHandle; }
@@ -203,6 +210,7 @@ namespace KimonoCore
 		/// Gets the color of the selected handle.
 		/// </summary>
 		/// <value>The color of the selected handle or black if no handle is selected.</value>
+		[Ignore]
 		public SKColor SelectedColor
 		{
 			get
@@ -225,6 +233,7 @@ namespace KimonoCore
 		/// Gets the Skia Shader that represents this gradient.
 		/// </summary>
 		/// <value>The <c>SKShader</c> for this gradient.</value>
+		[Ignore]
 		public SKShader Shader
 		{
 			get

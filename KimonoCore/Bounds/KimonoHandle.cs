@@ -1,5 +1,6 @@
 ﻿using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -7,6 +8,7 @@ namespace KimonoCore
 	/// Defines an edit handle that the user manipulates to edit the bounds of a
 	/// <c>KimonoShape</c> or the control points of a Bezier object.
 	/// </summary>
+	[Table("Handle")]
 	public class KimonoHandle
 	{
 		#region Static Properties
@@ -38,6 +40,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -62,6 +65,7 @@ namespace KimonoCore
 		/// Gets the rect.
 		/// </summary>
 		/// <value>The rect.</value>
+		[Ignore]
 		public SKRect Rect
 		{
 			get
@@ -80,6 +84,7 @@ namespace KimonoCore
 		/// Gets or sets the hit offset.
 		/// </summary>
 		/// <value>The hit offset.</value>
+		[Ignore]
 		public SKPoint HitOffset { get; set; } = new SKPoint();
 
 		/// <summary>
@@ -87,6 +92,7 @@ namespace KimonoCore
 		/// <c>LinkedColor</c> property is <c>null</c>, this color will be used.
 		/// </summary>
 		/// <value>The <c>SKColor</c>.</value>
+		[Serializer("SKColor")]
 		public SKColor Color { get; set; } = KimonoColor.Black;
 
 		/// <summary>
@@ -95,12 +101,14 @@ namespace KimonoCore
 		/// be used instead.
 		/// </summary>
 		/// <value>The color of the linked.</value>
+		[Child]
 		public KimonoColor LinkedColor { get; set; } = null;
 
 		/// <summary>
 		/// Gets the color that this handle represents.
 		/// </summary>
 		/// <value>The color as a <c>SKColor</c>.</value>
+		[Ignore]
 		public SKColor RepresentedColor
 		{
 			get
@@ -119,6 +127,16 @@ namespace KimonoCore
 		#endregion
 
 		#region Constructors
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoHandle"/> class.
+		/// </summary>
+		public KimonoHandle()
+		{
+			// Initialize
+			X = 0f;
+			Y = 0f;
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoHandle"/> class.
 		/// </summary>

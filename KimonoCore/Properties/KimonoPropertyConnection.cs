@@ -1,9 +1,12 @@
 ﻿using System;
+using TextBase;
+
 namespace KimonoCore
 {
 	/// <summary>
 	/// Defines a connection between a given Kimono Object and a `KimonoProperty`.
 	/// </summary>
+	[Table("ConnectionProperty")]
 	public class KimonoPropertyConnection
 	{
 		#region Computed Properties
@@ -11,6 +14,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -24,6 +28,7 @@ namespace KimonoCore
 		/// Gets or sets the connected property.
 		/// </summary>
 		/// <value>The connected `KimonoProperty`.</value>
+		[Child]
 		public KimonoProperty ConnectedProperty { get; set; } = null;
 		#endregion
 

@@ -14,6 +14,10 @@ namespace KimonoMac
 	[Register("AppPreferences")]
 	public class AppPreferences : NSObject
 	{
+		#region Private Variables
+		private bool UseDefaults = true;
+		#endregion
+
 		#region Computed Properties
 		/// <summary>
 		/// Gets or sets the default language that will be automatically selected when creating a new
@@ -526,6 +530,18 @@ namespace KimonoMac
 				DidChangeValue("EditorBackgroundColor");
 			}
 		}
+
+		[Export("ShowWelcomeWindow")]
+		public bool ShowWelcomeWindow
+		{
+			get { return LoadBool("ShowWelcomeWindow", true); }
+			set
+			{
+				WillChangeValue("ShowWelcomeWindow");
+				SaveBool("ShowWelcomeWindow", value, true);
+				DidChangeValue("ShowWelcomeWindow");
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -534,10 +550,22 @@ namespace KimonoMac
 		/// </summary>
 		public AppPreferences()
 		{
+			// Set initial state
+			var HasRunBefore = NSUserDefaults.StandardUserDefaults.BoolForKey("HasRunBefore");
+			UseDefaults = !HasRunBefore;
 		}
 		#endregion
 
 		#region Public Methods
+		/// <summary>
+		/// Stop the using default preferences.
+		/// </summary>
+		public void StopUsingDefaultPreferences()
+		{
+			NSUserDefaults.StandardUserDefaults.SetBool(true, "HasRunBefore");
+			NSUserDefaults.StandardUserDefaults.Synchronize();
+		}
+
 		/// <summary>
 		/// Loads the given integer value for the specified key. If the key is not found,
 		/// the default value is returned.
@@ -551,8 +579,9 @@ namespace KimonoMac
 			var number = NSUserDefaults.StandardUserDefaults.IntForKey(key);
 
 			// Take action based on value
-			if (number == null)
+			if (UseDefaults)
 			{
+				SaveInt(key, defaultValue, true);
 				return defaultValue;
 			}
 			else
@@ -585,8 +614,9 @@ namespace KimonoMac
 			var value = NSUserDefaults.StandardUserDefaults.BoolForKey(key);
 
 			// Take action based on value
-			if (value == null)
+			if (UseDefaults)
 			{
+				SaveBool(key, defaultValue, true);
 				return defaultValue;
 			}
 			else
@@ -604,6 +634,41 @@ namespace KimonoMac
 		public void SaveBool(string key, bool value, bool sync)
 		{
 			NSUserDefaults.StandardUserDefaults.SetBool(value, key);
+			if (sync) NSUserDefaults.StandardUserDefaults.Synchronize();
+		}
+
+		/// <summary>
+		/// Loads the string from the system-wide user defaults.
+		/// </summary>
+		/// <returns>The value of the key or the default value if not found.</returns>
+		/// <param name="key">The key to load the value for.</param>
+		/// <param name="defaultValue">The default value if not found.</param>
+		public string LoadString(string key, string defaultValue)
+		{
+			// Attempt to read int
+			var value = NSUserDefaults.StandardUserDefaults.StringForKey(key);
+
+			// Take action based on value
+			if (UseDefaults)
+			{
+				SaveString(key, defaultValue, true);
+				return defaultValue;
+			}
+			else
+			{
+				return value;
+			}
+		}
+
+		/// <summary>
+		/// Saves the string to the system-wide user defaults.
+		/// </summary>
+		/// <param name="key">The key to save the value to.</param>
+		/// <param name="value">The value to save.</param>
+		/// <param name="sync">If set to <c>true</c> sync.</param>
+		public void SaveString(string key, string value, bool sync)
+		{
+			NSUserDefaults.StandardUserDefaults.SetString(value, key);
 			if (sync) NSUserDefaults.StandardUserDefaults.Synchronize();
 		}
 
@@ -686,8 +751,9 @@ namespace KimonoMac
 			var hex = NSUserDefaults.StandardUserDefaults.StringForKey(key);
 
 			// Take action based on value
-			if (hex == null)
+			if (UseDefaults)
 			{
+				SaveColor(key, defaultValue, true);
 				return defaultValue;
 			}
 			else

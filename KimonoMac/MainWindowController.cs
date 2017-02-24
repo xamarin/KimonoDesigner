@@ -5,6 +5,7 @@ using Foundation;
 using SkiaSharp;
 using KimonoCore;
 using KimonoCore.Mac;
+using System.IO;
 
 namespace KimonoMac
 {
@@ -22,6 +23,21 @@ namespace KimonoMac
 		{
 			get { return ContentViewController as ViewController; }
 		}
+
+		/// <summary>
+		/// Gets or sets the portfolio.
+		/// </summary>
+		/// <value>The KimonoPortfolio currently being edited.</value>
+		public KimonoPortfolio Portfolio
+		{
+
+			get { return MainController.Surface.Portfolio; }
+			set
+			{
+				MainController.Surface.Portfolio = value;
+				MainController.Surface.RefreshView();
+			}
+		}
 		#endregion
 
 		#region Constructors
@@ -34,6 +50,49 @@ namespace KimonoMac
 		}
 		#endregion
 
+		#region Public Methods
+		/// <summary>
+		/// Saves the document being edited in the current window. If the document hasn't been saved
+		/// before, it presents a Save File Dialog and allows to specify the name and location of 
+		/// the file.
+		/// </summary>
+		public void SaveDocument()
+		{
+
+			// Already saved?
+			if (Window.RepresentedUrl != null)
+			{
+				var path = Window.RepresentedUrl.Path;
+
+				// Save changes to file
+				File.WriteAllText(path, Portfolio.SaveToTextBase());
+				Window.DocumentEdited = false;
+			}
+			else
+			{
+				var dlg = new NSSavePanel();
+				dlg.Title = "Save Portfolio";
+				dlg.AllowedFileTypes = new string[] { "ksp" };
+				dlg.BeginSheet(Window, (rslt) =>
+				{
+					// File selected?
+					if (rslt == 1)
+					{
+						var path = dlg.Url.Path;
+						File.WriteAllText(path, Portfolio.SaveToTextBase());
+						Window.DocumentEdited = false;
+						MainController.View.Window.SetTitleWithRepresentedFilename(Path.GetFileName(path));
+						MainController.View.Window.RepresentedUrl = dlg.Url;
+						MainController.FilePath = path;
+
+						// Add document to the Open Recent menu
+						NSDocumentController.SharedDocumentController.NoteNewRecentDocumentURL(dlg.Url);
+					}
+				});
+			}
+		}
+		#endregion
+
 		#region Override Events
 		/// <summary>
 		/// Handles the window loading and configures any user interface elements based on the stateof
@@ -42,6 +101,14 @@ namespace KimonoMac
 		public override void WindowDidLoad()
 		{
 			base.WindowDidLoad();
+
+			// Configure window
+			Window.Delegate = new MainWindowDelegate(Window);
+			// Window.TitleVisibility = NSWindowTitleVisibility.Hidden;
+
+			// Apply the Dark Interface Appearance
+			// NOTE: Nope, this DOES NOT look good with the way the app's UI has been built!
+			// Window.Appearance = NSAppearance.GetAppearance(NSAppearance.NameVibrantDark);
 
 			// Set initial tool states
 			MoveTopTool.Active = false;
@@ -61,6 +128,9 @@ namespace KimonoMac
 			// Grouping tools
 			GroupShapes.Active = false;
 			UngroupShapes.Active = false;
+
+			// Connect to view controller
+			MainController.ParentWindowController = this;
 
 			// Wireup events
 			MainController.SketchModified += (sketch) =>
@@ -85,9 +155,45 @@ namespace KimonoMac
 				UngroupShapes.Active = sketch.CanUngroupShapes;
 			};
 		}
+
+		/// <summary>
+		/// Gets the new window for tab.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		public override void GetNewWindowForTab(NSObject sender)
+		{
+			// Get new window
+			var storyboard = NSStoryboard.FromName("Main", null);
+			var controller = storyboard.InstantiateControllerWithIdentifier("MainWindow") as NSWindowController;
+
+			// Display
+			controller.ShowWindow(this);
+		}
 		#endregion
 
 		#region Custom Actions
+		/// <summary>
+		/// Allows the user to specify where to save the document.
+		/// </summary>
+		/// <param name="sender">The controller calling the method.</param>
+		[Action("saveDocumentAs:")]
+		public void SaveDocumentAs(NSObject sender)
+		{
+			Window.RepresentedUrl = null;
+			SaveDocument();
+		}
+
+		/// <summary>
+		/// Saves the document to its last location or allows the user to select a 
+		/// location if it has never been saved before.
+		/// </summary>
+		/// <param name="sender">The controller calling the method.</param>
+		[Action("saveDocument:")]
+		public void SaveDocument(NSObject sender)
+		{
+			SaveDocument();
+		}
+
 		/// <summary>
 		/// Adds the sketch.
 		/// </summary>

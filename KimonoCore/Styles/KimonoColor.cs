@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -9,6 +10,7 @@ namespace KimonoCore
 	/// <c>KimonoColor</c>. A <c>KimonoColor</c> can be attached directly to a <c>KimonoShape</c>
 	/// or be used in a <c>KimonoStyle<c>.
 	/// </summary>
+	[Table("Color")]
 	public class KimonoColor : IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Static Properties
@@ -169,6 +171,7 @@ namespace KimonoCore
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -182,6 +185,7 @@ namespace KimonoCore
 		/// Gets or sets the <c>KimonoColor</c> that this color is based off of.
 		/// </summary>
 		/// <value>The base color.</value>
+		[Child]
 		public KimonoColor BaseColor
 		{
 			get { return _baseColor; }
@@ -326,6 +330,7 @@ namespace KimonoCore
 		/// Gets or sets the color.
 		/// </summary>
 		/// <value>The color.</value>
+		[Serializer("SKColor")]
 		public SKColor Color
 		{
 			get {
@@ -354,6 +359,7 @@ namespace KimonoCore
 		/// `KimonoColor`.
 		/// </summary>
 		/// <value>The array of `KimonoPropertyConnectionPoint`.</value>
+		[Ignore]
 		public virtual KimonoPropertyConnectionPoint[] ConnectionPoints
 		{
 			get
@@ -379,6 +385,7 @@ namespace KimonoCore
 		/// this `KimonoColor`.
 		/// </summary>
 		/// <value>The property connections.</value>
+		[Children]
 		public List<KimonoPropertyConnection> PropertyConnections { get; set; } = new List<KimonoPropertyConnection>();
 		#endregion
 

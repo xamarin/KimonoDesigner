@@ -4,6 +4,7 @@ using Foundation;
 using KimonoCore;
 using SkiaSharp;
 using Kimono;
+using TextBase;
 
 namespace TestConsumerMac
 {
@@ -47,10 +48,29 @@ namespace TestConsumerMac
 				// Draw all shapes into the canvas
 				// TestPortfolioClass(canvas);
 				TestSketchClass(canvas);
+				TestTextBase();
 
 				// Return data from sketch
 				return surface.Snapshot().Encode();
 			}
+		}
+
+		public void TestTextBase()
+		{
+			var database = new KimonoTextBase();
+
+			// Create test object
+			var element = new KimonoShapeRect()
+			{
+				Name = "Sample"
+			};
+
+			// Convert to database and display
+			var data = database.Save(element);
+			Console.WriteLine("Data: {0}", data);
+
+			// Reconstitute 
+			var newElement = database.Load(data);
 		}
 
 		public void TestPortfolioClass(SKCanvas canvas)

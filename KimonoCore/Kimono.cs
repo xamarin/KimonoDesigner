@@ -95,6 +95,62 @@ namespace KimonoCore
 		{
 			return new SKPoint(point.X, point.Y);
 		}
+
+		/// <summary>
+		/// Converts the given hex color string into a <c>SKColor</c>.
+		/// </summary>
+		/// <returns>The color, or white on error.</returns>
+		/// <param name="hex">The hex representation of the color.</param>
+		public static SKColor HexToColor(string hex)
+		{
+			int offset;
+
+			// Valid length?
+			if (hex.Length < 8 || hex.Length > 9)
+			{
+				// No, just return white
+				return KimonoColor.White;
+			}
+
+			try
+			{
+				// Has leading #?, skip
+				if (hex[0] == '#')
+				{
+					offset = 1;
+				}
+				else
+				{
+					offset = 0;
+				}
+
+				// Break hex into sections
+				int Red = int.Parse(hex.Substring(offset, 2), System.Globalization.NumberStyles.HexNumber);
+				int Green = int.Parse(hex.Substring(offset + 2, 2), System.Globalization.NumberStyles.HexNumber);
+				int Blue = int.Parse(hex.Substring(offset + 4, 2), System.Globalization.NumberStyles.HexNumber);
+				int Alpha = int.Parse(hex.Substring(offset + 6, 2), System.Globalization.NumberStyles.HexNumber);
+
+				// Return assembled color
+				return new SKColor((byte)Red, (byte)Green, (byte)Blue, (byte)Alpha);
+			}
+			catch
+			{
+				// Return white on error
+				return KimonoColor.White;
+			}
+		}
+
+		/// <summary>
+		/// Converts a <c>SKColor</c> into a hex value.
+		/// </summary>
+		/// <returns>The hex representation of the color.</returns>
+		/// <param name="color">The SKColor to convert.</param>
+		/// <param name="LeadingHash">If set to <c>true</c>, adds a leading hash.</param>
+		public static string ColorToHex(SKColor color, bool LeadingHash)
+		{
+			// Return results
+			return string.Format("{0}{1:X2}{2:X2}{3:X2}{4:X2}", (LeadingHash) ? "#" : "", color.Red, color.Green, color.Blue, color.Alpha);
+		}
 		#endregion
 
 		#region Delegates

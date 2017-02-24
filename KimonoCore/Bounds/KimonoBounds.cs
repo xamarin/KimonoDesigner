@@ -1,5 +1,6 @@
 using System;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -7,6 +8,7 @@ namespace KimonoCore
 	/// Defines the outter bounding box for a <c>KimonoShape</c> and contains the routines required
 	/// to draw the bounds and the control handles as the user edits and moves the shape.
 	/// </summary>
+	[Table("Bounds")]
 	public class KimonoBounds : IKimonoCodeGeneration
 	{
 		#region Private Variables
@@ -31,18 +33,20 @@ namespace KimonoCore
 		/// Gets the current edit state of the <c>KimonoShape</c>.
 		/// </summary>
 		/// <value>The state as a <c>KimonoShapeState</c>.</value>
+		[Ignore]
 		public KimonoShapeState State { get; internal set; } = KimonoShapeState.Unselected;
 
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
-		public string Name { get; set; } = "Bounds";
+		public virtual string Name { get; set; } = "Bounds";
 
 		/// <summary>
 		/// Gets or sets the unique identifier.
 		/// </summary>
 		/// <value>The unique identifier.</value>
+		[PrimaryKey]
 		public string UniqueID { get; set; } = Guid.NewGuid().ToString();
 
 		/// <summary>
@@ -109,6 +113,7 @@ namespace KimonoCore
 		/// Gets or sets the width.
 		/// </summary>
 		/// <value>The width of the shape's bounding box.</value>
+		[Ignore]
 		public float Width
 		{
 			get { return Math.Abs(Right - Left); }
@@ -130,6 +135,7 @@ namespace KimonoCore
 		/// Gets or sets the height.
 		/// </summary>
 		/// <value>The height of the shape's bounding box.</value>
+		[Ignore]
 		public float Height
 		{
 			get { return Math.Abs(Bottom - Top); }
@@ -151,6 +157,7 @@ namespace KimonoCore
 		/// Gets the horizontal center.
 		/// </summary>
 		/// <value>The horizontal center.</value>
+		[Ignore]
 		public float HorizontalCenter
 		{
 			get
@@ -163,6 +170,7 @@ namespace KimonoCore
 		/// Gets the vertical center.
 		/// </summary>
 		/// <value>The vertical center.</value>
+		[Ignore]
 		public float VerticalCenter
 		{
 			get
@@ -175,6 +183,7 @@ namespace KimonoCore
 		/// Gets the center.
 		/// </summary>
 		/// <value>The center.</value>
+		[Ignore]
 		public SKPoint Center
 		{
 			get { return new SKPoint(HorizontalCenter, VerticalCenter); }
@@ -190,60 +199,70 @@ namespace KimonoCore
 		/// Gets or sets the top left handle.
 		/// </summary>
 		/// <value>The top left handle.</value>
+		[Ignore]
 		public KimonoHandle TopLeftHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the top handle.
 		/// </summary>
 		/// <value>The top handle.</value>
+		[Ignore]
 		public KimonoHandle TopHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the top right handle.
 		/// </summary>
 		/// <value>The top right handle.</value>
+		[Ignore]
 		public KimonoHandle TopRightHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the right handle.
 		/// </summary>
 		/// <value>The right handle.</value>
+		[Ignore]
 		public KimonoHandle RightHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bottom right handle.
 		/// </summary>
 		/// <value>The bottom right handle.</value>
+		[Ignore]
 		public KimonoHandle BottomRightHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bottom handle.
 		/// </summary>
 		/// <value>The bottom handle.</value>
+		[Ignore]
 		public KimonoHandle BottomHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bottom left handle.
 		/// </summary>
 		/// <value>The bottom left handle.</value>
+		[Ignore]
 		public KimonoHandle BottomLeftHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the left handle.
 		/// </summary>
 		/// <value>The left handle.</value>
+		[Ignore]
 		public KimonoHandle LeftHandle { get; set; }
 
 		/// <summary>
 		/// Gets or sets the hit offset.
 		/// </summary>
 		/// <value>The hit offset.</value>
+		[Ignore]
 		public SKPoint HitOffset { get; set; } = new SKPoint();
 
 		/// <summary>
 		/// Gets or sets the hit handle.
 		/// </summary>
 		/// <value>The hit handle.</value>
+		[Ignore]
 		public KimonoHandle HitHandle { get; set; } = null;
 		#endregion
 

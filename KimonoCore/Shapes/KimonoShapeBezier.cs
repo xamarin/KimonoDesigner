@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SkiaSharp;
+using TextBase;
 
 namespace KimonoCore
 {
@@ -8,6 +9,7 @@ namespace KimonoCore
 	/// A Kimono Bezier is a collection of control and end points that define the quad sections of a
 	/// bezier shape to be drawn using SkiaSharp.
 	/// </summary>
+	[Table("Bezier")]
 	public class KimonoShapeBezier : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Computed Properties
@@ -15,6 +17,7 @@ namespace KimonoCore
 		/// Gets or sets the points that define the shape.
 		/// </summary>
 		/// <value>The points.</value>
+		[Children]
 		public List<KimonoBezierPoint> Points { get; set; } = new List<KimonoBezierPoint>();
 
 		/// <summary>
@@ -27,6 +30,7 @@ namespace KimonoCore
 		/// Gets a value indicating whether this <see cref="T:KimonoCore.KimonoShapeVector"/> is editable.
 		/// </summary>
 		/// <value><c>true</c> if is editable; otherwise, <c>false</c>.</value>
+		[Ignore]
 		public override bool IsEditable
 		{
 			get { return true; }
@@ -36,6 +40,7 @@ namespace KimonoCore
 		/// Gets the last point in the collection of control points.
 		/// </summary>
 		/// <value>The last point.</value>
+		[Ignore]
 		public KimonoBezierPoint LastPoint
 		{
 			get

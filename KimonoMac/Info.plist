@@ -30,5 +30,28 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.graphics-design</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>ksp</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>DOC-96</string>
+			<key>CFBundleTypeName</key>
+			<string>Kimono Portfolio File</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>XKSP</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>text/plain</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
