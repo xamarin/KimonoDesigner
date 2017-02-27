@@ -55,6 +55,9 @@ namespace KimonoMac
 		AppKit.NSLayoutConstraint DocumentViewWidth { get; set; }
 
 		[Outlet]
+		AppKit.NSButton ExportButton { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorFill FillInspector { get; set; }
 
 		[Outlet]
@@ -177,6 +180,9 @@ namespace KimonoMac
 		[Outlet]
 		AppKit.NSButton ToolVector { get; set; }
 
+		[Action ("ExportSource:")]
+		partial void ExportSource (Foundation.NSObject sender);
+
 		[Action ("GoBackToSketch:")]
 		partial void GoBackToSketch (Foundation.NSObject sender);
 
@@ -239,9 +245,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ScriptDebuggerInspector != null) {
-				ScriptDebuggerInspector.Dispose ();
-				ScriptDebuggerInspector = null;
+			if (ExportButton != null) {
+				ExportButton.Dispose ();
+				ExportButton = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -402,6 +408,11 @@ namespace KimonoMac
 			if (RoundRectInspector != null) {
 				RoundRectInspector.Dispose ();
 				RoundRectInspector = null;
+			}
+
+			if (ScriptDebuggerInspector != null) {
+				ScriptDebuggerInspector.Dispose ();
+				ScriptDebuggerInspector = null;
 			}
 
 			if (SketchInspector != null) {

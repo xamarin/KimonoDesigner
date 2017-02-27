@@ -59,11 +59,12 @@ namespace KimonoMac
 		public void SaveDocument()
 		{
 
-			// Already saved?
-			if (Window.RepresentedUrl != null)
-			{
-				var path = Window.RepresentedUrl.Path;
+			// Get path
+			var path = (Window.RepresentedUrl == null) ? "" : Window.RepresentedUrl.Path;
 
+			// Already saved?
+			if (!string.IsNullOrEmpty(path))
+			{
 				// Save changes to file
 				File.WriteAllText(path, Portfolio.SaveToTextBase());
 				Window.DocumentEdited = false;
@@ -78,7 +79,7 @@ namespace KimonoMac
 					// File selected?
 					if (rslt == 1)
 					{
-						var path = dlg.Url.Path;
+						path = dlg.Url.Path;
 						File.WriteAllText(path, Portfolio.SaveToTextBase());
 						Window.DocumentEdited = false;
 						MainController.View.Window.SetTitleWithRepresentedFilename(Path.GetFileName(path));
@@ -179,7 +180,7 @@ namespace KimonoMac
 		[Action("saveDocumentAs:")]
 		public void SaveDocumentAs(NSObject sender)
 		{
-			Window.RepresentedUrl = null;
+			Window.RepresentedUrl = new NSUrl("");
 			SaveDocument();
 		}
 

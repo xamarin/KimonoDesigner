@@ -76,6 +76,7 @@ namespace KimonoCore.Mac
 				WireUpSketchEvents(SelectedSketch);
 
 				// Update UI
+				ObiScriptPortfolio.Portfolio = _portfolio;
 				RaiseReloadUI();
 			}
 		}

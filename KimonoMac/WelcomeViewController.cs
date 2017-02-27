@@ -2,6 +2,8 @@ using System;
 using Foundation;
 using AppKit;
 using CoreGraphics;
+using System.IO;
+using MarkdownSharp;
 
 namespace KimonoMac
 {
@@ -82,23 +84,81 @@ namespace KimonoMac
 			Contents.FinishedLoad += (sender, e) =>
 			{
 				// Restore to preview scroll location
-				if (Scroll != null)
-				{
-					Scroll.ContentView.ScrollToPoint(VisibleRect.Location);
-					Scroll.ReflectScrolledClipView(Scroll.ContentView);
-					VisibleRect = Scroll.ContentView.DocumentVisibleRect();
-				}
+				//if (Scroll != null)
+				//{
+				//	Scroll.ContentView.ScrollToPoint(VisibleRect.Location);
+				//	Scroll.ReflectScrolledClipView(Scroll.ContentView);
+				//	VisibleRect = Scroll.ContentView.DocumentVisibleRect();
+				//}
 
 				// Clear update flag
 				Updating = false;
 				//Contents.Hidden = false;
 			};
 
-			DisplayURL("https://skia.org");
+			// Default to What's New
+			WhatsNew();
 		}
 		#endregion
 
 		#region Public Methods
+		/// <summary>
+		/// Displays the What's New info for the app
+		/// </summary>
+		public void WhatsNew()
+		{
+			var bundle = NSBundle.MainBundle;
+			var path = bundle.PathForResource("WhatsNew", "txt");
+
+			// Anything to process?
+			if (string.IsNullOrEmpty(path))
+			{
+				// Default to showing SkiaSharp's website
+				DisplayURL("https://skia.org");
+			}
+			else
+			{
+				// Load the file
+				var data = File.ReadAllText(path);
+
+				// Convert from Markdown to HTML
+				var engine = new Markdown();
+				var html = engine.Transform(data);
+
+				// Display results
+				DisplayText(html, "");
+			}
+		}
+
+		/// <summary>
+		/// Displays the "Home" about Kimono Designer screen.
+		/// </summary>
+		public void Home()
+		{
+			var bundle = NSBundle.MainBundle;
+			var path = bundle.PathForResource("Home", "txt");
+
+			// Anything to process?
+			if (string.IsNullOrEmpty(path))
+			{
+				// Default to showing SkiaSharp's website
+				DisplayURL("https://skia.org");
+			}
+			else
+			{
+				// Load the file
+				var data = File.ReadAllText(path);
+
+				// Convert from Markdown to HTML
+				var engine = new Markdown();
+				var html = engine.Transform(data);
+
+				// Display results
+				DisplayText(html, "");
+			}
+
+		}
+
 		/// <summary>
 		/// Displays the given text string as final output to the user using a <c>WebKit</c> view.
 		/// </summary>
@@ -157,12 +217,35 @@ namespace KimonoMac
 		#endregion
 
 		#region Custom Actions
+		partial void OpenWhatsNew(Foundation.NSObject sender)
+		{
+			WhatsNew();
+		}
+
+		partial void OpenSkiaWebsite(Foundation.NSObject sender)
+		{
+			DisplayURL("https://skia.org");
+		}
+
+		partial void OpenHome(Foundation.NSObject sender)
+		{
+			Home();
+		}
+
+		/// <summary>
+		/// Closes the dialog.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
 		partial void CloseDialog(Foundation.NSObject sender)
 		{
 			// Close this window
 			View.Window.Close();
 		}
 
+		/// <summary>
+		/// Opens a new file.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
 		partial void NewFile(Foundation.NSObject sender)
 		{
 			// Get new window
@@ -176,6 +259,10 @@ namespace KimonoMac
 			View.Window.Close();
 		}
 
+		/// <summary>
+		/// Opens a recently saved file.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
 		partial void OpenFile(Foundation.NSObject sender)
 		{
 			var dlg = NSOpenPanel.OpenPanel;
@@ -198,6 +285,11 @@ namespace KimonoMac
 				}
 			}
 		}
+
+		/// <summary>
+		/// Handles the user clicking the "Show this window at launch" checkbox.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
 		partial void ShowWindowChanged(Foundation.NSObject sender)
 		{
 			App.Preferences.ShowWelcomeWindow = !App.Preferences.ShowWelcomeWindow;

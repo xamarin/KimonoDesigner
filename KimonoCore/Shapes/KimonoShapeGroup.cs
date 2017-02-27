@@ -9,7 +9,7 @@ namespace KimonoCore
 	/// A <c>KimonoShapeGroup</c> holds a collection of <c>KimonoShapes</c> that can be acted
 	/// upon as a group.
 	/// </summary>
-	[Table("Group")]
+	[Table("ShapeGroup")]
 	public class KimonoShapeGroup : KimonoShape, IKimonoCodeGeneration, IKimonoPropertyConsumer
 	{
 		#region Private Variables
@@ -57,7 +57,7 @@ namespace KimonoCore
 		/// this <c>KimonoShapeGroup</c> belongs to.
 		/// </summary>
 		/// <value>The parent <c>KimonoSketch</c> or <c>KimonoShapeGroup</c>.</value>
-		[Child]
+		[Ignore]
 		public object Parent { get; set; } = null;
 
 		/// <summary>
@@ -303,6 +303,16 @@ namespace KimonoCore
 		#endregion
 
 		#region Constructors
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeGroup"/> class.
+		/// </summary>
+		public KimonoShapeGroup()
+		{
+			// Set the default properties
+			Name = "Group";
+			State = KimonoShapeState.Constructing;
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:KimonoCore.KimonoShapeGroup"/> class.
 		/// </summary>

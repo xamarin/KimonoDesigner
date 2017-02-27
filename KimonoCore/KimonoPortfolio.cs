@@ -1387,8 +1387,9 @@ namespace KimonoCore
 		/// <summary>
 		/// Relinks the given <c>KimonoShape</c> after a clone operation.
 		/// </summary>
+		/// <param name="parent">The parent object of this object.</param>
 		/// <param name="shape">The <c>KimonoShape</c> to relink.</param>
-		internal void RelinkShape(KimonoShape shape)
+		internal void RelinkShape(object parent, KimonoShape shape)
 		{
 			// Relink style based on type
 			if (shape.Style.StyleType == KimonoStyleType.Custom ||
@@ -1411,12 +1412,13 @@ namespace KimonoCore
 			if (shape is KimonoShapeGroup)
 			{
 				var group = shape as KimonoShapeGroup;
+				group.Parent = parent;
 
 				// Process all child shapes in the group
 				foreach (KimonoShape subshape in group.Shapes)
 				{
 					// Link subshape
-					RelinkShape(subshape);
+					RelinkShape(group, subshape);
 				}
 			}
 		}
@@ -1440,7 +1442,7 @@ namespace KimonoCore
 			// Process all shapes
 			foreach (KimonoShape shape in sketch.Shapes)
 			{
-				RelinkShape(shape);
+				RelinkShape(sketch, shape);
 			}
 		}
 

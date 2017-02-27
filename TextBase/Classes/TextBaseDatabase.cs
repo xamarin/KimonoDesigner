@@ -163,14 +163,11 @@ namespace TextBase
 		/// Load the specified record.
 		/// </summary>
 		/// <returns>A C# object of the given type, or `null` on error.</returns>
-		/// <param name="record">The TextRecord formatted data.</param>
+		/// <param name="data">The TextRecord formatted data.</param>
 		/// <typeparam name="T">The type of the object to load.</typeparam>
-		public T Load<T>(string record)
+		public T Load<T>(string data)
 		{
 			Object obj = null;
-
-			// Strip terminator
-			record = record.Replace("^", "");
 
 			// Trap all errors
 			try
@@ -178,18 +175,21 @@ namespace TextBase
 				// Grab schema for table
 				var schema = GetSchema<T>();
 
-				// Convert to table record
-				var tableRecord = new TextBaseRecord(record);
+				// Split the data into it's base parts
+				var records = GetRecords(data);
+
+				// Grab first record
+				var record = records[0];
 
 				// Do the types match?
-				if (schema.TableName == tableRecord.RecordName)
+				if (schema.TableName == record.Name)
 				{
 					// Create new instance 
 					var type = typeof(T);
 					obj = Activator.CreateInstance<T>();
 
 					// Populate class instance
-					RecordToClass(schema, tableRecord.RecordValue, obj);
+					RecordToClass(schema, record.Value, obj);
 				}
 				else
 				{
@@ -211,20 +211,20 @@ namespace TextBase
 		/// Load the specified record.
 		/// </summary>
 		/// <returns>A C# object of the type specified in the record data, or `null` on error.</returns>
-		/// <param name="record">The TextRecord formatted data.</param>
-		public object Load(string record)
+		/// <param name="data">The TextRecord formatted data.</param>
+		public object Load(string data)
 		{
-			// Strip terminator
-			record = record.Replace("^", "");
-
 			// Trap all errors
 			try
 			{
-				// Convert to table record
-				var tableRecord = new TextBaseRecord(record);
+				// Split the data into it's base parts
+				var records = GetRecords(data);
+
+				// Grab first record
+				var record = records[0];
 
 				// Grab schema for table
-				var schema = GetSchema(tableRecord.RecordName);
+				var schema = GetSchema(record.Name);
 
 				// Found schema?
 				if (schema == null)
@@ -236,7 +236,7 @@ namespace TextBase
 				{
 					// Create new instance 
 					var obj = Activator.CreateInstance(schema.MappedTo);
-					RecordToClass(schema, tableRecord.RecordValue, obj);
+					RecordToClass(schema, record.Value, obj);
 
 					// Return class
 					return obj;
@@ -252,21 +252,21 @@ namespace TextBase
 		/// <summary>
 		/// Load the specified record into the given object.
 		/// </summary>
-		/// <param name="record">The TextRecord formatted data.</param>
+		/// <param name="data">The TextRecord formatted data.</param>
 		/// <param name="obj">The object to load the data into.</param>
-		public void Load(string record, object obj)
+		public void Load(string data, object obj)
 		{
-			// Strip terminator
-			record = record.Replace("^", "");
-
 			// Trap all errors
 			try
 			{
-				// Convert to table record
-				var tableRecord = new TextBaseRecord(record);
+				// Split the data into it's base parts
+				var records = GetRecords(data);
+
+				// Grab first record
+				var record = records[0];
 
 				// Grab schema for table
-				var schema = GetSchema(tableRecord.RecordName);
+				var schema = GetSchema(record.Name);
 
 				// Was the schema found?
 				if (schema == null)
@@ -277,10 +277,10 @@ namespace TextBase
 				}
 
 				// Do the types match?
-				if (schema.TableName == tableRecord.RecordName)
+				if (schema.TableName == record.Name)
 				{
 					// Load instance from data 
-					RecordToClass(schema, tableRecord.RecordValue, obj);
+					RecordToClass(schema, record.Value, obj);
 
 				}
 			}
@@ -334,20 +334,20 @@ namespace TextBase
 		/// </summary>
 		/// <returns>The child C# object.</returns>
 		/// <param name="type">The type of the object to create.</param>
-		/// <param name="record">The TableRecord formatted string.</param>
-		internal object LoadChild(Type type, string record)
+		/// <param name="data">The TableRecord formatted string.</param>
+		internal object LoadChild(Type type, string data)
 		{
-			// Strip terminator
-			record = record.Replace("^", "");
-
 			// Trap all errors
 			try
 			{
-				// Convert to table record
-				var tableRecord = new TextBaseRecord(record);
+				// Split the data into it's base parts
+				var records = GetRecords(data);
+
+				// Grab first record
+				var record = records[0];
 
 				// Grab schema for table
-				var schema = GetSchema(tableRecord.RecordName);
+				var schema = GetSchema(record.Name);
 
 				// Was the schema found?
 				if (schema == null)
@@ -357,11 +357,52 @@ namespace TextBase
 				}
 
 				// Do the types match?
-				if (schema.TableName == tableRecord.RecordName)
+				if (schema.TableName == record.Name)
 				{
 					// Create new instance 
 					var obj = Activator.CreateInstance(schema.MappedTo);
-					RecordToClass(schema, tableRecord.RecordValue, obj);
+					RecordToClass(schema, record.Value, obj);
+
+					// Return class
+					return obj;
+				}
+			}
+			catch
+			{
+				// Stop processing on error
+			}
+
+			// Return default for failure
+			return null;
+		}
+
+		/// <summary>
+		/// Loads a child object from a TableRecord string.
+		/// </summary>
+		/// <returns>The child.</returns>
+		/// <param name="type">The type of the object to create.</param>
+		/// <param name="record">The name/value pair containing the record.</param>
+		internal object LoadChild(Type type, TextBaseNamedValue record)
+		{
+			// Trap all errors
+			try
+			{
+				// Grab schema for table
+				var schema = GetSchema(record.Name);
+
+				// Was the schema found?
+				if (schema == null)
+				{
+					// No, try getting the requested type
+					schema = GetSchema(type);
+				}
+
+				// Do the types match?
+				if (schema.TableName == record.Name)
+				{
+					// Create new instance 
+					var obj = Activator.CreateInstance(schema.MappedTo);
+					RecordToClass(schema, record.Value, obj);
 
 					// Return class
 					return obj;
@@ -381,25 +422,20 @@ namespace TextBase
 		/// </summary>
 		/// <returns>All C# child objects.</returns>
 		/// <param name="type">The type of the object to create.</param>
-		/// <param name="record">The RecordField formatted string to load the children from.</param>
-		internal List<object> LoadAllChildren(Type type, string record)
+		/// <param name="data">The RecordField formatted string to load the children from.</param>
+		internal List<object> LoadAllChildren(Type type, string data)
 		{
 			List<object> results = new List<object>();
 
 			// Split the data into it's base parts
-			char[] delimiterChars = { '^' };
-			string[] children = record.Split(delimiterChars);
+			var records = GetRecords(data);
 
 			// Handle all sub records
-			foreach (string child in children)
+			foreach (TextBaseNamedValue record in records)
 			{
-				// Does this child contain data?
-				if (child != "")
-				{
-					// Yes, attempt to load
-					var obj = LoadChild(type, child);
-					if (obj != null) results.Add(obj);
-				}
+				// Attempt to load
+				var obj = LoadChild(type, record);
+				if (obj != null) results.Add(obj);
 			}
 
 			// Return Results
@@ -549,6 +585,170 @@ namespace TextBase
 		}
 		#endregion
 
+		#region Storage Handlers
+		/// <summary>
+		/// Escapes the given value so it can be safely saved to file.
+		/// </summary>
+		/// <returns>The value with any control characters escaped.</returns>
+		/// <param name="value">The value to escape.</param>
+		private string EscapeValue(string value)
+		{
+			// Skip on empty string
+			if (string.IsNullOrEmpty(value)) return "";
+
+			value = value.Replace("[", $"&#91;");
+			value = value.Replace("]", $"&#93;");
+			value = value.Replace(":", $"&#58;");
+			value = value.Replace("{", $"&#123;");
+			value = value.Replace("}", $"&#125;");
+			return value;
+		}
+
+		/// <summary>
+		/// Unescapes the given value read from a saved file.
+		/// </summary>
+		/// <returns>The value with any escaped characters replaced with their original values.</returns>
+		/// <param name="value">The value to unescape.</param>
+		private string UnescapeValue(string value)
+		{
+			// Skip on empty string
+			if (string.IsNullOrEmpty(value)) return "";
+
+			value = value.Replace($"&#91;", "[");
+			value = value.Replace($"&#93;", "]");
+			value = value.Replace($"&#58;", ":");
+			value = value.Replace($"&#123;", "{");
+			value = value.Replace($"&#125;", "}");
+			return value;
+		}
+
+		/// <summary>
+		/// Pulls a list of records for the current location in the file.
+		/// </summary>
+		/// <returns>A list of found records.</returns>
+		/// <param name="data">A string containing a list of TextBase formatted records.</param>
+		private List<TextBaseNamedValue> GetRecords(string data)
+		{
+			List<TextBaseNamedValue> records = new List<TextBaseNamedValue>();
+			var nestLevel = 0;
+			var text = "";
+
+			// Process all characters
+			for (int n = 0; n < data.Length; ++n)
+			{
+				// Get the current character
+				var c = data[n];
+
+				// Take action based on the character
+				switch (c)
+				{
+					case '[':
+						// Are we inside a record?
+						if (nestLevel > 0)
+						{
+							// Yes, accumulate
+							text += c;
+						}
+						++nestLevel;
+						break;
+					case ']':
+						--nestLevel;
+
+						// Have we completed a record?
+						if (nestLevel == 0)
+						{
+							// Yes, collect it
+							records.Add(new TextBaseNamedValue(text));
+							text = "";
+						}
+						else
+						{
+							// No, accumulate
+							text += c;
+						}
+						break;
+					default:
+						// Accumulate
+						text += c;
+						break;
+				}
+			}
+
+			// Any remaining text?
+			if (text != "")
+			{
+				// Yes, collect it
+				records.Add(new TextBaseNamedValue(text));
+			}
+
+			// Return found records
+			return records;
+		}
+
+		/// <summary>
+		/// Pulls a list of fields for the current location in the file.
+		/// </summary>
+		/// <returns>A list of found fields.</returns>
+		/// <param name="data">A string containing a list of TextBase formatted fields.</param>
+		private List<TextBaseNamedValue> GetFields(string data)
+		{
+			List<TextBaseNamedValue> fields = new List<TextBaseNamedValue>();
+			var nestLevel = 0;
+			var text = "";
+
+			// Process all characters
+			for (int n = 0; n < data.Length; ++n)
+			{
+				// Get the current character
+				var c = data[n];
+
+				// Take action based on the character
+				switch (c)
+				{
+					case '{':
+						// Are we inside a field?
+						if (nestLevel > 0)
+						{
+							// Yes, accumulate
+							text += c;
+						}
+						++nestLevel;
+						break;
+					case '}':
+						--nestLevel;
+
+						// Have we completed a field?
+						if (nestLevel == 0)
+						{
+							// Yes, collect it
+							fields.Add(new TextBaseNamedValue(text));
+							text = "";
+						}
+						else
+						{
+							// No, accumulate
+							text += c;
+						}
+						break;
+					default:
+						// Accumulate
+						text += c;
+						break;
+				}
+			}
+
+			// Any remaining text?
+			if (text != "")
+			{
+				// Yes, collect it
+				fields.Add(new TextBaseNamedValue(text));
+			}
+
+			// Return found fields
+			return fields;
+		}
+		#endregion
+
 		#region Record Converters			
 		/// <summary>
 		/// Converts a C# class instance into a <c>CKRecord</c>.
@@ -612,7 +812,7 @@ namespace TextBase
 					else if (column.SaveAsString)
 					{
 						// Force column to string value
-						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, column.GetValue(obj).ToString());
+						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, EscapeValue(column.GetValue(obj).ToString()));
 					}
 					else if (column.ColumnType.BaseType == typeof(Enum))
 					{
@@ -622,7 +822,7 @@ namespace TextBase
 					else
 					{
 						// Save the string value
-						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, column.GetValue(obj).ToString());
+						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, EscapeValue(column.GetValue(obj).ToString()));
 					}
 				}
 				catch
@@ -643,128 +843,112 @@ namespace TextBase
 		/// <param name="obj">Object.</param>
 		private void RecordToClass(TableSchema schema, string record, object obj)
 		{
-
 			// Split the data into it's base parts
-			char[] delimiterChars = { '~' };
-			string[] fields = record.Split(delimiterChars);
+			var fields = GetFields(record);
 
 			// Process all fields
-			foreach (string field in fields)
+			foreach (TextBaseNamedValue field in fields)
 			{
-				// Anything in this field?
-				if (field != "")
+				// Load the column for this field
+				var column = schema.FindColumn(field.Name);
+
+				// Found?
+				if (column != null)
 				{
-					// Convert to record field
-					var recordField = new TextBaseRecordField(field);
-
-					// Load the column for this field
-					var column = schema.FindColumn(recordField.FieldName);
-
-					// Found?
-					if (column != null)
+					// Trap deserilization errors
+					try
 					{
-						// Yes, using a prefix?
-						if (!string.IsNullOrEmpty(schema.KeyPrefix))
+						// Take action based on column type
+						if (column.Serializer != "")
 						{
-							// Yes, use prefix to decode the record field's value
-							recordField.Prefix = schema.KeyPrefix;
-						}
-
-						// Trap deserilization errors
-						try
-						{
-							// Take action based on column type
-							if (column.Serializer != "")
+							// This column is requestion a custom serializer
+							if (RequestCustomDeserialization != null)
 							{
-								// This column is requestion a custom serializer
-								if (RequestCustomDeserialization != null)
-								{
-									// Deserialize and save back to object
-									column.SetValue(obj, RequestCustomDeserialization(column.Serializer, recordField.FieldValue));
-								}
-								else
-								{
-									throw new MissingSerializerException(string.Format("Unable to handle the request to use custom deserializer {0} for column {1} because no custom deserializer has been defined for event RequestCustomDeserialization.", column.Serializer, column.Name));
-								}
+								// Deserialize and save back to object
+								column.SetValue(obj, RequestCustomDeserialization(column.Serializer, field.Value));
 							}
-							else if (column.IsChild)
+							else
 							{
-								// Load child
-								var child = LoadChild(column.ColumnType, recordField.FieldValue);
-
-								// Save to property
-								column.SetValue(obj, child);
-							}
-							else if (column.IsChildren)
-							{
-								// Load children
-								IList children = (IList)column.GetValue(obj);
-								IEnumerable myEnum = children as IEnumerable;
-								Type entryType = myEnum.AsQueryable().ElementType;
-								var items = LoadAllChildren(entryType, recordField.FieldValue);
-
-								// Clone items into children
-								children.Clear();
-								foreach (object item in items)
-								{
-									children.Add(item);
-								}
-							}
-							else if (column.ColumnType.BaseType == typeof(Enum))
-							{
-								column.SetValue(obj, Enum.Parse(column.ColumnType, recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(int))
-							{
-								column.SetValue(obj, int.Parse(recordField.FieldValue));
-							}
-							#if __IOS__ || __MACOS__ || __TVOS__
-							else if (column.ColumnType == typeof(nint))
-							{
-								column.SetValue(obj, nint.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(nuint))
-							{
-								column.SetValue(obj, nuint.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(nfloat))
-							{
-								column.SetValue(obj, nfloat.Parse(recordField.FieldValue));
-							}
-							#endif
-							else if (column.ColumnType == typeof(bool))
-							{
-								column.SetValue(obj, bool.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(double))
-							{
-								column.SetValue(obj, double.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(float))
-							{
-								column.SetValue(obj, float.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(DateTime))
-							{
-								column.SetValue(obj, DateTime.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(byte))
-							{
-								column.SetValue(obj, byte.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(Single))
-							{
-								column.SetValue(obj, Single.Parse(recordField.FieldValue));
-							}
-							else if (column.ColumnType == typeof(string))
-							{
-								column.SetValue(obj, recordField.FieldValue);
+								throw new MissingSerializerException(string.Format("Unable to handle the request to use custom deserializer {0} for column {1} because no custom deserializer has been defined for event RequestCustomDeserialization.", column.Serializer, column.Name));
 							}
 						}
-						catch
+						else if (column.IsChild)
 						{
-							// Ignore for now
+							// Load child
+							var child = LoadChild(column.ColumnType, field.Value);
+
+							// Save to property
+							column.SetValue(obj, child);
 						}
+						else if (column.IsChildren)
+						{
+							// Load children
+							IList children = (IList)column.GetValue(obj);
+							IEnumerable myEnum = children as IEnumerable;
+							Type entryType = myEnum.AsQueryable().ElementType;
+							var items = LoadAllChildren(entryType, field.Value);
+
+							// Clone items into children
+							children.Clear();
+							foreach (object item in items)
+							{
+								children.Add(item);
+							}
+						}
+						else if (column.ColumnType.BaseType == typeof(Enum))
+						{
+							column.SetValue(obj, Enum.Parse(column.ColumnType, field.Value));
+						}
+						else if (column.ColumnType == typeof(int))
+						{
+							column.SetValue(obj, int.Parse(field.Value));
+						}
+						#if __IOS__ || __MACOS__ || __TVOS__
+						else if (column.ColumnType == typeof(nint))
+						{
+							column.SetValue(obj, nint.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(nuint))
+						{
+							column.SetValue(obj, nuint.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(nfloat))
+						{
+							column.SetValue(obj, nfloat.Parse(field.Value));
+						}
+						#endif
+						else if (column.ColumnType == typeof(bool))
+						{
+							column.SetValue(obj, bool.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(double))
+						{
+							column.SetValue(obj, double.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(float))
+						{
+							column.SetValue(obj, float.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(DateTime))
+						{
+							column.SetValue(obj, DateTime.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(byte))
+						{
+							column.SetValue(obj, byte.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(Single))
+						{
+							column.SetValue(obj, Single.Parse(field.Value));
+						}
+						else if (column.ColumnType == typeof(string))
+						{
+							column.SetValue(obj, UnescapeValue(field.Value));
+						}
+					}
+					catch
+					{
+						// Ignore for now
 					}
 				}
 			}

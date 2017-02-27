@@ -31,5 +31,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\MissingSerializerException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseRecordField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseRecord.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseNamedValue.cs" />
   </ItemGroup>
 </Project>

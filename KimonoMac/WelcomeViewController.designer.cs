@@ -27,19 +27,28 @@ namespace KimonoMac
 		[Action ("OpenFile:")]
 		partial void OpenFile (Foundation.NSObject sender);
 
+		[Action ("OpenHome:")]
+		partial void OpenHome (Foundation.NSObject sender);
+
+		[Action ("OpenSkiaWebsite:")]
+		partial void OpenSkiaWebsite (Foundation.NSObject sender);
+
+		[Action ("OpenWhatsNew:")]
+		partial void OpenWhatsNew (Foundation.NSObject sender);
+
 		[Action ("ShowWindowChanged:")]
 		partial void ShowWindowChanged (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ShowCheckbox != null) {
-				ShowCheckbox.Dispose ();
-				ShowCheckbox = null;
-			}
-
 			if (Contents != null) {
 				Contents.Dispose ();
 				Contents = null;
+			}
+
+			if (ShowCheckbox != null) {
+				ShowCheckbox.Dispose ();
+				ShowCheckbox = null;
 			}
 		}
 	}

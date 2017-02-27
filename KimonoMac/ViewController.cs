@@ -6,6 +6,7 @@ using SkiaSharp;
 using KimonoCore;
 using KimonoCore.Mac;
 using AppKit.TextKit.Formatter;
+using System.IO;
 
 namespace KimonoMac
 {
@@ -1351,6 +1352,7 @@ namespace KimonoMac
 			LanguageSelector.Enabled = false;
 			LibrarySelector.SelectItem(1);
 			LibrarySelector.Enabled = false;
+			ExportButton.Enabled = false;
 		}
 
 		/// <summary>
@@ -1371,6 +1373,7 @@ namespace KimonoMac
 			OSSelector.Enabled = false;
 			LanguageSelector.Enabled = false;
 			LibrarySelector.Enabled = false;
+			ExportButton.Enabled = false;
 		}
 
 		/// <summary>
@@ -1447,6 +1450,9 @@ namespace KimonoMac
 			// Show preview code
 			KimonoCodeGenerator.ResetCodeGeneration();
 			Text = KimonoPreviewElement.ToCode(GenerateOSCode, GenerateLanguageCode, GenerateLibraryCode);
+
+			// Enable export?
+			ExportButton.Enabled = (LanguageSelector.IndexOfSelectedItem != 1);
 		}
 
 		/// <summary>
@@ -2077,9 +2083,6 @@ namespace KimonoMac
 			// Configure editor from user preferences
 			ConfigureEditor();
 
-			// Attach to script engine
-			ObiScriptPortfolio.Portfolio = DesignSurface.Portfolio;
-
 			// Highligh the syntax of the text after an edit has been made
 			TextEditor.TextStorage.DidProcessEditing += (sender, e) =>
 			{
@@ -2417,9 +2420,33 @@ namespace KimonoMac
 				case 8:
 					// Anything selected?
 					return (DesignSurface.DeeplySelectedShape != null);
+				case 9:
+					// Can export source code?
+					return ExportButton.Enabled;
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Exports the currently generated source code to a file.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		partial void ExportSource(Foundation.NSObject sender)
+		{
+			// Ask user to select location
+			var dlg = new NSSavePanel();
+			dlg.Title = "Export Source Code";
+			dlg.AllowedFileTypes = new string[] { "cs" };
+			dlg.BeginSheet(View.Window, (rslt) =>
+			{
+					// File selected?
+					if (rslt == 1)
+				{
+					var path = dlg.Url.Path;
+					File.WriteAllText(path, Text);
+				}
+			});
 		}
 
 		/// <summary>

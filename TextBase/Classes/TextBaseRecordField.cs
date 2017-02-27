@@ -32,8 +32,8 @@ namespace TextBase
 		/// <value>The field value.</value>
 		public string FieldValue
 		{
-			get { return UnescapeValue(_value); }
-			set { _value = EscapeValue(value); }
+			get { return _value; }
+			set { _value = value; }
 		}
 		#endregion
 
@@ -76,7 +76,6 @@ namespace TextBase
 		{
 			// Initialize
 			FieldName = fieldName;
-			Prefix = FieldName.Substring(0, 3);
 			FieldValue = fieldValue;
 		}
 
@@ -90,14 +89,7 @@ namespace TextBase
 		{
 			// Initialize
 			FieldName = fieldName;
-			if (prefix == "")
-			{
-				Prefix = FieldName.Substring(0, 3);
-			}
-			else
-			{
-				Prefix = prefix;
-			}
+			Prefix = prefix;
 			FieldValue = fieldValue;
 		}
 
@@ -115,51 +107,12 @@ namespace TextBase
 			try
 			{
 				FieldName = parts[0];
-				Prefix = FieldName.Substring(0, 3);
 				_value = parts[1];
 			}
 			catch
 			{
 				// Ignore all errors
 			}
-		}
-		#endregion
-
-		#region Private Methods
-		/// <summary>
-		/// Escapes the given value so it can be safely saved to file.
-		/// </summary>
-		/// <returns>The value with any control characters escaped.</returns>
-		/// <param name="value">The value to escape.</param>
-		private string EscapeValue(string value)
-		{
-			// Skip on empty string
-			if (string.IsNullOrEmpty(value)) return "";
-
-			value = value.Replace("~", $"&{Prefix}3;");
-			value = value.Replace("^", $"&{Prefix}4;");
-			value = value.Replace(":", $"&{Prefix}5;");
-			value = value.Replace("\t", $"&{Prefix}6;");
-			value = value.Replace("\n", $"&{Prefix}7;");
-			return value;
-		}
-
-		/// <summary>
-		/// Unescapes the given value read from a saved file.
-		/// </summary>
-		/// <returns>The value with any escaped characters replaced with their original values.</returns>
-		/// <param name="value">The value to unescape.</param>
-		private string UnescapeValue(string value)
-		{
-			// Skip on empty string
-			if (string.IsNullOrEmpty(value)) return "";
-
-			value = value.Replace($"&{Prefix}3;", "~");
-			value = value.Replace($"&{Prefix}4;", "^");
-			value = value.Replace($"&{Prefix}5;", ":");
-			value = value.Replace($"&{Prefix}6;", "\t");
-			value = value.Replace($"&{Prefix}7;", "\n");
-			return value;
 		}
 		#endregion
 
@@ -170,7 +123,17 @@ namespace TextBase
 		/// <returns>A string that represents the current RecordField.</returns>
 		public override string ToString()
 		{
-			return $"{FieldName}:{_value}~";
+			// Any value to return?
+			if (FieldValue == "")
+			{
+				return "";
+			}
+			else
+			{
+				return "{" +
+					$"{FieldName}:{FieldValue}" +
+					"}";
+			}
 		}
   		#endregion
 	}

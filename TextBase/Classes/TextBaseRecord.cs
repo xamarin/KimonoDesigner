@@ -32,8 +32,8 @@ namespace TextBase
 		/// <value>The record value.</value>
 		public string RecordValue
 		{
-			get { return UnescapeValue(_value); }
-			set { _value = EscapeValue(value); }
+			get { return _value; }
+			set { _value = value; }
 		}
 		#endregion
 
@@ -76,7 +76,6 @@ namespace TextBase
 		{
 			// Initialize
 			RecordName = recordName;
-			Prefix = RecordName.Substring(0, 3);
 			RecordValue = recordValue;
 		}
 
@@ -90,14 +89,7 @@ namespace TextBase
 		{
 			// Initialize
 			RecordName = recordName;
-			if (prefix == "")
-			{
-				Prefix = RecordName.Substring(0, 3);
-			}
-			else
-			{
-				Prefix = prefix;
-			}
+			Prefix = prefix;
 			RecordValue = recordValue;
 		}
 
@@ -115,45 +107,12 @@ namespace TextBase
 			try
 			{
 				RecordName = parts[0];
-				Prefix = RecordName.Substring(0, 3);
 				_value = parts[1];
 			}
 			catch
 			{
 				// Ignore all errors
 			}
-		}
-		#endregion
-
-		#region Private Methods
-		/// <summary>
-		/// Escapes the given value so it can be safely saved to file.
-		/// </summary>
-		/// <returns>The value with any control characters escaped.</returns>
-		/// <param name="value">The value to escape.</param>
-		private string EscapeValue(string value)
-		{
-			// Skip on empty string
-			if (string.IsNullOrEmpty(value)) return "";
-
-			value = value.Replace("^", $"&{Prefix}1;");
-			value = value.Replace(":", $"&{Prefix}2;");
-			return value;
-		}
-
-		/// <summary>
-		/// Unescapes the given value read from a saved file.
-		/// </summary>
-		/// <returns>The value with any escaped characters replaced with their original values.</returns>
-		/// <param name="value">The value to unescape.</param>
-		private string UnescapeValue(string value)
-		{
-			// Skip on empty string
-			if (string.IsNullOrEmpty(value)) return "";
-
-			value = value.Replace($"&{Prefix}1;", "^");
-			value = value.Replace($"&{Prefix}2;", ":");
-			return value;
 		}
 		#endregion
 
@@ -164,7 +123,15 @@ namespace TextBase
 		/// <returns>A string that represents the current Record.</returns>
 		public override string ToString()
 		{
-			return $"{RecordName}:{_value}^";
+			// Anything to return?
+			if (RecordValue == "")
+			{
+				return "";
+			}
+			else
+			{
+				return $"[{RecordName}:{RecordValue}]";
+			}
 		}
 		#endregion
 	}

@@ -234,6 +234,16 @@
     <ImageAsset Include="Assets.xcassets\IconDisconnected.imageset\Disconnected-48.png" />
     <ImageAsset Include="Assets.xcassets\KimonoDocIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\KimonoDocIcon.imageset\DOC-96.png" />
+    <ImageAsset Include="Assets.xcassets\IconNew.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconNew.imageset\New-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconHome.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconHome.imageset\Home-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconExport.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconExport.imageset\External-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconAbout.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconAbout.imageset\About-48.png" />
+    <ImageAsset Include="Assets.xcassets\IconSave.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IconSave.imageset\Save-48.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -324,6 +334,11 @@
     <Folder Include="Assets.xcassets\IconConnected.imageset\" />
     <Folder Include="Assets.xcassets\IconDisconnected.imageset\" />
     <Folder Include="Assets.xcassets\KimonoDocIcon.imageset\" />
+    <Folder Include="Assets.xcassets\IconNew.imageset\" />
+    <Folder Include="Assets.xcassets\IconHome.imageset\" />
+    <Folder Include="Assets.xcassets\IconExport.imageset\" />
+    <Folder Include="Assets.xcassets\IconAbout.imageset\" />
+    <Folder Include="Assets.xcassets\IconSave.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -484,6 +499,8 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\DOC-96.png" />
+    <BundleResource Include="Resources\WhatsNew.txt" />
+    <BundleResource Include="Resources\Home.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets')" />
