@@ -113,6 +113,7 @@
     <EmbeddedResource Include="Properties\KimonoCore.WinUWP.rd.xml" />
   </ItemGroup>
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" />
+  <Import Project="..\TextBase\TextBase.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

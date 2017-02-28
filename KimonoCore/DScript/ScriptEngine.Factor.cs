@@ -221,8 +221,10 @@ namespace DScript
 				ScriptVarLink funcVar = ParseFunctionDefinition();
 				if (funcVar.Name != String.Empty)
 				{
-					System.Diagnostics.Trace.TraceWarning("Functions not defined at statement level are not supposed to have a name");
-				}
+#if !WINDOWS_UWP
+                    System.Diagnostics.Trace.TraceWarning("Functions not defined at statement level are not supposed to have a name");
+#endif
+                }
 				return funcVar;
 			}
 
@@ -236,8 +238,10 @@ namespace DScript
 					ScriptVarLink classOrFuncObject = FindInScopes(className);
 					if (classOrFuncObject == null)
 					{
-						System.Diagnostics.Trace.TraceWarning("{0} is not a valid class name", className);
-						return new ScriptVarLink(new ScriptVar(), null);
+#if !WINDOWS_UWP
+                        System.Diagnostics.Trace.TraceWarning("{0} is not a valid class name", className);
+#endif
+                        return new ScriptVarLink(new ScriptVar(), null);
 					}
 
 					_currentLexer.Match(ScriptLex.LexTypes.Id);

@@ -271,9 +271,11 @@ namespace DScript
 					}
 					else
 					{
-						//return statement outside of function???
-						System.Diagnostics.Trace.TraceWarning("Return statement outside of a function, what is going on?");
-					}
+                        //return statement outside of function???
+#if !WINDOWS_UWP
+                        System.Diagnostics.Trace.TraceWarning("Return statement outside of a function, what is going on?");
+#endif
+                    }
 				}
 
 				execute = false;

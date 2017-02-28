@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 #if __IOS__ || __MACOS__ || __TVOS__
 using Foundation;
@@ -86,10 +87,15 @@ namespace TextBase
 			}
 
 			// Report issue
-			Console.WriteLine("Error: Can't load schema for table '{0}'.", tableName);
+			
+#if WINDOWS_UWP
+            Debug.WriteLine("Error: Can't load schema for table '{0}'.", tableName);
+#else
+            Console.Write("Error: Can't load schema for table '{0}'.", tableName);
+#endif
 
-			// Not found
-			return schema;
+            // Not found
+            return schema;
 		}
 
 		/// <summary>
@@ -814,12 +820,14 @@ namespace TextBase
 						// Force column to string value
 						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, EscapeValue(column.GetValue(obj).ToString()));
 					}
-					else if (column.ColumnType.BaseType == typeof(Enum))
+#if !WINDOWS_UWP
+                    else if (column.ColumnType.BaseType == typeof(Enum))
 					{
 						var index = (int)column.GetValue(obj);
 						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, index.ToString());
 					}
-					else
+#endif
+                    else
 					{
 						// Save the string value
 						record += new TextBaseRecordField(schema.KeyPrefix, column.Name, EscapeValue(column.GetValue(obj).ToString()));
@@ -895,11 +903,13 @@ namespace TextBase
 								children.Add(item);
 							}
 						}
-						else if (column.ColumnType.BaseType == typeof(Enum))
+#if !WINDOWS_UWP
+                        else if (column.ColumnType.BaseType == typeof(Enum))
 						{
 							column.SetValue(obj, Enum.Parse(column.ColumnType, field.Value));
 						}
-						else if (column.ColumnType == typeof(int))
+#endif
+                        else if (column.ColumnType == typeof(int))
 						{
 							column.SetValue(obj, int.Parse(field.Value));
 						}

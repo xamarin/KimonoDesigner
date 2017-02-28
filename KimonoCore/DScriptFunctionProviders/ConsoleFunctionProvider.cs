@@ -21,6 +21,7 @@ SOFTWARE.
 */
 
 using System;
+using System.Diagnostics;
 
 namespace DScript.FunctionProviders
 {
@@ -29,24 +30,41 @@ namespace DScript.FunctionProviders
 	{
 		public static void WriteLine(String text, object userData)
 		{
-			Console.WriteLine(text);
-		}
+#if WINDOWS_UWP
+            Debug.WriteLine(text);
+#else
+            Console.WriteLine(text);
+#endif
+        }
 
-		public static String ReadLine(object userData)
+        public static String ReadLine(object userData)
 		{
-			String retVal = Console.ReadLine();
-			return retVal;
+#if WINDOWS_UWP
+            String retVal = "";
+#else
+            String retVal = Console.ReadLine();
+#endif
+            return retVal;
 		}
 
 		public static void Write(String text, object userData)
 		{
-			Console.Write(text);
-		}
+#if WINDOWS_UWP
+            Debug.Write(text);
+#else
+            Console.Write(text);
+#endif
+        }
 
 		public static Int32 ReadChar(object userData)
 		{
-			Int32 retVal = Console.Read();
-			return retVal;
+#if WINDOWS_UWP
+            Int32 retVal = 0;
+#else
+            Int32 retVal = Console.Read();
+#endif
+
+            return retVal;
 		}
 	}
 }

@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using KimonoCore;
+using System.Diagnostics;
+using System.Linq;
 
 namespace DScript
 {
@@ -224,10 +226,14 @@ namespace DScript
 					errorMessage += "\n" + i++ + ": " + scriptVar;
 				}
 
-				Console.Write(errorMessage);
-			}
+#if WINDOWS_UWP
+                Debug.WriteLine(errorMessage);
+#else
+                    Console.Write(errorMessage);
+#endif
+            }
 
-			_currentLexer = oldLex;
+            _currentLexer = oldLex;
 			_scopes = oldScopes;
 
 			if (v != null)
@@ -317,22 +323,29 @@ namespace DScript
 
 		public void LoadAllFunctionProviders()
 		{
-			Assembly execAssembly = Assembly.GetExecutingAssembly();
+#if WINDOWS_UWP
+            // TODO: Add Windows UWP support
+            Assembly execAssembly = this.GetType().GetTypeInfo().Assembly;
+#else
+            Assembly execAssembly = Assembly.GetExecutingAssembly();
 
-			TestForAttribute(execAssembly);
+            TestForAttribute(execAssembly);
 
-			AssemblyName[] referencedAssemblies = execAssembly.GetReferencedAssemblies();
-			foreach (AssemblyName assembly in referencedAssemblies)
-			{
-				Assembly asm = Assembly.Load(assembly);
+            AssemblyName[] referencedAssemblies = execAssembly.GetReferencedAssemblies();
+            foreach (AssemblyName assembly in referencedAssemblies)
+            {
+                Assembly asm = Assembly.Load(assembly);
 
-				TestForAttribute(asm);
-			}
-		}
+                TestForAttribute(asm);
+            }
+#endif
+        }
 
-		private void TestForAttribute(Assembly asm)
+        private void TestForAttribute(Assembly asm)
 		{
-			Type[] types = asm.GetTypes();
+#if !WINDOWS_UWP
+            // TODO: Add Windows UWP support
+            Type[] types = asm.GetTypes();
 			foreach (Type type in types)
 			{
 				object[] scObjects = type.GetCustomAttributes(typeof(ScriptClassAttribute), false);
@@ -341,7 +354,8 @@ namespace DScript
 					ProcessType(type, scObjects[0] as ScriptClassAttribute);
 				}
 			}
-		}
+#endif
+        }
 
 		private void ProcessType(Type type, ScriptClassAttribute attr)
 		{

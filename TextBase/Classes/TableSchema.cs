@@ -65,8 +65,10 @@ namespace TextBase
 		/// <param name="type">The object type that a schema is being created for.</param>
 		public TableSchema(Type type)
 		{
-			// Save type
-			MappedTo = type;
+#if !WINDOWS_UWP
+            // TODO - Add Windows UWP version
+            // Save type
+            MappedTo = type;
 			FullName = type.FullName;
 
 			// Get table name
@@ -107,7 +109,8 @@ namespace TextBase
 				// No, make the first field a primary key
 				PrimaryKey = Columns[0];
 			}
-		}
+#endif
+        }
 		#endregion
 
 		#region Public Methods

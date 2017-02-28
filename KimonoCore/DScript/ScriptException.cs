@@ -24,7 +24,9 @@ using System;
 
 namespace DScript
 {
-	[Serializable]
+#if !WINDOWS_UWP
+    [Serializable]
+#endif
     public class ScriptException : Exception
     {
 		public ScriptException(String msg)

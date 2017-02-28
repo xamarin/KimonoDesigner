@@ -37,12 +37,21 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		KimonoCore\KimonoCore.projitems*{2ac0bc35-2b78-4782-babb-e1754b9878aa}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{2ac0bc35-2b78-4782-babb-e1754b9878aa}*SharedItemsImports = 4
 		KimonoCore\KimonoCore.projitems*{2b4faa48-5d44-442f-a7e1-bd933c1fb76d}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{2b4faa48-5d44-442f-a7e1-bd933c1fb76d}*SharedItemsImports = 4
 		KimonoCore\KimonoCore.projitems*{35b94639-bb12-4729-b05b-25039986b95c}*SharedItemsImports = 13
 		KimonoCore\KimonoCore.projitems*{53d7038f-63f7-4a9a-bcf7-857f93fe0e5c}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{53d7038f-63f7-4a9a-bcf7-857f93fe0e5c}*SharedItemsImports = 4
 		KimonoCore\KimonoCore.projitems*{68a6acd8-8f0a-4cf4-82cd-73430fcf2ea3}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{68a6acd8-8f0a-4cf4-82cd-73430fcf2ea3}*SharedItemsImports = 4
 		KimonoCore\KimonoCore.projitems*{9f358dc7-6c6f-4862-a3af-e12978d1eacc}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{9f358dc7-6c6f-4862-a3af-e12978d1eacc}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{b107a17f-d016-43ad-b859-cea311a48800}*SharedItemsImports = 13
+		KimonoCore\KimonoCore.projitems*{c25e1e33-deda-4520-a5e4-bd1b6c72adce}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{c25e1e33-deda-4520-a5e4-bd1b6c72adce}*SharedItemsImports = 4
 		KimonoCore\KimonoCore.projitems*{f44a69c7-e93b-4950-8a29-4ed5447d13a7}*SharedItemsImports = 4
+		TextBase\TextBase.projitems*{f44a69c7-e93b-4950-8a29-4ed5447d13a7}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

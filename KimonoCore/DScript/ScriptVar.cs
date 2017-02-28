@@ -741,9 +741,11 @@ namespace DScript
 
 		public void Trace(Int32 indent, String name)
 		{
-			System.Diagnostics.Trace.TraceInformation("{0}{1} = '{2}' ({3})", new String(' ', indent), name ?? "ROOT", GetString(), _flags);
+#if !WINDOWS_UWP
+            System.Diagnostics.Trace.TraceInformation("{0}{1} = '{2}' ({3})", new String(' ', indent), name ?? "ROOT", GetString(), _flags);
+#endif
 
-			ScriptVarLink link = FirstChild;
+            ScriptVarLink link = FirstChild;
 			while(link != null)
 			{
 				link.Var.Trace(indent + 2, link.Name);
