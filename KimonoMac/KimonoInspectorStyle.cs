@@ -82,7 +82,12 @@ namespace KimonoMac
 				// Save undo point
 				DesignSurface.SaveUndoPoint();
 
+				// Save and verify
 				SelectedStyle.Name = StyleName.StringValue;
+				DesignSurface.Portfolio.EnsureStyleNameIsValid(SelectedStyle);
+
+				// Update the UI
+				StyleName.StringValue = SelectedStyle.Name;
 				RaiseStyleModified();
 			};
 

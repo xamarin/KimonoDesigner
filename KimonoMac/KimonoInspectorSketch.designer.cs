@@ -19,6 +19,9 @@ namespace KimonoMac
 		AppKit.NSButton CanvasColorCheckbox { get; set; }
 
 		[Outlet]
+		AppKit.NSButton DeleteButton { get; set; }
+
+		[Outlet]
 		AppKit.NSSlider OpacitySlider { get; set; }
 
 		[Outlet]
@@ -74,6 +77,11 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (DeleteButton != null) {
+				DeleteButton.Dispose ();
+				DeleteButton = null;
+			}
+
 			if (CanvasColor != null) {
 				CanvasColor.Dispose ();
 				CanvasColor = null;
@@ -109,6 +117,11 @@ namespace KimonoMac
 				SketchWidth = null;
 			}
 
+			if (ToBitmapCheckbox != null) {
+				ToBitmapCheckbox.Dispose ();
+				ToBitmapCheckbox = null;
+			}
+
 			if (ToCanvasCheckbox != null) {
 				ToCanvasCheckbox.Dispose ();
 				ToCanvasCheckbox = null;
@@ -117,11 +130,6 @@ namespace KimonoMac
 			if (ToDataCheckbox != null) {
 				ToDataCheckbox.Dispose ();
 				ToDataCheckbox = null;
-			}
-
-			if (ToBitmapCheckbox != null) {
-				ToBitmapCheckbox.Dispose ();
-				ToBitmapCheckbox = null;
 			}
 
 			if (UseSkiaSharpViewsCheckbox != null) {

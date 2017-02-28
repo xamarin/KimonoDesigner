@@ -210,6 +210,23 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Duplicates the selected point.
+		/// </summary>
+		public void DuplicateSelectedPoint()
+		{
+			// Anything to process?
+			if (HitHandle == null) return;
+
+			// Yes, clone the point under the handle
+			var point = Points[HitHandle.Index].Clone();
+			Points.Insert(HitHandle.Index, point);
+			RecalculateVectorBounds();
+
+			// Add a new handle too
+			StartEditing();
+		}
+
+		/// <summary>
 		/// Adds the handles for the given bezier point.
 		/// </summary>
 		/// <param name="index">The index of the <c>KimonoBezierPoint</c> that handles are
@@ -269,6 +286,23 @@ namespace KimonoCore
 			// Remove point and recalculate bounds
 			Points.RemoveAt(n);
 			RecalculateVectorBounds();
+		}
+
+		/// <summary>
+		/// Removes the selected point.
+		/// </summary>
+		public void RemoveSelectedPoint()
+		{
+			// Anything to process?
+			if (HitHandle == null) return;
+
+			// Remove point
+			Points.RemoveAt(HitHandle.Index);
+			HitHandle = null;
+			RecalculateVectorBounds();
+
+			// Update UI
+			StartEditing();
 		}
 		#endregion
 
@@ -470,12 +504,14 @@ namespace KimonoCore
 			if (State == KimonoShapeState.Editing)
 			{
 				// Yes, see if any handle has been hit
+				if (HitHandle != null) HitHandle.State = KimonoShapeState.Unselected;
 				HitHandle = null;
 				foreach (KimonoHandle handle in ControlPoints)
 				{
 					if (handle.PointInBound(point))
 					{
 						HitHandle = handle;
+						HitHandle.State = KimonoShapeState.Selected;
 						return true;
 					}
 				}
@@ -548,6 +584,7 @@ namespace KimonoCore
 			base.StartEditing();
 
 			// Add the required control points
+			ControlPoints.Clear();
 			for (int n = 0; n < Points.Count; ++n)
 			{
 				AddHandlesForPoint(n, Points[n]);

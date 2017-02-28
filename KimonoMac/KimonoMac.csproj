@@ -487,6 +487,10 @@
     <Compile Include="WelcomeViewController.designer.cs">
       <DependentUpon>WelcomeViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="KimonoInspectorPoint.cs" />
+    <Compile Include="KimonoInspectorPoint.designer.cs">
+      <DependentUpon>KimonoInspectorPoint.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

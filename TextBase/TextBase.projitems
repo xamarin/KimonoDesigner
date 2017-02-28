@@ -33,4 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseRecord.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\TextBaseNamedValue.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)License.txt" />
+  </ItemGroup>
 </Project>

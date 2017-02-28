@@ -220,15 +220,15 @@ With that line in place, the user can call any function from the library as if i
 
 ## Work in Progress
 
-This app is very much a work-in-progress and still has several rough areas and missing features (such as drag to select and save/load portfolios). Work is currently focusing on adding the main features of the app, so several UI refinements still need to be implemented.
+This app is very much a work-in-progress and still has several rough areas and missing features (such as drag to select items and copy & paste). Up to this point, work has been focused on getting the core functionality in place, so there are also areas where the User Interface needs to be refined and polished. For now, the app is definitely use at your own risk!
 
-As a result, it is quite easy to make the running app crash. For example, shift-drag and deleting all of the sketches from a Portfolio. Other features are "broadly" implemented and will behave oddly based on what the user does while running the app. For example, setting names to "" (empty string) or given **Colors** or **Gradients** the same, non-unique name.
+While the editor is currently only implemented in Xamarin.Mac and only runs on macOS, the project was designed to be built cross-platform. As such most of the editor code has been implemented in the back end KimonoCore library and platform specific version of the core libraries has already been built.
 
-These known issues will all be solved in the finished apps (editors are planned on all Xamarin/Windows platforms). For now the app is definitely use at your own risk!
+It is hoped that the front end Kimono Designer will be ported to other platforms such as Windows UWP, iOS for iPad and for Android Tables.
 
 ## About this Project
 
-Kimono Designer and the KimonoCore libraries were created by Kevin Mullins for Microsoft, Inc.
+Kimono Designer and the KimonoCore libraries were created by Kevin Mullins for Microsoft, Inc. The design of the TextBase ORM is based off of [Sqlite.Net](https://github.com/praeclarum/sqlite-net) by Krueger Systems, Inc.
 
 The code has been fully commented and, where available, links have be provided from key technologies or methods to relevant information in the [Xamarin.Mac Guides Documentation](https://developer.xamarin.com/guides/#mac).
 

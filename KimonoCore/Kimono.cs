@@ -23,12 +23,55 @@ namespace KimonoCore
 		/// <summary>
 		/// Test to see if the given character is a letter character.
 		/// </summary>
-		/// <returns><c>true</c>, if is letter was chared, <c>false</c> otherwise.</returns>
+		/// <returns><c>true</c>, if is character is a letter, <c>false</c> otherwise.</returns>
 		/// <param name="c">C.</param>
 		public static bool CharIsLetter(char c)
 		{
 			var numbers = "abcdefghijklmnopqrstuvwxyz";
 			return numbers.Contains(c.ToString().ToLower());
+		}
+
+		/// <summary>
+		/// Test to see if the given character is valid in an element name.
+		/// </summary>
+		/// <returns><c>true</c>, if is character is a valid symbol, <c>false</c> otherwise.</returns>
+		/// <param name="c">C.</param>
+		public static bool CharIsLegalNameSymbol(char c)
+		{
+			var symbol = " ._-";
+			return symbol.Contains(c.ToString().ToLower());
+		}
+
+		/// <summary>
+		/// Makes a valid element name from the given name.
+		/// </summary>
+		/// <returns>The valid item name.</returns>
+		/// <param name="itemType">The type of item that a name is being built for.</param>
+		/// <param name="name">The current item name.</param>
+		public static string MakeValidItemName(string itemType, string name)
+		{
+			var validatedName = "";
+
+			// Process incoming name
+			for (int n = 0; n < name.Length; ++n)
+			{
+				// Get character
+				var c = name[n];
+
+				// Is valid character?
+				if (CharIsNumber(c) || CharIsLetter(c) || CharIsLegalNameSymbol(c))
+				{
+					// Yes, accumulate
+					validatedName += c;
+				}
+			}
+
+			// Non-empty
+			validatedName = validatedName.Trim();
+			if (validatedName == "") validatedName = itemType;
+
+			// Return valid name
+			return validatedName;
 		}
 
 		/// <summary>

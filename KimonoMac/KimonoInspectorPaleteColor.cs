@@ -130,7 +130,12 @@ namespace KimonoMac
 				// Save undo point
 				DesignSurface.SaveUndoPoint();
 
+				// Save name and ensure it's valid
 				SelectedColor.Name = ColorName.StringValue;
+				DesignSurface.Portfolio.EnsureColorNameIsValid(SelectedColor);
+
+				// Udate UI
+				ColorName.StringValue = SelectedColor.Name;
 				RaiseColorModified(null);
 			};
 		}

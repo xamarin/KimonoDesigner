@@ -66,7 +66,12 @@ namespace KimonoMac
 				// Save undo point
 				DesignSurface.SaveUndoPoint();
 
+				// Save and validate
 				SelectedPortfolio.Name = NameField.StringValue;
+				SelectedPortfolio.Name = Kimono.MakeValidItemName("Portfolio", SelectedPortfolio.Name);
+
+				// Update UI
+				NameField.StringValue = SelectedPortfolio.Name;
 				RaisePortfolioModified();
 			};
 

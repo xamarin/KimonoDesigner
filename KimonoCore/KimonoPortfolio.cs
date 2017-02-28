@@ -169,6 +169,190 @@ namespace KimonoCore
 
 		#region Public Methods
 		/// <summary>
+		/// Ensures the sketch name is valid.
+		/// </summary>
+		/// <param name="sketch">Sketch to check the name of.</param>
+		public void EnsureSketchNameIsValid(KimonoSketch sketch)
+		{
+
+			// Make sure name is valid
+			sketch.Name = Kimono.MakeValidItemName("Sketch", sketch.Name);
+
+			// Make sketch name unique
+			while (IsSketchNameUsed(sketch)) {
+				// Increment name
+				sketch.Name = Kimono.IncrementName(sketch.Name);
+			}
+
+		}
+
+		/// <summary>
+		/// Tests to see if a sketch's name is unique
+		/// </summary>
+		/// <returns><c>true</c>, if sketch name has been used, <c>false</c> otherwise.</returns>
+		/// <param name="sketch">The sketch to check.</param>
+		public bool IsSketchNameUsed(KimonoSketch sketch)
+		{
+			// Scan all sketches
+			foreach (KimonoSketch existingSketch in Sketches)
+			{
+				// Found?
+				if (existingSketch != sketch && existingSketch.Name == sketch.Name) return true;
+			}
+
+			// Not found
+			return false;
+		}
+
+		/// <summary>
+		/// Ensures the property name is valid.
+		/// </summary>
+		/// <param name="property">Property to check the name of.</param>
+		public void EnsurePropertyNameIsValid(KimonoProperty property)
+		{
+
+			// Make sure name is valid
+			property.Name = Kimono.MakeValidItemName("Property", property.Name);
+
+			// Make name unique
+			while (IsPropertyNameUsed(property))
+			{
+				// Increment name
+				property.Name = Kimono.IncrementName(property.Name);
+			}
+
+		}
+
+		/// <summary>
+		/// Tests to see if a property's name is unique
+		/// </summary>
+		/// <returns><c>true</c>, if property name has been used, <c>false</c> otherwise.</returns>
+		/// <param name="property">The property to check.</param>
+		public bool IsPropertyNameUsed(KimonoProperty property)
+		{
+			// Scan all properties
+			foreach (KimonoProperty existingProperty in Properties)
+			{
+				// Found?
+				if (existingProperty != property && existingProperty.Name == property.Name) return true;
+			}
+
+			// Not found
+			return false;
+		}
+
+		/// <summary>
+		/// Ensures the color name is valid.
+		/// </summary>
+		/// <param name="color">Color to check the name of.</param>
+		public void EnsureColorNameIsValid(KimonoColor color)
+		{
+
+			// Make sure name is valid
+			color.Name = Kimono.MakeValidItemName("Color", color.Name);
+
+			// Make name unique
+			while (IsColorNameUsed(color))
+			{
+				// Increment name
+				color.Name = Kimono.IncrementName(color.Name);
+			}
+
+		}
+
+		/// <summary>
+		/// Tests to see if a color's name is unique
+		/// </summary>
+		/// <returns><c>true</c>, if color name has been used, <c>false</c> otherwise.</returns>
+		/// <param name="color">The color to check.</param>
+		public bool IsColorNameUsed(KimonoColor color)
+		{
+			// Scan all colors
+			foreach (KimonoColor existingColor in Colors)
+			{
+				// Found?
+				if (existingColor != color && existingColor.Name == color.Name) return true;
+			}
+
+			// Not found
+			return false;
+		}
+
+		/// <summary>
+		/// Ensures the gradient name is valid.
+		/// </summary>
+		/// <param name="gradient">gradient to check the name of.</param>
+		public void EnsureGradientNameIsValid(KimonoGradient gradient)
+		{
+
+			// Make sure name is valid
+			gradient.Name = Kimono.MakeValidItemName("Gradient", gradient.Name);
+
+			// Make name unique
+			while (IsGradientNameUsed(gradient))
+			{
+				// Increment name
+				gradient.Name = Kimono.IncrementName(gradient.Name);
+			}
+
+		}
+
+		/// <summary>
+		/// Tests to see if a gradient's name is unique
+		/// </summary>
+		/// <returns><c>true</c>, if gradient name has been used, <c>false</c> otherwise.</returns>
+		/// <param name="gradient">The gradient to check.</param>
+		public bool IsGradientNameUsed(KimonoGradient gradient)
+		{
+			// Scan all gradients
+			foreach (KimonoGradient existingGradient in Gradients)
+			{
+				// Found?
+				if (existingGradient != gradient && existingGradient.Name == gradient.Name) return true;
+			}
+
+			// Not found
+			return false;
+		}
+
+		/// <summary>
+		/// Ensures the style name is valid.
+		/// </summary>
+		/// <param name="style">KimonoStyle to check the name of.</param>
+		public void EnsureStyleNameIsValid(KimonoStyle style)
+		{
+
+			// Make sure name is valid
+			style.Name = Kimono.MakeValidItemName("Style", style.Name);
+
+			// Make name unique
+			while (IsStyleNameUsed(style))
+			{
+				// Increment name
+				style.Name = Kimono.IncrementName(style.Name);
+			}
+
+		}
+
+		/// <summary>
+		/// Tests to see if a style's name is unique
+		/// </summary>
+		/// <returns><c>true</c>, if style name has been used, <c>false</c> otherwise.</returns>
+		/// <param name="style">The style to check.</param>
+		public bool IsStyleNameUsed(KimonoStyle style)
+		{
+			// Scan all styles
+			foreach (KimonoStyle existingStyle in Styles)
+			{
+				// Found?
+				if (existingStyle != style && existingStyle.Name == style.Name) return true;
+			}
+
+			// Not found
+			return false;
+		}
+
+		/// <summary>
 		/// Finds the given <c>KimonoSketch</c> by its Unique ID.
 		/// </summary>
 		/// <returns>The <c>KimonoSketch</c> if found, else <c>null</c>.</returns>
@@ -332,6 +516,7 @@ namespace KimonoCore
 
 			// Add new gradient
 			var gradient = new KimonoGradient();
+			EnsureGradientNameIsValid(gradient);
 			Gradients.Add(gradient);
 
 			// Update UI
@@ -352,6 +537,7 @@ namespace KimonoCore
 
 			// And new color
 			var color = new KimonoColor();
+			EnsureColorNameIsValid(color);
 			Colors.Add(color);
 
 			// Update UI
@@ -503,6 +689,9 @@ namespace KimonoCore
 		{
 			// Save undo point
 			RaiseRequestNewUndoPoint();
+
+			// Ensure name is unique
+			EnsurePropertyNameIsValid(property);
 
 			// And new property
 			Properties.Add(property);
@@ -722,6 +911,7 @@ namespace KimonoCore
 
 			// Add new style
 			var style = new KimonoStyle();
+			EnsureStyleNameIsValid(style);
 			Styles.Add(style);
 
 			// Update the UI

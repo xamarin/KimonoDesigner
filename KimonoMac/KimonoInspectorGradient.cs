@@ -154,7 +154,12 @@ namespace KimonoMac
 				// Save undo point
 				DesignSurface.SaveUndoPoint();
 
+				// Save and validate
 				SelectedGradient.Name = GradientName.StringValue;
+				DesignSurface.Portfolio.EnsureGradientNameIsValid(SelectedGradient);
+
+				// Update UI
+				GradientName.StringValue = SelectedGradient.Name;
 				RaiseGradientModified(SelectedGradient);
 			};
 

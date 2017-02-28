@@ -1501,7 +1501,7 @@ Gw
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
-                                                                        <button toolTip="Details Inspector" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEA-f7-bri">
+                                                                        <button toolTip="Export source code to file" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEA-f7-bri">
                                                                             <rect key="frame" x="117" y="5" width="24" height="24"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="24" id="3FG-4t-c4w"/>
@@ -1739,6 +1739,7 @@ Gw
                         <outlet property="LibrarySelector" destination="7HA-l7-x23" id="RxN-66-qDh"/>
                         <outlet property="NumberPropertyInspector" destination="jTJ-rb-lA6" id="0jD-di-3hd"/>
                         <outlet property="OSSelector" destination="K70-Wg-Zw2" id="pzY-KF-PSH"/>
+                        <outlet property="PointInspector" destination="DvL-5n-JcF" id="OIf-iM-5vj"/>
                         <outlet property="PolygonInspector" destination="dP7-W3-I2Q" id="dPs-l2-K7e"/>
                         <outlet property="PortfolioInspector" destination="U64-BH-Rdf" id="3vj-qi-hK6"/>
                         <outlet property="PropertyInspector" destination="IZC-Kc-rJm" id="piy-WC-MVa"/>
@@ -2008,10 +2009,6 @@ Gw
                                 <action selector="RotationChanged:" target="rgT-Ax-TTx" id="hSp-ix-edR"/>
                             </connections>
                         </slider>
-                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="ycs-Nm-D64">
-                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XYm-TA-zWh">
                             <rect key="frame" x="5" y="177" width="52" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -2080,6 +2077,10 @@ Gw
                                 <action selector="EditOrFinalizeShape:" target="rgT-Ax-TTx" id="bFu-wa-u2O"/>
                             </connections>
                         </button>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="rjD-Qn-P2b">
+                            <rect key="frame" x="0.0" y="2" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
                     </subviews>
                     <connections>
                         <outlet property="EditButton" destination="f9o-1S-3Bo" id="1mZ-yJ-V7x"/>
@@ -2218,6 +2219,51 @@ Gw
                         <outlet property="NamespaceField" destination="raJ-l1-hEL" id="Pdu-e5-aqD"/>
                     </connections>
                 </customView>
+                <customView id="DvL-5n-JcF" customClass="KimonoInspectorPoint">
+                    <rect key="frame" x="0.0" y="0.0" width="251" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AgH-z9-9Jn">
+                            <rect key="frame" x="5" y="13" width="52" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Point" id="dGw-yK-2Hv">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mRl-Sj-mXE">
+                            <rect key="frame" x="0.0" y="2" width="251" height="5"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </box>
+                        <button toolTip="Duplicate selected point" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hx9-A5-zrE">
+                            <rect key="frame" x="192" y="10" width="24" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconDuplicate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="P1I-vd-IJY">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="DuplicatePoint:" target="DvL-5n-JcF" id="0mA-HN-StT"/>
+                            </connections>
+                        </button>
+                        <button toolTip="Delete selected point" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BrE-cV-xs7">
+                            <rect key="frame" x="221" y="10" width="24" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="IconTrash" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="utu-fT-0iS">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="DeletePoint:" target="DvL-5n-JcF" id="Lwd-M4-3fE"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <connections>
+                        <outlet property="DeleteButton" destination="BrE-cV-xs7" id="dh5-MJ-HY4"/>
+                        <outlet property="DuplicateButton" destination="hx9-A5-zrE" id="yHj-ad-2xS"/>
+                    </connections>
+                </customView>
                 <customView id="Ygl-h0-QaX" customClass="KimonoInspectorConnections">
                     <rect key="frame" x="0.0" y="0.0" width="251" height="413"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -2236,7 +2282,7 @@ Gw
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Cmm-cR-SSS">
-                            <rect key="frame" x="0.0" y="81" width="251" height="58"/>
+                            <rect key="frame" x="0.0" y="81" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SrH-SO-XxZ">
@@ -2745,7 +2791,7 @@ Gw
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="zy9-vU-rnh">
-                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="46"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                     </subviews>
@@ -2981,6 +3027,7 @@ Gw
                     <connections>
                         <outlet property="CanvasColor" destination="JvT-fc-CFY" id="Ldl-ee-Red"/>
                         <outlet property="CanvasColorCheckbox" destination="dJu-eI-MG3" id="a5n-it-lzG"/>
+                        <outlet property="DeleteButton" destination="ARj-pN-fLy" id="Ryl-15-xpw"/>
                         <outlet property="OpacitySlider" destination="Pq0-Rm-tq5" id="Mzn-ME-boF"/>
                         <outlet property="OpacityValue" destination="frL-9X-oPD" id="d86-rc-SZ5"/>
                         <outlet property="SketchHeight" destination="eMH-dM-aBF" id="qSl-JY-K5X"/>
@@ -3087,7 +3134,7 @@ Gw
                             </connections>
                         </popUpButton>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="qpm-yc-Bkb">
-                            <rect key="frame" x="0.0" y="55" width="251" height="143"/>
+                            <rect key="frame" x="0.0" y="55" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3gx-0M-KaY">
@@ -5788,7 +5835,7 @@ Gw
                     </connections>
                 </customView>
             </objects>
-            <point key="canvasLocation" x="525" y="1453"/>
+            <point key="canvasLocation" x="533" y="1953"/>
         </scene>
     </scenes>
     <resources>

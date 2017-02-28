@@ -59,7 +59,12 @@ namespace KimonoMac
 				// Save undo point
 				DesignSurface.SaveUndoPoint();
 
+				// Save name and ensure it is valid
 				SelectedProperty.Name = PropertyName.StringValue;
+				DesignSurface.Portfolio.EnsurePropertyNameIsValid(SelectedProperty);
+
+				// Update UI
+				PropertyName.StringValue = SelectedProperty.Name;
 				RaisePropertyModified();
 			};
 		}

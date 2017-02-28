@@ -97,6 +97,9 @@ namespace KimonoMac
 		AppKit.NSPopUpButton OSSelector { get; set; }
 
 		[Outlet]
+		KimonoMac.KimonoInspectorPoint PointInspector { get; set; }
+
+		[Outlet]
 		KimonoMac.KimonoInspectorPolygon PolygonInspector { get; set; }
 
 		[Outlet]
@@ -245,9 +248,9 @@ namespace KimonoMac
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ExportButton != null) {
-				ExportButton.Dispose ();
-				ExportButton = null;
+			if (PointInspector != null) {
+				PointInspector.Dispose ();
+				PointInspector = null;
 			}
 
 			if (ArrowInspector != null) {
@@ -318,6 +321,11 @@ namespace KimonoMac
 			if (DocumentViewWidth != null) {
 				DocumentViewWidth.Dispose ();
 				DocumentViewWidth = null;
+			}
+
+			if (ExportButton != null) {
+				ExportButton.Dispose ();
+				ExportButton = null;
 			}
 
 			if (FillInspector != null) {

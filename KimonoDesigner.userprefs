@@ -1,19 +1,14 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Bounds/KimonoBounds.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Shapes/KimonoShapeBezier.cs">
     <Files>
-      <File FileName="KimonoMac/AppDelegate.cs" Line="157" Column="32" />
-      <File FileName="KimonoCore/KimonoPortfolio.cs" Line="1434" Column="4" />
-      <File FileName="TextBase/Classes/TextBaseDatabase.cs" Line="436" Column="23" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="294" Column="23" />
-      <File FileName="KimonoCore/Bounds/KimonoBounds.cs" Line="27" Column="17" />
+      <File FileName="KimonoMac/ViewController.cs" Line="1631" Column="44" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeVector.cs" Line="397" Column="51" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeBezier.cs" Line="523" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/KimonoCore/KimonoPortfolio.cs" relfile="KimonoCore/KimonoPortfolio.cs" line="1415" column="1" />
-      <Breakpoint file="/Users/kmullins/Xamarin Corp/GITHub/KimonoDesigner/TextBase/Classes/TextBaseDatabase.cs" relfile="TextBase/Classes/TextBaseDatabase.cs" line="889" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.TestConsumer.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Nexus7" />

@@ -864,6 +864,7 @@ namespace KimonoMac
 			TextPropertyInspector.Initialize();
 			ConnectionsInspector.Initialize();
 			ScriptDebuggerInspector.Initialize();
+			PointInspector.Initialize();
 
 			// Attach inspectors to the Design Surface
 			GeneralInfoInspector.DesignSurface = DesignSurface;
@@ -889,6 +890,7 @@ namespace KimonoMac
 			TextPropertyInspector.DesignSurface = DesignSurface;
 			ConnectionsInspector.DesignSurface = DesignSurface;
 			ScriptDebuggerInspector.DesignSurface = DesignSurface;
+			PointInspector.DesignSurface = DesignSurface;
 
 			// Wire-up Inspector events
 			// -- General Inspector -----------------------------------------
@@ -940,6 +942,15 @@ namespace KimonoMac
 
 			// -- Connection Inspector -----------------------------------------
 			ConnectionsInspector.ConnectionModified += () =>
+			{
+				// Update UI
+				DocumentEdited = true;
+				DesignSurface.RefreshView();
+				UpdateTextEditor();
+			};
+
+			// -- Point Inspector -----------------------------------------
+			PointInspector.ShapeModified += () =>
 			{
 				// Update UI
 				DocumentEdited = true;
@@ -1327,6 +1338,7 @@ namespace KimonoMac
 			TextPropertyInspector.RemoveFromSuperview();
 			ConnectionsInspector.RemoveFromSuperview();
 			ScriptDebuggerInspector.RemoveFromSuperview();
+			PointInspector.RemoveFromSuperview();
 		}
 
 		/// <summary>
@@ -1610,6 +1622,15 @@ namespace KimonoMac
 							offset = GroupInspector.MoveTo(offset);
 							InspectorView.AddSubview(GroupInspector);
 						}
+					}
+
+					// Is a control point based shape?
+					if (shape.State == KimonoShapeState.Editing && (shape is KimonoShapeVector || shape is KimonoShapeBezier))
+					{
+						// Yes, add point inspector
+						PointInspector.SelectedShape = shape;
+						offset = PointInspector.MoveTo(offset);
+						InspectorView.AddSubview(PointInspector);
 					}
 
 					// Display the style editors?

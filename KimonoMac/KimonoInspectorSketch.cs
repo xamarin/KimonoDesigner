@@ -64,7 +64,12 @@ namespace KimonoMac
 				// Save undo point
 				DesignSurface.SaveUndoPoint();
 
+				// Save name and ensure it is valid
 				SelectedSketch.Name = SketchName.StringValue;
+				DesignSurface.Portfolio.EnsureSketchNameIsValid(SelectedSketch);
+
+				// Update UI
+				SketchName.StringValue = SelectedSketch.Name;
 				RaiseSketchModified();
 			};
 
@@ -113,6 +118,7 @@ namespace KimonoMac
 			ToDataCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputSkiaData ? 1 : 0;
 			ToBitmapCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputBitmapImage ? 1 : 0;
 			UseSkiaSharpViewsCheckbox.IntValue = SelectedSketch.GenerateCodeToOuputToSkiaSharpViews ? 1 : 0;
+			DeleteButton.Enabled = (DesignSurface.Portfolio.Sketches.Count > 1);
 		}
 
 		/// <summary>
