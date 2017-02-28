@@ -282,6 +282,9 @@ namespace KimonoCore.Mac
 		/// </summary>
 		public void Initialize()
 		{
+			// Initialize scripting
+			ObiScriptPortfolio.Portfolio = Portfolio;
+
 			// Wire-up events for the initial shape
 			WireUpSketchEvents(SelectedSketch);
 
