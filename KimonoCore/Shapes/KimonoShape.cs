@@ -351,6 +351,12 @@ namespace KimonoCore
 			}
 		}
 
+		/// <summary>
+		/// Calculates the confroming gradient coordinates.
+		/// </summary>
+		/// <param name="gradient">Gradient.</param>
+		/// <param name="startPoint">Start point.</param>
+		/// <param name="endPoint">End point.</param>
 		public virtual void CalculateConfromingGradientCoordinates(KimonoGradient gradient, out SKPoint startPoint, out SKPoint endPoint)
 		{
 			// Generate conforming coordinates

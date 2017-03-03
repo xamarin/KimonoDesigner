@@ -909,6 +909,30 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Selects all of the shapes in this sketch.
+		/// </summary>
+		public void SelectAll()
+		{
+			// Make a new group
+			var group = new KimonoShapeGroup(this);
+			SelectedShape = group;
+			ShapeUnderConstruction = SelectedShape;
+
+			// Process all shapes
+			foreach (KimonoShape shape in Shapes)
+			{
+				// Add the hit shape to the group
+				group.AddShape(shape);
+				shape.StartGrouping();
+			}
+
+			// Update UI
+			group.PlaceUnderConstruction(true);
+			ParentSketch.RaiseSelectionChanged(SelectedShape);
+			ParentSketch.RaiseImageBufferNeedsRefresh();
+		}
+
+		/// <summary>
 		/// Deselects all shapes in this group.
 		/// </summary>
 		public void DeselectAll()
@@ -1674,6 +1698,50 @@ namespace KimonoCore
 				// Allow base to handle bounds
 				base.BoundsChanged();
 			}
+		}
+
+		/// <summary>
+		/// Moves up.
+		/// </summary>
+		public override void MoveUp()
+		{
+			MoveBounds(new SKPoint(Rect.Left, Rect.Top - 1f));
+
+			// Apply changes if needed
+			if (State == KimonoShapeState.Constructing) ApplyMoveAndScale();
+		}
+
+		/// <summary>
+		/// Moves down.
+		/// </summary>
+		public override void MoveDown()
+		{
+			MoveBounds(new SKPoint(Rect.Left, Rect.Top + 1f));
+
+			// Apply changes if needed
+			if (State == KimonoShapeState.Constructing) ApplyMoveAndScale();
+		}
+
+		/// <summary>
+		/// Moves the left.
+		/// </summary>
+		public override void MoveLeft()
+		{
+			MoveBounds(new SKPoint(Rect.Left - 1f, Rect.Top));
+
+			// Apply changes if needed
+			if (State == KimonoShapeState.Constructing) ApplyMoveAndScale();
+		}
+
+		/// <summary>
+		/// Moves the right.
+		/// </summary>
+		public override void MoveRight()
+		{
+			MoveBounds(new SKPoint(Rect.Left + 1f, Rect.Top));
+
+			// Apply changes if needed
+			if (State == KimonoShapeState.Constructing) ApplyMoveAndScale();
 		}
 		#endregion
 

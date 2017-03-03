@@ -776,6 +776,30 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Selects all of the shapes in this sketch.
+		/// </summary>
+		public void SelectAll()
+		{
+			// Make a new group
+			var group = new KimonoShapeGroup(this);
+			SelectedShape = group;
+			ShapeUnderConstruction = SelectedShape;
+
+			// Process all shapes
+			foreach(KimonoShape shape in Shapes)
+			{
+				// Add the hit shape to the group
+				group.AddShape(shape);
+				shape.StartGrouping();
+			}
+
+			// Update UI
+			group.PlaceUnderConstruction(true);
+			RaiseSelectionChanged(SelectedShape);
+			RaiseImageBufferNeedsRefresh();
+		}
+
+		/// <summary>
 		/// Deselects all shapes in the sketch.
 		/// </summary>
 		public void DeselectAll()

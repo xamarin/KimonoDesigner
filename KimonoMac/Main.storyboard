@@ -2791,7 +2791,7 @@ Gw
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="zy9-vU-rnh">
-                            <rect key="frame" x="0.0" y="3" width="251" height="46"/>
+                            <rect key="frame" x="0.0" y="3" width="251" height="5"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                     </subviews>
@@ -3512,7 +3512,7 @@ Gw
                             </connections>
                         </button>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="keL-dO-Mmv">
-                            <rect key="frame" x="0.0" y="493" width="251" height="5"/>
+                            <rect key="frame" x="0.0" y="493" width="251" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ekg-7N-7w4">
@@ -5571,7 +5571,7 @@ Gw
                             </connections>
                         </slider>
                         <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="NKN-kD-koB">
-                            <rect key="frame" x="1" y="79" width="251" height="5"/>
+                            <rect key="frame" x="1" y="79" width="251" height="72"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </box>
                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HHQ-Zr-1qj">

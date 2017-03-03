@@ -396,6 +396,88 @@ namespace KimonoCore.Mac
 				DeeplySelectedGroup?.DeleteSelectedShape();
 			}
 		}
+
+		/// <summary>
+		/// Selects all shapes in the current group or sketch.
+		/// </summary>
+		public void SelectAll()
+		{
+			if (DeeplySelectedGroup == null)
+			{
+				SelectedSketch?.SelectAll();
+			}
+			else
+			{
+				DeeplySelectedGroup?.SelectAll();
+			}
+		}
+
+		/// <summary>
+		/// Deselects all selected shapes.
+		/// </summary>
+		public void DeselectAll()
+		{
+			if (DeeplySelectedGroup == null)
+			{
+				SelectedSketch?.DeselectAll();
+			}
+			else
+			{
+				DeeplySelectedGroup?.DeselectAll();
+			}
+
+			// Update UI
+			RaiseSelectionChanged(null);
+			RefreshView();
+		}
+
+		/// <summary>
+		/// Moves the selection up.
+		/// </summary>
+		public void MoveSelectionUp()
+		{
+			DeeplySelectedShape.MoveUp();
+
+			// Update UI
+			RaiseSelectionChanged(DeeplySelectedShape);
+			RefreshView();
+		}
+
+		/// <summary>
+		/// Moves the selection down.
+		/// </summary>
+		public void MoveSelectionDown()
+		{
+			DeeplySelectedShape.MoveDown();
+
+			// Update UI
+			RaiseSelectionChanged(DeeplySelectedShape);
+			RefreshView();
+		}
+
+		/// <summary>
+		/// Moves the selection left.
+		/// </summary>
+		public void MoveSelectionLeft()
+		{
+			DeeplySelectedShape.MoveLeft();
+
+			// Update UI
+			RaiseSelectionChanged(DeeplySelectedShape);
+			RefreshView();
+		}
+
+		/// <summary>
+		/// Moves the selection right.
+		/// </summary>
+		public void MoveSelectionRight()
+		{
+			DeeplySelectedShape.MoveRight();
+
+			// Update UI
+			RaiseSelectionChanged(DeeplySelectedShape);
+			RefreshView();
+		}
 		#endregion
 
 		#region Override Methods
@@ -409,12 +491,24 @@ namespace KimonoCore.Mac
 		}
 
 		/// <summary>
+		/// Becomes the first responder.
+		/// </summary>
+		/// <returns><c>true</c>, if becoming first responder, <c>false</c> otherwise.</returns>
+		public override bool BecomeFirstResponder()
+		{
+			return true;
+		}
+
+		/// <summary>
 		/// Handles the user clicking the mouse
 		/// </summary>
 		/// <param name="theEvent">The <c>NSEvent</c> representing the mouse down.</param>
 		public override void MouseDown(NSEvent theEvent)
 		{
 			base.MouseDown(theEvent);
+
+			// Make the design surface the first responder
+			Window.MakeFirstResponder(this);
 
 			// Get the location
 			var point = ConvertToCanvasPoint(theEvent);
@@ -463,6 +557,66 @@ namespace KimonoCore.Mac
 			// Send mouse up to the Sketch and refresh the view
 			SelectedSketch.ToolUp(point);
 			RefreshView();
+		}
+
+		/// <summary>
+		/// Handles the start of a key press on the design surface.
+		/// </summary>
+		/// <param name="theEvent">The event.</param>
+		public override void KeyDown(NSEvent theEvent)
+		{
+			var ascii = (int)theEvent.CharactersIgnoringModifiers[0];
+
+			// Take action based on the key pressed
+			switch (ascii)
+			{
+				case 27:
+					// Esc key pressed
+					DeselectAll();
+					return;
+				case 63232:
+					// Up key
+					MoveSelectionUp();
+					return;
+				case 63233:
+					// Down key
+					MoveSelectionDown();
+					return;
+				case 63234:
+					// Left key
+					MoveSelectionLeft();
+					return;
+				case 63235:
+					// Right key
+					MoveSelectionRight();
+					return;
+			}
+
+			// Not handled
+			base.KeyDown(theEvent);
+		}
+
+		/// <summary>
+		/// Handles the end of a key press on the design surface.
+		/// </summary>
+		/// <param name="theEvent">The event.</param>
+		public override void KeyUp(NSEvent theEvent)
+		{
+			var ascii = (int)theEvent.CharactersIgnoringModifiers[0];
+
+			// Take action based on the key pressed
+			switch (ascii)
+			{
+				case 27:
+					// Consume handled key presses
+					return;
+			}
+
+			// Show ascii code 
+			//Console.WriteLine("Key: {0}", ascii);
+
+			// Not handled
+			base.KeyUp(theEvent);
 		}
 		#endregion
 

@@ -696,6 +696,38 @@ namespace KimonoCore
 		}
 
 		/// <summary>
+		/// Moves up.
+		/// </summary>
+		public virtual void MoveUp()
+		{
+			MoveBounds(new SKPoint(Rect.Left, Rect.Top - 1f));
+		}
+
+		/// <summary>
+		/// Moves down.
+		/// </summary>
+		public virtual void MoveDown()
+		{
+			MoveBounds(new SKPoint(Rect.Left, Rect.Top + 1f));
+		}
+
+		/// <summary>
+		/// Moves the left.
+		/// </summary>
+		public virtual void MoveLeft()
+		{
+			MoveBounds(new SKPoint(Rect.Left - 1f, Rect.Top));
+		}
+
+		/// <summary>
+		/// Moves the right.
+		/// </summary>
+		public virtual void MoveRight()
+		{
+			MoveBounds(new SKPoint(Rect.Left + 1f, Rect.Top));
+		}
+
+		/// <summary>
 		/// Drags the bounds.
 		/// </summary>
 		/// <param name="point">Point.</param>

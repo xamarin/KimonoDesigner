@@ -2396,6 +2396,9 @@ namespace KimonoMac
 			Keyword = "";
 			KeywordInfo = null;
 
+			// Make the design surface the first responder
+			View.Window.MakeFirstResponder(DesignSurface);
+
 			// Update UI
 			//App.ReformatItem.Enabled = (Text.Length > 0);
 			//WindowController.Print.Disabled = false;
@@ -2690,6 +2693,16 @@ namespace KimonoMac
 		public void DeleteSelectedShape(NSObject sender)
 		{
 			DesignSurface.DeleteSelectedShape();
+		}
+
+		/// <summary>
+		/// Selects all shapes.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		[Action("selectAll:")]
+		public void SelectAll(NSObject sender)
+		{
+			DesignSurface.SelectAll();
 		}
 
 		/// <summary>
