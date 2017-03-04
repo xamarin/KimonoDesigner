@@ -14,6 +14,11 @@ namespace KimonoCore
 		/// <summary>
 		/// Generate code for the internal ObiScript scripting language.
 		/// </summary>
-		ObiScript
+		ObiScript,
+
+        /// <summary>
+        /// Generate code for F#
+        /// </summary>
+        FSharp
 	}
 }

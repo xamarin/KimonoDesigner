@@ -40,6 +40,10 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
 		string ToCSharp(CodeOutputLibrary outputLibrary);
 
+		string ToFSharp(CodeOutputLibrary outputLibrary);
+        string ToFSharpSkia ();
+        string ToFSharpKimonoCore ();
+
 		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.
 		/// </summary>

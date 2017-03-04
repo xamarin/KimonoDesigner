@@ -870,7 +870,27 @@ namespace KimonoCore
 		public virtual string ToCSharp(CodeOutputLibrary outputLibrary)
 		{
 			return "";
-		}
+        		}
+
+        /// <summary>
+        /// Generates F# representation of <c>this</c>
+        /// </summary>
+        /// <returns>The F# code.</returns>
+        /// <param name="outputLibrary">Output library.</param>
+        public override string ToFSharp (CodeOutputLibrary outputLibrary) => FSharpCodeGenerator.ToCode (this, outputLibrary);
+
+        /// <summary>
+        /// Forwards to extension method
+        /// </summary>
+        /// <returns>The Skia representation of <c>this</c>.</returns>
+        public override string ToFSharpSkia () => this.ToFSharpSkiaImpl ();
+
+        /// <summary>
+        /// Forwards to extension method
+        /// </summary>
+        /// <returns>The KimonoCore representation of <c>this</c>.</returns>
+        public override string ToFSharpKimonoCore () => this.ToFSharpKimonoCoreImpl ();
+
 
 		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.

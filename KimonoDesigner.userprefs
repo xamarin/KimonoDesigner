@@ -1,18 +1,26 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Shapes/KimonoShapeBezier.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/CodeGeneration/FSharp/SKPointCodeGenFSharp.cs">
     <Files>
-      <File FileName="KimonoMac/MainWindowController.cs" Line="229" Column="23" />
-      <File FileName="KimonoMac/ViewController.cs" Line="2394" Column="4" />
-      <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="574" Column="24" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="1736" Column="16" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeBezier.cs" Line="632" Column="4" />
+      <File FileName="KimonoCore/Styles/KimonoGradient.cs" Line="1299" Column="55" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/GradientCodeGenFSharp.cs" Line="6" Column="41" />
+      <File FileName="KimonoCore/Styles/KimonoStyle.cs" Line="2372" Column="55" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/StyleCodeGenFSharp.cs" Line="6" Column="38" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/ShapeCodeGenFSharp.cs" Line="6" Column="38" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/BlurCodeGenFSharp.cs" Line="4" Column="37" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/BoundsCodeGenFSharp.cs" Line="4" Column="39" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/ColorCodeGenFSharp.cs" Line="4" Column="38" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/PortfolioCodeGenFSharp.cs" Line="4" Column="47" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/ShadowCodeGenFSharp.cs" Line="4" Column="39" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/ArrowCodeGenFSharp.cs" Line="6" Column="43" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/SketchCodeGenFSharp.cs" Line="8" Column="39" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/SKPointCodeGenFSharp.cs" Line="6" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="Test1" />
   <MonoDevelop.Ide.ItemProperties.TestConsumer.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Nexus7" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

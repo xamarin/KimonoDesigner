@@ -369,6 +369,26 @@ namespace KimonoCore
 			// Return code
 			return sourceCode;
 		}
+
+        /// <summary>
+        /// Generates F# representation of <c>this</c>
+        /// </summary>
+        /// <returns>The F# code.</returns>
+        /// <param name="outputLibrary">Output library.</param>
+        public override string ToFSharp (CodeOutputLibrary outputLibrary) => FSharpCodeGenerator.ToCode (this, outputLibrary);
+
+        /// <summary>
+        /// Forwards to extension method
+        /// </summary>
+        /// <returns>The Skia representation of <c>this</c>.</returns>
+        public override string ToFSharpSkia () => this.ToFSharpSkiaImpl ();
+
+        /// <summary>
+        /// Forwards to extension method
+        /// </summary>
+        /// <returns>The KimonoCore representation of <c>this</c>.</returns>
+        public override string ToFSharpKimonoCore () => this.ToFSharpKimonoCoreImpl ();
+
 		#endregion
 
 		#region Cloning
