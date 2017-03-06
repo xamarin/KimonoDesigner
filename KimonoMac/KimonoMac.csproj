@@ -494,6 +494,7 @@
     <Compile Include="KimonoInspectorPoint.designer.cs">
       <DependentUpon>KimonoInspectorPoint.cs</DependentUpon>
     </Compile>
+    <Compile Include="LanguageFormats\FSharpDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

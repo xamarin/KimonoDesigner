@@ -63,6 +63,7 @@
     <None Include="packages.config" />
     <None Include="ImplementationNotes.md" />
   </ItemGroup>
+  <Import Project="..\TextBase\TextBase.projitems" Label="Shared" Condition="Exists('..\TextBase\TextBase.projitems')" />
   <Import Project="..\KimonoCore\KimonoCore.projitems" Label="Shared" Condition="Exists('..\KimonoCore\KimonoCore.projitems')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

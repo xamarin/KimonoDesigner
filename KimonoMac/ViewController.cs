@@ -1444,6 +1444,13 @@ namespace KimonoMac
 					Formatter = new LanguageFormatter(TextEditor, new ObiScriptDescriptor());
 					LanguageSelector.SelectItem(1);
 					break;
+				case CodeOutputLanguage.FSharp :
+					Formatter = new LanguageFormatter(TextEditor, new FSharpDescriptor());
+					LanguageSelector.SelectItem(2);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException($"Unsupported language code {GenerateLanguageCode}");	
+					
 			}
 			LanguageSelector.Enabled = true;
 
@@ -2568,6 +2575,12 @@ namespace KimonoMac
 				case 1:
 					GenerateLanguageCode = CodeOutputLanguage.ObiScript;
 					break;
+				case 2 :
+					GenerateLanguageCode = CodeOutputLanguage.FSharp;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException($"Unknown Language Selection index {LanguageSelector.IndexOfSelectedItem}");
+			
 			}
 
 			// Update UI

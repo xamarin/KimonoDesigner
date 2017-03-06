@@ -1,26 +1,40 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/CodeGeneration/FSharp/SKPointCodeGenFSharp.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/CodeGeneration/FSharp/SkiaSharp/SketchCodeGen.cs">
     <Files>
-      <File FileName="KimonoCore/Styles/KimonoGradient.cs" Line="1299" Column="55" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/GradientCodeGenFSharp.cs" Line="6" Column="41" />
-      <File FileName="KimonoCore/Styles/KimonoStyle.cs" Line="2372" Column="55" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/StyleCodeGenFSharp.cs" Line="6" Column="38" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/ShapeCodeGenFSharp.cs" Line="6" Column="38" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/BlurCodeGenFSharp.cs" Line="4" Column="37" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/BoundsCodeGenFSharp.cs" Line="4" Column="39" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/ColorCodeGenFSharp.cs" Line="4" Column="38" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/PortfolioCodeGenFSharp.cs" Line="4" Column="47" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/ShadowCodeGenFSharp.cs" Line="4" Column="39" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/ArrowCodeGenFSharp.cs" Line="6" Column="43" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/SketchCodeGenFSharp.cs" Line="8" Column="39" />
-      <File FileName="KimonoCore/CodeGeneration/FSharp/SKPointCodeGenFSharp.cs" Line="6" Column="36" />
+      <File FileName="KimonoMac/MainWindowController.cs" Line="15" Column="20" />
+      <File FileName="KimonoMac/ViewController.cs" Line="1471" Column="1" />
+      <File FileName="KimonoMac/LanguageFormats/ObiScriptDescriptor.cs" Line="34" Column="10" />
+      <File FileName="KimonoMac/LanguageFormats/FSharpDescriptor.cs" Line="30" Column="4" />
+      <File FileName="KimonoMac/LanguageFormats/CSharpDescriptor.cs" Line="209" Column="58" />
+      <File FileName="KimonoCore/KimonoSketch.cs" Line="1988" Column="1" />
+      <File FileName="KimonoMac/Main.cs" Line="16" Column="1" />
+      <File FileName="KimonoCore/CodeGeneration/FSharp/SkiaSharp/SketchCodeGen.cs" Line="10" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="KimonoDesigner" expanded="True">
+            <Node name="KimonoCore" expanded="True">
+              <Node name="CodeGeneration" expanded="True">
+                <Node name="FSharp" expanded="True">
+                  <Node name="SkiaSharp" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="KimonoCore.Mac" expanded="True">
+              <Node name="References" expanded="True" />
+            </Node>
+            <Node name="KimonoMac" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="Test1" />
+  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.TestConsumer.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Nexus7" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

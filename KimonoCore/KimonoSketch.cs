@@ -1971,6 +1971,24 @@ namespace KimonoCore
 				case CodeOutputLanguage.ObiScript:
 					sourceCode += "// Sketches are not supported in ObiScript\n";
 					break;
+				case CodeOutputLanguage.FSharp :
+					IVisitorCodeGen generator = null;
+					switch (outputLibrary)
+					{
+						case (CodeOutputLibrary.SkiaSharp):
+							generator = new CodeGenFSharp.SkiaSharp.ToFSharpSkia();
+							break;
+						case (CodeOutputLibrary.KimonoCore):
+							//TODO
+							throw new NotImplementedException("TODO");
+						default:
+							throw new ArgumentOutOfRangeException($"Unknown code generation library {outputLibrary}");
+					}
+					//Kick off source code generation here
+					sourceCode += this.ToCode(generator);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException($"Unknown output language {outputLanguage}");
 			}
 
 			// Return code
