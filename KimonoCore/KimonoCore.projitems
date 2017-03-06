@@ -88,19 +88,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Properties\KimonoPropertyLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KimonoTextBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\GeneratorUtils.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SketchCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\GradientCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\ArrowCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\ShapeCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SKPointCodeGenFSharp.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\IKimonoCodeGeneration_Extensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\FSharpCodeGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\StyleCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\BoundsCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\BlurCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\ColorCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\PortfolioCodeGenFSharp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\ShadowCodeGenFSharp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\IVisitorCodeGen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

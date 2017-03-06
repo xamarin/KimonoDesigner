@@ -40,9 +40,13 @@ namespace KimonoCore
 		/// <param name="outputLibrary">The `CodeOutputLibrary` to use.</param>
 		string ToCSharp(CodeOutputLibrary outputLibrary);
 
-		string ToFSharp(CodeOutputLibrary outputLibrary);
-        string ToFSharpSkia ();
-        string ToFSharpKimonoCore ();
+        /// <summary>
+        ///  Visitor pattern: accepts a code generator to which it calls back for double dispatch
+        /// </summary>
+        /// <returns>The generated code.</returns>
+        /// <param name="visitor">The code generator, specific to a lang and library.</param>
+        /// Note: Implementation is always just: `=> visitor.CodeGen(this);`
+		string ToCode(IVisitorCodeGen visitor);
 
 		/// <summary>
 		/// Converts this object to source code for the given OS, Language and Library.

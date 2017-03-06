@@ -730,23 +730,12 @@ namespace KimonoCore
 		}
 
         /// <summary>
-        /// Generates F# representation of <c>this</c>
+        /// Visitor pattern: returns results of double-dispatch to code generator
         /// </summary>
-        /// <returns>The F# code.</returns>
-        /// <param name="outputLibrary">Output library.</param>
-        public override string ToFSharp (CodeOutputLibrary outputLibrary) => FSharpCodeGenerator.ToCode (this, outputLibrary);
-
-        /// <summary>
-        /// Forwards to extension method
-        /// </summary>
-        /// <returns>The Skia representation of <c>this</c>.</returns>
-        public override string ToFSharpSkia () => this.ToFSharpSkiaImpl ();
-
-        /// <summary>
-        /// Forwards to extension method
-        /// </summary>
-        /// <returns>The KimonoCore representation of <c>this</c>.</returns>
-        public override string ToFSharpKimonoCore () => this.ToFSharpKimonoCoreImpl ();
+        /// <returns>The code from the code generator visitor.</returns>
+        /// <param name="visitor">A code generator.</param>
+        /// <remarks>Note that implementation is always just `=>visitor.CodeGen(this)`</remarks>
+        public string ToCode (IVisitorCodeGen visitor) => visitor.CodeGen (this);
 
 		#endregion
 
