@@ -831,6 +831,25 @@ namespace KimonoCore
 
 			return inBounds;
 		}
+
+		/// <summary>
+		/// Test to see if the given bounds in contained within this bounds.
+		/// </summary>
+		/// <returns><c>true</c>, if bounds was contained, <c>false</c> otherwise.</returns>
+		/// <param name="bounds">The bounds to see if it is contained.</param>
+		public virtual bool ContainsBounds(KimonoBounds bounds)
+		{
+			if (ValueBetween(bounds.Left, Left, Right) && ValueBetween(bounds.Top, Top, Bottom)) {
+				return true;
+			}
+			else if (ValueBetween(bounds.Right, Left, Right) && ValueBetween(bounds.Bottom, Top, Bottom))
+			{
+				return true;
+			}
+
+			// Not in bounds
+			return false;
+		}
 		#endregion
 
 		#region Conversion Routines

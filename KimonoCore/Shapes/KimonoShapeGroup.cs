@@ -45,6 +45,11 @@ namespace KimonoCore
 		private SKPoint ToolDownAt = new SKPoint();
 
 		/// <summary>
+		/// If <c>true</c>, the user is currently performing a drag to select operation.
+		/// </summary>
+		private bool PerformingDragToSelect = false;
+
+		/// <summary>
 		/// If <c>true</c>, the top most shape in the group will act as a mask for the
 		/// shapes below it.
 		/// </summary>
@@ -787,7 +792,16 @@ namespace KimonoCore
 		public void AddShape(KimonoShape shape)
 		{
 			// Add to collection and reset bounds
-			if (!ShapeInGroup(shape))
+			if (ShapeInGroup(shape))
+			{
+				// Remove shape from group
+				Shapes.Remove(shape);
+				shape.Unselect();
+				RecalculateGroupBounds();
+				RecalculateLayerDepths();
+				ParentSketch.RaiseImageBufferNeedsRefresh();
+			} 
+			else
 			{
 				// Save an undo point
 				ParentSketch.RaiseRequestNewUndoPoint();
@@ -2135,6 +2149,7 @@ namespace KimonoCore
 		{
 			// Save the point where the tool went down
 			ToolDownAt = point;
+			PerformingDragToSelect = false;
 
 			// Is the selected shape a group in the edit mode?
 			if (SelectedShape is KimonoShapeGroup && SelectedShape.State == KimonoShapeState.Editing)
@@ -2262,7 +2277,15 @@ namespace KimonoCore
 					ParentSketch.RaiseSelectionChanged(this);
 
 					// Edit editing?
-					if (clicks == 2 & State == KimonoShapeState.Editing) EndEditing();
+					if (clicks == 2 & State == KimonoShapeState.Editing)
+					{
+						EndEditing();
+						return;
+					}
+
+					// Start a drag selection
+					ShapeUnderConstruction = new KimonoShape(point.X, point.Y, point.X, point.Y, KimonoShapeState.Selected);
+					PerformingDragToSelect = true;
 					break;
 				case KimonoTool.Line:
 					ShapeUnderConstruction = new KimonoShapeLine(point.X, point.Y, point.X, point.Y);
@@ -2364,7 +2387,11 @@ namespace KimonoCore
 			switch (ParentSketch.Tool)
 			{
 				case KimonoTool.Cursor:
-					if (SelectedShape != null && !((int)point.X == (int)ToolDownAt.X && (int)point.Y == (int)ToolDownAt.Y))
+					if (PerformingDragToSelect)
+					{
+						ShapeUnderConstruction?.GrowBounds(point);
+					}
+					else if (SelectedShape != null && !((int)point.X == (int)ToolDownAt.X && (int)point.Y == (int)ToolDownAt.Y))
 					{
 						SelectedShape.DragBounds(point);
 						ParentSketch.RaiseSelectedShapeModified();
@@ -2406,6 +2433,47 @@ namespace KimonoCore
 			switch (ParentSketch.Tool)
 			{
 				case KimonoTool.Cursor:
+					if (PerformingDragToSelect)
+					{
+						// Save undo point
+						ParentSketch.RaiseRequestNewUndoPoint();
+
+						// Make new group
+						var group = new KimonoShapeGroup(this);
+
+						// Scan all shapes
+						foreach (KimonoShape shape in Shapes)
+						{
+							// Does the shape under construction contain the 
+							// current shape?
+							if (ShapeUnderConstruction.ContainsBounds(shape))
+							{
+								// Yes, add the shape to the group
+								shape.StartGrouping();
+								group.AddShape(shape);
+							}
+						}
+
+						// Anything in group?
+						if (group.Shapes.Count > 0)
+						{
+							// Yes, save group
+							group.PlaceUnderConstruction(true);
+							SelectedShape = group;
+							ShapeUnderConstruction = SelectedShape;
+							ParentSketch.RaiseSelectionChanged(SelectedShape);
+						}
+						else
+						{
+							// No, clear group
+							SelectedShape = null;
+							ShapeUnderConstruction = SelectedShape;
+							ParentSketch.RaiseSelectionChanged(null);
+						}
+
+						// Clear flag
+						PerformingDragToSelect = false;
+					}
 					break;
 				case KimonoTool.Vector:
 					if (ShapeUnderConstruction.State == KimonoShapeState.Finalizing)

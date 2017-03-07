@@ -220,7 +220,7 @@ With that line in place, the user can call any function from the library as if i
 
 ## Work in Progress
 
-This app is very much a work-in-progress and still has several rough areas and missing features (such as drag to select items and copy & paste). Up to this point, work has been focused on getting the core functionality in place, so there are also areas where the User Interface needs to be refined and polished. For now, the app is definitely use at your own risk!
+This app is very much a work-in-progress and still has several rough areas and missing features (such as copy & paste). Up to this point, work has been focused on getting the core functionality in place, so there are also areas where the User Interface needs to be refined and polished. For now, the app is definitely use at your own risk!
 
 While the editor is currently only implemented in Xamarin.Mac and only runs on macOS, the project was designed to be built cross-platform. As such most of the editor code has been implemented in the back end KimonoCore library and platform specific version of the core libraries has already been built.
 

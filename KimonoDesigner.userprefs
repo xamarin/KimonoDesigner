@@ -1,18 +1,15 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Shapes/KimonoShapeBezier.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Shapes/KimonoShapeGroup.cs">
     <Files>
-      <File FileName="KimonoMac/MainWindowController.cs" Line="229" Column="23" />
-      <File FileName="KimonoMac/ViewController.cs" Line="2394" Column="4" />
-      <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="574" Column="24" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="1736" Column="16" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeBezier.cs" Line="632" Column="4" />
+      <File FileName="KimonoCore/KimonoSketch.cs" Line="2399" Column="7" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="2452" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="Test1" />
   <MonoDevelop.Ide.ItemProperties.TestConsumer.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Nexus7" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
