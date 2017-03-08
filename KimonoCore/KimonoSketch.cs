@@ -1976,7 +1976,7 @@ namespace KimonoCore
 					switch (outputLibrary)
 					{
 						case (CodeOutputLibrary.SkiaSharp):
-							generator = new CodeGenFSharp.SkiaSharp.ToFSharpSkia();
+							generator = new CodeGenFSharp.SkiaSharp.ToFSharpSkia(outputOS);
 							break;
 						case (CodeOutputLibrary.KimonoCore):
 							//TODO

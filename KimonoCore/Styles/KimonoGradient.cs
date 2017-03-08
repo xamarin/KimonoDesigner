@@ -405,7 +405,7 @@ namespace KimonoCore
 		/// Returns a list a color weights by their "X" location in the gradient.
 		/// </summary>
 		/// <returns>The sorted weights.</returns>
-		private Single[] SortedWeights()
+		internal Single[] SortedWeights()
 		{
 			// Sort color list
 			var list = ControlPoints.OrderBy(n => n.X).ToList();

@@ -112,6 +112,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\ToFSharpSkia.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\TriangleCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\VectorCodeGen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\Indenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

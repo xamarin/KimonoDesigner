@@ -1,6 +1,8 @@
 using System;
 using KimonoCore;
 using SkiaSharp;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CodeGenFSharp.SkiaSharp
 {
@@ -88,5 +90,143 @@ namespace CodeGenFSharp.SkiaSharp
             }
             return shaderPrefix + gradientCode;
         }
+
+		static IEnumerable<string> ColorsToInitializerCode(this KimonoGradient self, bool isConstructor)
+		{
+			// Sort color list
+			var list = self.ControlPoints.OrderBy(n => n.X).ToList();
+
+			var arrayDeclCode = $"{self.ElementName}Colors = [| ";
+
+			var colorCode = list.Aggregate("", (accum, handle) =>
+				{
+					Func<string> DirectColor = () => KimonoCodeGenerator.ColorToCode(CodeOutputLibrary.SkiaSharp, handle.Color);
+					Func<KimonoColor, string> LinkedColor = (c) => KimonoCodeGenerator.AddSupportingColor(c);
+
+					var cc = handle.LinkedColor == null ? DirectColor() : LinkedColor(handle.LinkedColor);
+					return accum + ", " + cc;
+			});
+
+			var arrayCloseCode = "|]";
+
+			return new[]
+			{
+				arrayDeclCode,
+				colorCode,
+				arrayCloseCode
+			};
+		}
+
+		static IEnumerable<string> WeightsToInitializerCode(this KimonoGradient self, bool isConstructor)
+		{
+			var weights = self.SortedWeights().Select(wt => wt.ToString() + "f");
+			var arrayDeclCode = $"{self.ElementName}Weights = [| " ;
+
+			var weightCode = weights.BuildString();
+
+			var arrayCloseCode = "|]";
+			return new[]
+			{
+				arrayDeclCode,
+				weightCode,
+				arrayCloseCode
+			};
+		}
+
+		public static IEnumerable<string> ToInitializerCode(this KimonoGradient self)
+		{
+			Func<string, string, IEnumerable<string>> GradientCode = (name, elementName) =>
+			{
+				var colorCode = self.ColorsToInitializerCode(false);
+				var weightCode = self.WeightsToInitializerCode(false);
+
+				return $"// Initialize {name}"
+				.AppendAll(colorCode)
+				.Append(weightCode)
+				.Append($"{elementName} = SKShader.");
+			};
+
+			Func<KimonoHandle, KimonoHandle, double, string, SKShaderTileMode, string> ConicalGradientCode = (start, end, radius, elementName, tileMode) =>
+			{
+				var code = new[]
+				{
+					$"CreateTwoPointConicalGradient(",
+					KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, start),
+					$"{radius}f",
+					KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, end),
+					$"{radius / 2f}f",
+					$"{elementName}Colors, {elementName}Weights",
+					$"SKShaderTileMode.{tileMode.ToString()}"
+				}.BuildFunctionCall();
+				return code;
+			};
+
+			Func<KimonoHandle, KimonoHandle, string, SKShaderTileMode, string> LinearGradientCode = (start, end, elementName, tileMode) =>
+			{
+				return new[]
+				{
+					$"CreateLinearGradient(",
+					KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, start),
+					KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, end),
+					$"{elementName}Colors, {elementName}Weights",
+					$"SKShaderTileMode.{tileMode.ToString()}"
+				}.BuildFunctionCall();
+			};
+
+			Func<KimonoHandle, double, string, SKShaderTileMode, string> RadialGradientCode = (start, radius, elementName, tileMode) =>
+			{
+				return new[]
+				{
+					$"CreateRadialGradient(",
+					KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, start),
+					$"{radius}f",
+					$"{elementName}Colors, {elementName}Weights",
+					$"SKShaderTileMode.{tileMode.ToString()}"
+				}.BuildFunctionCall();
+			};
+
+			Func<KimonoHandle, string, string> SweepGradientCode = (start, elementName) =>
+			{
+				return new[]
+				{
+					$"CreateSweepGradient(",
+					KimonoCodeGenerator.PointToCode(CodeOutputLibrary.SkiaSharp, start),
+					$"{elementName}Colors, {elementName}Weights"
+				}.BuildFunctionCall();
+			};
+
+			var gradientCode = GradientCode(self.Name, self.ElementName);
+			string generatorCode = null;
+
+			switch (self.GradientType)
+			{
+				case KimonoGradientType.ConicalGradient : 
+					generatorCode = ConicalGradientCode(self.StartPoint, self.EndPoint, self.Radius, self.ElementName, self.TileMode);
+					break;
+					case KimonoGradientType.LinearGradient :
+					generatorCode = LinearGradientCode(self.StartPoint, self.EndPoint, self.ElementName, self.TileMode);
+					break;
+					case KimonoGradientType.RadialGradient :
+					generatorCode = RadialGradientCode(self.StartPoint, self.Radius, self.ElementName, self.TileMode);
+					break;
+					case KimonoGradientType.SweepGradient :
+					generatorCode = SweepGradientCode(self.StartPoint, self.ElementName);
+					break;
+					default:
+					throw new ArgumentOutOfRangeException($"Unknown gradient type {self.GradientType}");
+			}
+
+			return gradientCode.Append(generatorCode);
+
+		}
+
+		public static IEnumerable<string> ToPrivateVariableCode(this KimonoGradient self)
+		{
+			return new[] {
+				$"// Private gradient {self.Name} variables",
+				$"private {self.ElementName}Colors : SKColor seq ",
+				$"private {self.ElementName}Weights : float seq"
+			};
+		}
     }
 }

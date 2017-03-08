@@ -1,5 +1,6 @@
 ﻿using System;
 using KimonoCore;
+using System.Collections.Generic;
 
 namespace CodeGenFSharp.SkiaSharp
 {
@@ -9,5 +10,10 @@ namespace CodeGenFSharp.SkiaSharp
         {
             throw new NotImplementedException ();
         }
+
+		public static IEnumerable<string> ToCode(this KimonoShadow self)
+		{
+			throw new NotImplementedException();
+		}
     }
 }

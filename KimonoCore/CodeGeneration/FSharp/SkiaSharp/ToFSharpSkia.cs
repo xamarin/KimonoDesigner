@@ -3,8 +3,15 @@ using KimonoCore;
 
 namespace CodeGenFSharp.SkiaSharp
 {
-    public class ToFSharpSkia : IVisitorCodeGen
-    {
+	public class ToFSharpSkia : IVisitorCodeGen
+	{
+		CodeOutputOS codeOutputOS;
+
+		public ToFSharpSkia(CodeOutputOS codeOutputOS)
+		{
+			this.codeOutputOS = codeOutputOS;	
+		}
+
 		public string CodeGen(KimonoBounds bounds) => BoundsCodeGen.CodeGen(bounds);
 
 		public string CodeGen(KimonoBlur blur) => BlurCodeGen.CodeGen(blur);
@@ -41,7 +48,7 @@ namespace CodeGenFSharp.SkiaSharp
 
 		public string CodeGen(KimonoShapeVector vector) => VectorCodeGen.CodeGen(vector);
 
-		public string CodeGen(KimonoSketch sketch) => SketchCodeGen.CodeGen(sketch);
+		public string CodeGen(KimonoSketch sketch) => SketchCodeGen.CodeGen(sketch, this.codeOutputOS, this);
 
 		public string CodeGen(KimonoPortfolio portfolio) => PortfolioCodeGenFSharp.CodeGen(portfolio);
 

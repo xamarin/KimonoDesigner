@@ -10,5 +10,17 @@ namespace CodeGenFSharp.SkiaSharp
             throw new NotImplementedException ();
         }
 
+		public static string ToCode(this KimonoColor self)
+		{
+			var comment = $"// Create new {self.Name}";
+
+			var source = $"let {KimonoCodeGenerator.MakeElementName(self.Name)} = new SKColor({self.Color.Red}, {self.Color.Green}, {self.Color.Blue}, {self.Color.Alpha})";
+
+			return new[]
+			{
+				comment,
+				source
+			}.ToLines();
+		}
     }
 }
