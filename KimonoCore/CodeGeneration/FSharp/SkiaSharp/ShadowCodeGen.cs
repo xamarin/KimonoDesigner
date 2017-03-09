@@ -8,12 +8,16 @@ namespace CodeGenFSharp.SkiaSharp
     {
         public static string CodeGen (KimonoShadow shadow)
         {
-            throw new NotImplementedException ();
+			//TODO: Implement
+			return "//TODO: KimonoShadow.CodeGen()";
+
         }
 
 		public static IEnumerable<string> ToCode(this KimonoShadow self)
 		{
-			throw new NotImplementedException();
+			//TODO: Implement
+			return new string[] { "//TODO: KimonoShadow.CodeGen()" };
+
 		}
     }
 }

@@ -8,12 +8,14 @@ namespace CodeGenFSharp.SkiaSharp
     {
         public static string CodeGen (KimonoBlur blur)
         {
-            throw new NotImplementedException ();
+			//TODO: Implement
+			return "//TODO: KimonoBlur.CodeGen()";
         }
 
 		public static IEnumerable<string> ToCode(this KimonoBlur self)
 		{
-			throw new NotImplementedException();
+			//TODO: Implement
+			return new string[] { "//TODO: KimonoBlur.ToCode()" };
 		}
     }
 }

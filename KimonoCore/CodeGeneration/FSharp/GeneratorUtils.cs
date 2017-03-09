@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeGenFSharp.SkiaSharp
+namespace CodeGenFSharp
 {
 	public static class GeneratorUtils
 	{
@@ -17,6 +17,13 @@ namespace CodeGenFSharp.SkiaSharp
 			return self.BuildString(Environment.NewLine);
 		}
 
+		/// <summary>
+		/// Concatenates ToString() results, with a separator that defaults to ", "
+		/// </summary>
+		/// <returns>A concatenated string.</returns>
+		/// <param name="self"><c>this</c> object sequence</param>
+		/// <param name="separator">The string to place between strings.</param>
+		/// <typeparam name="T">The type of the objects in the sequence. ToString() implicitly called.</typeparam>
 		public static string BuildString<T>(this IEnumerable<T> self, string separator = ", ")
 		{
 			return self.Aggregate("", (accum, current) => accum + separator + current);

@@ -1,8 +1,13 @@
-﻿using System;
+using System;
 namespace KimonoCore
 {
 	public enum IndentForm { Tabs, Spaces }
 
+
+	/*
+	 TODO: This class is confused. Either switch to a global instance that tracks state or switch to static or 
+		switch to some composition-based thing. (An Indent monad?)
+	*/ 
 	public class Indenter
 	{
 		private int indentLevel = 0;
@@ -19,6 +24,12 @@ namespace KimonoCore
 			{
 				throw new ArgumentOutOfRangeException("Attempt to mix tabs with custom space size. What kind of monster _does_ that?");
 			}
+		}
+
+		internal static string Indent(int level)
+		{
+			var ws = new Indenter();
+			return ws[level];
 		}
 
 		public Indenter(int indentInSpaces = 3)

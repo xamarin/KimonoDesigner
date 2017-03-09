@@ -8,7 +8,9 @@ namespace CodeGenFSharp.SkiaSharp
     {
         public static string CodeGen (KimonoShape shape)
         {
-            return "// Generating KimonoShapes in SkiaSharp is not yet supported";
+			//TODO: Implement
+			return "//TODO: KimonoShape.CodeGen()";
+
         }
 
         public static string StyleFillPaintForCodeSkia (this KimonoShape self)

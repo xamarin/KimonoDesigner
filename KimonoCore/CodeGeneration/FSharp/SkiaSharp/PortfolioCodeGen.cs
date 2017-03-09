@@ -3,11 +3,13 @@ using KimonoCore;
 
 namespace CodeGenFSharp.SkiaSharp
 {
-    public static class PortfolioCodeGenFSharp
+    public static class PortfolioCodeGen
     {
         public static string CodeGen (KimonoPortfolio portfolio)
         {
-            throw new NotImplementedException ();
+			//TODO: Implement
+			return "//TODO: KimonoPortfolio.CodeGen()";
+
         }
 
     }

@@ -7,7 +7,9 @@ namespace CodeGenFSharp.SkiaSharp
 	{
 		public static string CodeGen(KimonoShapeOval oval)
 		{
-			throw new NotImplementedException();
+			//TODO: Implement
+			return "//TODO: KimonoShapeOval.CodeGen()";
+
 		}
 	}
 }

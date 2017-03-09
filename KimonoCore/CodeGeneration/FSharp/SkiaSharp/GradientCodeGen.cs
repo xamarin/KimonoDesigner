@@ -10,7 +10,9 @@ namespace CodeGenFSharp.SkiaSharp
     {
         public static string CodeGen (KimonoGradient gradient)
         {
-            throw new NotImplementedException ("Cannot generate gradient code without start and end points");
+			//TODO: Implement
+			return "//TODO: KimonoGradient.CodeGen()";
+
         }
 
         public static string CodeGen (this ToFSharpSkia self,  KimonoGradient gradient, SKPoint start, SKPoint end)

@@ -93,26 +93,26 @@
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\BlurCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\BoundsCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\ColorCodeGen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\GeneratorUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\GradientCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\GroupCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\LineCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\OvalCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\PolygonCodeGen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\PortfolioCodeGenFSharp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\PortfolioCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\RectangleCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\RoundedRectCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\ShadowCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\ShapeCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\SketchCodeGen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\SKPointCodeGenFSharp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\SKPointCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\StarCodeGen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\StyleCodeGenFSharp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\StyleCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\TextCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\ToFSharpSkia.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\TriangleCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\SkiaSharp\VectorCodeGen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\Indenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeGeneration\FSharp\GeneratorUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)License.txt" />

@@ -7,7 +7,8 @@ namespace CodeGenFSharp.SkiaSharp
     {
         public static string CodeGen (KimonoBounds bounds)
         {
-            throw new NotImplementedException ();
+			//TODO: Implement
+			return "//TODO: KimonoBounds.CodeGen()";
         }
 
     }

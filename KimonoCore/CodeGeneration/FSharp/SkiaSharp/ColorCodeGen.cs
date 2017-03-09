@@ -7,7 +7,9 @@ namespace CodeGenFSharp.SkiaSharp
     {
         public static string CodeGen (KimonoColor color)
         {
-            throw new NotImplementedException ();
+			//TODO: Implement
+			return "//TODO: KimonoColor.CodeGen()";
+
         }
 
 		public static string ToCode(this KimonoColor self)

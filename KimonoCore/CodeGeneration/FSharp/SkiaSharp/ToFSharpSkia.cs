@@ -50,8 +50,8 @@ namespace CodeGenFSharp.SkiaSharp
 
 		public string CodeGen(KimonoSketch sketch) => SketchCodeGen.CodeGen(sketch, this.codeOutputOS, this);
 
-		public string CodeGen(KimonoPortfolio portfolio) => PortfolioCodeGenFSharp.CodeGen(portfolio);
+		public string CodeGen(KimonoPortfolio portfolio) => PortfolioCodeGen.CodeGen(portfolio);
 
-		public string CodeGen(KimonoStyle style) => StyleCodeGenFSharp.CodeGen(style);
+		public string CodeGen(KimonoStyle style) => StyleCodeGen.CodeGen(style);
     }
 }

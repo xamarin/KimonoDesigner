@@ -15,25 +15,26 @@ namespace CodeGenFSharp.SkiaSharp
             // Note: Closure over self for non-public access 
             Func<string> ToPath = () =>
             {
-                return "foo";
+				//TODO: Implement
+				return "//TODO: KimonoShapeArrow.ToPath()";
             };
 
             Func<double, double, double, string> RotationPush = (rot, hC, vC) =>
             {
                 return new [] {
-                    $"canvas.Save();",
-                    $"canvas.RotateDegrees({rot}f, {hC}f, {vC}f);"
+                    $"canvas.Save",
+                    $"canvas.RotateDegrees {rot}f {hC}f {vC}f"
                 }.ToLines ();
             };
 
             Func<string> RotationPop = () =>
             {
-                return "canvas.Restore();";
+                return "canvas.Restore";
             };
 
             Func<string, string, string, string> Fill = (gradientCode, styleFill, pathName) =>
             {
-                var pathCode = $"canvas.DrawPath({pathName}, {styleFill});";
+                var pathCode = $"canvas.DrawPath {pathName} {styleFill}";
                 var fillCode = new [] {
                     gradientCode,
                     pathCode
@@ -41,7 +42,7 @@ namespace CodeGenFSharp.SkiaSharp
                 return fillCode;
             };
 
-            Func<string> Frame = () => { throw new NotImplementedException ("TODO"); };
+			Func<string> Frame = () => "//TODO: KimonoShapeArrow.Frame()";
 
             // Create necessary snippets
             var path = arrow.Visible ? ToPath () : null;

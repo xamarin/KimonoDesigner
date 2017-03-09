@@ -7,7 +7,8 @@ namespace CodeGenFSharp.SkiaSharp
 	{
 		public static string CodeGen(KimonoShapeBezier bezier)
 		{
-			throw new NotImplementedException();
+			//TODO: Implement
+			return "//TODO: KimonoShapeBezier.CodeGen()";
 		}
 	}
 }
