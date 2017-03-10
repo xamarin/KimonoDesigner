@@ -256,6 +256,17 @@ namespace AppKit.TextKit.Formatter
 
 			// Init
 			this.Delegate = new SourceTextViewDelegate(this);
+			NSFont fixedFont = null;
+
+			var fixedFontList = new [] { "SF Mono", "Monaco", "New Courier", "Courier" };
+			foreach (var fontName in fixedFontList) {
+				fixedFont = NSFont.FromFontName (fontName, 12);
+				if (fixedFont != null)
+					break;
+			}
+
+			if (fixedFont != null)
+				this.Font = fixedFont;
 
 		}
 		#endregion
