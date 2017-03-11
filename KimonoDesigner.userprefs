@@ -1,15 +1,17 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoCore/Shapes/KimonoShapeGroup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/Resources/Home.txt">
     <Files>
       <File FileName="KimonoCore/KimonoSketch.cs" Line="2399" Column="7" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="2452" Column="31" />
+      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="2457" Column="5" />
+      <File FileName="KimonoCore.Mac/KimonoCore.Mac.csproj" Line="76" Column="11" />
+      <File FileName="KimonoMac/Resources/Home.txt" Line="14" Column="63" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="Test1" />
+  <MonoDevelop.Ide.ItemProperties.KimonoMac PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.TestConsumer.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Nexus7" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

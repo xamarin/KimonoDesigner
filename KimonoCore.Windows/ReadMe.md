@@ -17,7 +17,7 @@ Kimono Designer allows a developer to graphically edit Skia based graphic object
 <a name="Remarks"></a>
 ##Remarks
 
-Kimono Designer, KimonoCore and KimonoCore.Windows were created by Kevin Mullins for Microsoft, Inc.
+Kimono Designer and the KimonoCore libraries were created by Microsoft, Inc. and released under the MIT License.
 
 ### License
 

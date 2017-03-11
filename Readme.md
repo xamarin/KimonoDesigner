@@ -1,7 +1,7 @@
 Kimono Designer
 ============
 
-Kimono Designer allows a developer to graphically edit SkiaSharp based graphic objects that can can be converted to code and included in any cross-platform language and OS that SkiaSharp supports.
+Kimono Designer allows a developer to graphically edit SkiaSharp based graphic objects that can be converted to code and included in any cross-platform language and OS that SkiaSharp supports.
 
 ![](Images/Intro01.png)
 
@@ -228,14 +228,13 @@ It is hoped that the front end Kimono Designer will be ported to other platforms
 
 ## About this Project
 
-Kimono Designer and the KimonoCore libraries were created by Kevin Mullins for Microsoft, Inc. The design of the TextBase ORM is based off of [Sqlite.Net](https://github.com/praeclarum/sqlite-net) by Krueger Systems, Inc.
+Kimono Designer and the KimonoCore libraries were created by Microsoft, Inc. and released under the MIT License. The design of the TextBase ORM is based off of [Sqlite.Net](https://github.com/praeclarum/sqlite-net) by Krueger Systems, Inc.
 
 The code has been fully commented and, where available, links have be provided from key technologies or methods to relevant information in the [Xamarin.Mac Guides Documentation](https://developer.xamarin.com/guides/#mac).
 
 ### API Documentation
 
 Full API documentation is provided via a **ReadMe** file in project folder for each Visual Studio project that makes up the Kimono Designer solution.
-
 
 ## Icon Resources
 
