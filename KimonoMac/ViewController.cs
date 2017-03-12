@@ -784,6 +784,9 @@ namespace KimonoMac
 			// Repopulate
 			ProjectList.AddItem("Portfolio", "IconPortfolio", () =>
 				 {
+					 // Ensure the porfolio is connected to the scripting engine
+					 ObiScriptPortfolio.Portfolio = DesignSurface.Portfolio;
+
 					 // Update the UI
 					 ShowPortfolioInspectors(DesignSurface.Portfolio);
 				 });

@@ -1,13 +1,11 @@
 ﻿<Properties StartupConfiguration="{7AC1CF02-8C15-43F0-B380-CFC0EFB51A47}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/Resources/Home.txt">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KimonoMac/ViewController.cs">
     <Files>
-      <File FileName="KimonoCore/KimonoSketch.cs" Line="2399" Column="7" />
-      <File FileName="KimonoCore/Shapes/KimonoShapeGroup.cs" Line="2457" Column="5" />
-      <File FileName="KimonoCore.Mac/KimonoCore.Mac.csproj" Line="76" Column="11" />
-      <File FileName="KimonoMac/Resources/Home.txt" Line="14" Column="63" />
+      <File FileName="KimonoCore.Mac/Classes/KimonoDesignSurface.cs" Line="79" Column="46" />
+      <File FileName="KimonoMac/ViewController.cs" Line="796" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

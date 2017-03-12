@@ -12,7 +12,7 @@
 <a name="Summary"></a>
 ##Summary
 
-Kimono Designer allows a developer to graphically edit Skia based graphic objects that can be converted to code and included in any cross-platform language and OS that SkiaSharp supports. Kimono.WinUWP is the Windows UWP specific version of the Kimono cross-platform library that provides a helper interface to SkiaSharp.
+Kimono Designer allows a developer to graphically edit Skia based graphic objects that can be converted to code and included in any cross-platform language and OS that SkiaSharp supports. KimonoCore.WinUWP is the Windows UWP specific version of the Kimono cross-platform library that provides a helper interface to SkiaSharp.
 
 <a name="Remarks"></a>
 ##Remarks
