@@ -348,6 +348,7 @@
     <None Include="Entitlements.plist" />
     <None Include="License.txt" />
     <None Include="packages.config" />
+    <None Include="THIRDPARTYNOTICES.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -447,9 +448,7 @@
     <Compile Include="LanguageFormatter\SourceTextViewDelegate.cs" />
     <Compile Include="LanguageFormats\CSharpDescriptor.cs" />
     <Compile Include="LanguageFormats\HTMLDescriptor.cs" />
-    <Compile Include="LanguageFormats\MarkDownDescriptor.cs" />
     <Compile Include="LanguageFormats\XMLDescriptor.cs" />
-    <Compile Include="Classes\Markdown.cs" />
     <Compile Include="Classes\AppPreferences.cs" />
     <Compile Include="LanguageFormats\ObiScriptDescriptor.cs" />
     <Compile Include="KimonoInspectorPortfolio.cs" />
@@ -506,8 +505,8 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\DOC-96.png" />
-    <BundleResource Include="Resources\WhatsNew.txt" />
-    <BundleResource Include="Resources\Home.txt" />
+    <BundleResource Include="Resources\Home.html" />
+    <BundleResource Include="Resources\WhatsNew.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.56.1\build\XamarinMac\SkiaSharp.targets')" />

@@ -3,7 +3,6 @@ using Foundation;
 using AppKit;
 using CoreGraphics;
 using System.IO;
-using MarkdownSharp;
 
 namespace KimonoMac
 {
@@ -108,7 +107,7 @@ namespace KimonoMac
 		public void WhatsNew()
 		{
 			var bundle = NSBundle.MainBundle;
-			var path = bundle.PathForResource("WhatsNew", "txt");
+			var path = bundle.PathForResource("WhatsNew", "html");
 
 			// Anything to process?
 			if (string.IsNullOrEmpty(path))
@@ -119,11 +118,7 @@ namespace KimonoMac
 			else
 			{
 				// Load the file
-				var data = File.ReadAllText(path);
-
-				// Convert from Markdown to HTML
-				var engine = new Markdown();
-				var html = engine.Transform(data);
+				var html = File.ReadAllText(path);
 
 				// Display results
 				DisplayText(html, "");
@@ -136,7 +131,7 @@ namespace KimonoMac
 		public void Home()
 		{
 			var bundle = NSBundle.MainBundle;
-			var path = bundle.PathForResource("Home", "txt");
+			var path = bundle.PathForResource("Home", "html");
 
 			// Anything to process?
 			if (string.IsNullOrEmpty(path))
@@ -147,11 +142,7 @@ namespace KimonoMac
 			else
 			{
 				// Load the file
-				var data = File.ReadAllText(path);
-
-				// Convert from Markdown to HTML
-				var engine = new Markdown();
-				var html = engine.Transform(data);
+				var html = File.ReadAllText(path);
 
 				// Display results
 				DisplayText(html, "");

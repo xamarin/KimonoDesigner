@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>About Kimono Designer</title>
+</head>
+<body>
+<h1>About Kimono Designer</h1>
+<p>Kimono Designer allows a developer to graphically edit SkiaSharp based graphic objects that can can be converted to code and included in any cross-platform language and OS that SkiaSharp supports.</p>
+<h2>Key Features</h2>
+<p>Kimono Designer provides several key features that make it the perfect tool for designing SkiaSharp graphics that can be used in all of your cross-platform applications:</p>
+<ul>
+	<li><b>Groups with Boolean Operations and Masks</b> - Multiple shapes can be grouped together and features such as boolean operations and masks can be applied to the items in the group. When applying a mask, the top-most item in the group will be used as the masking path.</li>
+	<li><b>Named Palette Colors</b> - A series of named colors can be defined and used in gradients, named styles, by shapes directly or as the basis of other named colors. If a named color is adjusted, everything using the named color will be updated to reflect the new value.</li>
+	<li><b>Visual Gradient Editor</b> - Build named gradients that can be used in named styles or in shapes directly using the built-in gradient editor. Any changes to a gradient will instantly be reflected in the sketch.</li>
+	<li><b>Named Styles</b> - A series of named styles can be created and applied to several shapes in any sketch in a portfolio to provide a uniform look. Any change in a named style will instantly be reflected in the sketch.</li>
+	<li><b>Multiple Sketches within a Portfolio</b> - Multiple sketches can be created inside the same portfolio and all of the named colors, gradients and named styles can be applied across sketches. Additionally, the user has control over how an individual sketch will be exported to source code.</li>
+	<li><b>Portfolios</b> - Portfolios can contain multiple named colors, gradients, styles and sketches that can be exported to source code as a single class. When this class is included in a cross-platform application, the developer can use its properties and methods to adjust graphics properties and draw the individual sketches.</li>
+	<li><b>Linked Properties</b> - The user can define several different types of named properties in a portfolio and attach those properties to values for colors, gradients, styles and shapes. Use the Portfolio menu to define a new property of a given type. Next, configure the new property in the Property Inspector. After the property has been defined, select a color, gradient, style or shape, switch to the Connection Inspector and attach the property to the desired value of the selected item. When the value of the property changes, any item in the sketch using the property will be instantly updated with the new value.</li>
+</ul>
+<h2>Source Code Generation</h2>
+<p>The main purpose of the Kimono Designer is to allow the developer to graphically define SkiaSharp objects that will be converted to source code that can be used in any cross-platform application that supports SkiaSharp.</p>
+<p>As the sketch is designed and edited on the Kimono Designer design surface, source code will be generated for the requested operating system, language and support library in the code preview area.</p>
+<h3>Code Snippets</h3>
+<p>Based on what is selected, code snippets will be generated for individual colors, gradients, styles, shapes and shape groups. These snippets can be copied from the preview area and pasted into Visual Studio projects.</p>
+<h3>Generate Code for Multiple Platforms</h3>
+<p>Source code can be generated for multiple OS platforms with support for Xamarin.Forms (cross-platform) and SkiaSharp.Views (set at the Sketch level).</p>
+<h3>Use KimonoCore Support Library</h3>
+<p>Source code can either be generated directly using SkiaSharp classes or by using the KimonoCore helper classes, which produces smaller source code files and provides several useful features (such as mutable linked properties and ObiScript functionality).</p>
+<h2>ObiScript</h2>
+<p>As stated above, portfolio properties can derive their values by executing an attached script written in the ObiScript language. ObiScript is a powerful and easy scripting language built on top of the DScript language (by Darren Horrocks). Because of this, ObiScript's syntax is nearly identical to JavaScript.</p>
+<p>When developing or editing an ObiScript, the user can instantly test the script using the Debugging Inspector. In the event of an error, the Debugger Inspector will give helpful error messages.</p>
+<h3>Script Libraries</h3>
+<p>If the user has a group of ObiScript functions that they want to use across all of the scripts in the portfolio, they can add a Script Library from the Portfolio menu. Unlike a typical property, a Script Library holds a collection of function definitions.</p>
+<p>Any script that wants to use the functions in the library will need to add a <code>using library-name;</code> statement to the top of the script.</p>
+<h2>License</h2>
+<p><b>Kimono Designer</b></p>
+<p>Copyright (c) Microsoft Corporation</p>
+<p>All rights reserved.</p>
+<p>MIT License</p>
+<p>Permission is hereby granted, free of charge, to any person 
+obtaining a copy of this software and associated documentation 
+files (the "Software"), to deal in the Software without restriction, 
+including without limitation the rights to use, copy, modify, merge, 
+publish, distribute, sublicense, and/or sell copies of the Software, 
+and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included 
+in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+IN THE SOFTWARE.</p>
+</body>
