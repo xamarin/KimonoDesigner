@@ -1,0 +1,10 @@
+os: Visual Studio 2015
+platform:
+- Any CPU
+configuration:
+- Release
+before_build:
+- cmd: git submodule update --init
+build_script:
+- ps: .\build.ps1 -Target "Build" -Platform $env:platform -Configuration $env:configuration
+test: off
