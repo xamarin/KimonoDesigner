@@ -1,8 +1,8 @@
-#API Documentation
+# API Documentation
 
-####Version 01.00.00
+#### Version 01.00.00
 
-##Table of Contents
+## Table of Contents
 
 * [Summary](#Summary)
 * [Remarks](#Remarks)
@@ -10,12 +10,12 @@
 * [Types](#Types)
 
 <a name="Summary"></a>
-##Summary
+## Summary
 
 Kimono Designer allows a developer to graphically edit Skia based graphic objects that can be converted to code and included in any cross-platform language and OS that SkiaSharp supports. KimonoCore.WinUWP is the Windows UWP specific version of the Kimono cross-platform library that provides a helper interface to SkiaSharp.
 
 <a name="Remarks"></a>
-##Remarks
+## Remarks
 
 Kimono Designer and the KimonoCore libraries were created by Microsoft, Inc. and released under the MIT License.
 
@@ -48,13 +48,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 <a name="Namespaces"></a>
-#Namespaces
+# Namespaces
 
 
 ---
 
 <a name="8f9b0d76-5653-4ad0-96b3-560f4444b75f"></a>
-##KimonoCore
+## KimonoCore
 
 <p><table style='width:100%'><tr><th style='width:25%'>Type</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#84e8cd66-169a-4152-a62a-99a9f0d2a4de'>KimonoSketch</a></td><td style='width:75%' ><p>Holds a collection of <code>KimonoShapes</code> that are used to create a given image using Skia.</p>
 </td></tr><tr><td style='width:25%' class='term'><a href='#ec3f0a06-9f07-45d7-a365-bf12f58f8811'>KimonoTool</a></td><td style='width:75%' class='def'><p>Defines the current tool that is active in a <code>KimonoSketch</code> that the user can use to create or modify a <code>KimonoShape</code>.</p>
@@ -110,7 +110,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 ---
 
 <a name="6cf3de51-1a6a-406c-9f4a-346b48f2fbe1"></a>
-##KimonoCore.Kimono
+## KimonoCore.Kimono
 
 <p><table style='width:100%'><tr><th style='width:25%'>Type</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#7a2b9cd4-a155-473d-87a3-0efc8eb67312'>PortfolioEventDelegate</a></td><td style='width:75%' ><p>Portfolio event delegate.</p>
 </td></tr><tr><td style='width:25%' class='term'><a href='#05ac79f0-535e-4099-ae1c-7c4633b443d5'>SketchEventDelegate</a></td><td style='width:75%' class='def'><p>Sketch event delegate.</p>
@@ -127,23 +127,23 @@ OTHER DEALINGS IN THE SOFTWARE.
 </td></tr></table></p>
 
 <a name="Types"></a>
-#Types
+# Types
 
 
 ---
 
 <a name="84e8cd66-169a-4152-a62a-99a9f0d2a4de"></a>
-##KimonoSketch
+## KimonoSketch
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Holds a collection of `KimonoShapes` that are used to create a given image using Skia.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#10822042-e47b-4424-a01b-3c880497c514'>ShapeUnderConstruction</a></td><td style='width:75%' ><p><a name="10822042-e47b-4424-a01b-3c880497c514"></a>
@@ -1290,17 +1290,17 @@ The new <code>KimonoTool</code> that has been selected.</p>
 ---
 
 <a name="ec3f0a06-9f07-45d7-a365-bf12f58f8811"></a>
-##KimonoTool
+## KimonoTool
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the current tool that is active in a `KimonoSketch` that the user can use to create or modify a `KimonoShape`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#31b9f111-73b3-4e7d-b8f6-ac28062e277c'>Cursor</a></td><td style='width:75%' ><p><a name="31b9f111-73b3-4e7d-b8f6-ac28062e277c"></a>
@@ -1381,17 +1381,17 @@ Defines the current tool that is active in a `KimonoSketch` that the user can us
 ---
 
 <a name="c6781695-6cb5-4c7a-8618-b183f94a5fd4"></a>
-##Kimono
+## Kimono
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Holds a set of shared utilities that are used across the Kimono classes.
 <p><table style='width:100%'><tr><th style='width:25%'>Methods</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#7fd2ea3e-e2e8-4e9d-ae2c-3ec412849e19'>CharIsNumber</a></td><td style='width:75%' ><p><a name="7fd2ea3e-e2e8-4e9d-ae2c-3ec412849e19"></a></p>
@@ -1476,221 +1476,221 @@ The <code>SKPoint</code> to clone.</p>
 ---
 
 <a name="7a2b9cd4-a155-473d-87a3-0efc8eb67312"></a>
-##PortfolioEventDelegate
+## PortfolioEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Portfolio event delegate.
 
 ---
 
 <a name="05ac79f0-535e-4099-ae1c-7c4633b443d5"></a>
-##SketchEventDelegate
+## SketchEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Sketch event delegate.
 
 ---
 
 <a name="c5b1f028-e1de-4164-85ca-775388b14f66"></a>
-##StyleEventDelegate
+## StyleEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Style event delegate.
 
 ---
 
 <a name="cc5a2e34-eb5b-49cd-88e3-18caf2eb1a45"></a>
-##ShapeEventDelegate
+## ShapeEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Shape event delegate.
 
 ---
 
 <a name="e5402a3a-3a82-4baa-b305-8d4da6d4de43"></a>
-##ToolEventDelegate
-
-###Namespace
+## ToolEventDelegate
+ 
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Tool event delegate.
 
 ---
 
 <a name="6d003ef1-1679-4ab2-8ca0-b853e611c519"></a>
-##SkiaPointEventDelegate
+## SkiaPointEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Skia point event delegate.
 
 ---
 
 <a name="4baac2ff-cbb0-4808-b0cf-c7f406de407b"></a>
-##GroupEventDelegate
+## GroupEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Group event delegate.
 
 ---
 
 <a name="50adb16e-02fe-4fdc-902f-95211d7137f0"></a>
-##ColorEventDelegate
+## ColorEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Color event delegate.
 
 ---
 
 <a name="a0ecae65-25e0-4c96-b8bf-ecee92797399"></a>
-##SkiaColorEventDelegate
+## SkiaColorEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Skia color event delegate.
 
 ---
 
 <a name="e9b9d8aa-3d90-436c-a40d-2b63a4ae2612"></a>
-##GradientEventDelegate
+## GradientEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Gradient event delegate.
 
 ---
 
 <a name="32baa88b-c252-42c1-80cd-f916e5b5787a"></a>
-##HandleEventDelegate
+## HandleEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Handle event delegate.
 
 ---
 
 <a name="b3c992c6-f6ce-4bf3-acbf-18c88d895e83"></a>
-##PropertyEventDelegate
+## PropertyEventDelegate
 
-###Namespace
+### Namespace
 
 [KimonoCore.Kimono](#6cf3de51-1a6a-406c-9f4a-346b48f2fbe1)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Property event delegate.
 
 ---
 
 <a name="035bafdd-7b26-42a7-be68-b5baf315b517"></a>
-##KimonoPortfolio
+## KimonoPortfolio
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 A Kimono Portfolio holds a collection of `KimonoSketches`, `KimonoStyles` and `KimonoColors` that define a given Kimono Designer project.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#d9be4dcf-b9c7-4683-a004-a48dcca1db18'>_selectedSketch</a></td><td style='width:75%' ><p><a name="d9be4dcf-b9c7-4683-a004-a48dcca1db18"></a>
@@ -2832,17 +2832,17 @@ The <code>KimonoColor</code> that was modified.</p>
 ---
 
 <a name="f650aeee-c69a-464f-b831-0b9b15b3a564"></a>
-##KimonoUndoHandler
+## KimonoUndoHandler
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Handles the undo/redo state for a `KimonoDesignSurface`.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#66d082d9-9a97-4f52-a958-12f885d42af5'>MaximumUndoPoints</a></td><td style='width:75%' ><p><a name="66d082d9-9a97-4f52-a958-12f885d42af5"></a></p>
@@ -3031,17 +3031,17 @@ The current state of the <code>KimonoPortfolio</code>.</p>
 ---
 
 <a name="f7ecc982-613a-459a-8e8d-06e8ebad6154"></a>
-##KimonoShape
+## KimonoShape
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the based shape that all other Kimono Shape types will inherit from.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#45dccfe7-9412-48b9-8b8e-eedf69ad1957'>_name</a></td><td style='width:75%' ><p><a name="45dccfe7-9412-48b9-8b8e-eedf69ad1957"></a>
@@ -3611,17 +3611,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="d8706785-5054-4f35-ac08-bd35c4534e9e"></a>
-##KimonoShapeArrow
+## KimonoShapeArrow
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws either an outlined or single line arrow with heads on one or both ends.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#cee00ca3-190f-4ec6-aca9-d66216994067'>HasStartHead</a></td><td style='width:75%' ><p><a name="cee00ca3-190f-4ec6-aca9-d66216994067"></a></p>
@@ -3969,17 +3969,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="af4d21a2-42ef-4bb8-b8dc-077cc5e73d2d"></a>
-##KimonoShapeBezier
+## KimonoShapeBezier
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 A Kimono Bezier is a collection of control and end points that define the quad sections of a bezier shape to be drawn using SkiaSharp.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#87db7214-9a2a-47e9-bbf2-513118f972ec'>Points</a></td><td style='width:75%' ><p><a name="87db7214-9a2a-47e9-bbf2-513118f972ec"></a></p>
@@ -4426,17 +4426,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="fb524652-b106-411a-acfd-a8684826292b"></a>
-##KimonoShapeGroup
+## KimonoShapeGroup
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 A `KimonoShapeGroup` holds a collection of `KimonoShapes` that can be acted upon as a group.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#7f275c6d-d992-4907-8d2d-7f3950b88f7e'>ShapeUnderConstruction</a></td><td style='width:75%' ><p><a name="7f275c6d-d992-4907-8d2d-7f3950b88f7e"></a>
@@ -5570,17 +5570,17 @@ If <code>true</code>, the user has started a multi-shape select process.</p>
 ---
 
 <a name="93331952-3bca-4db8-a83d-1c2825a8db33"></a>
-##KimonoShapeGroupType
+## KimonoShapeGroupType
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the type of a `KimonoShapeGroup`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#a6c6a18e-7245-4027-bcd9-6c21419b4a17'>Selection</a></td><td style='width:75%' ><p><a name="a6c6a18e-7245-4027-bcd9-6c21419b4a17"></a>
@@ -5607,17 +5607,17 @@ Defines the type of a `KimonoShapeGroup`.
 ---
 
 <a name="353d0236-1f21-49cc-8d43-eb056a6413b4"></a>
-##KimonoShapeLine
+## KimonoShapeLine
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a line on the design surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Methods</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#34252c9d-5d89-4f3d-a3a4-2246d97a60cb'>KimonoShapeLine</a></td><td style='width:75%' ><p><a name="34252c9d-5d89-4f3d-a3a4-2246d97a60cb"></a></p>
@@ -5824,17 +5824,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="60a0823f-aaf6-41d5-9972-3d1154b2023d"></a>
-##KimonoShapeOval
+## KimonoShapeOval
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws an oval into the Design Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Methods</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#3318877b-7c4b-4ccf-ae59-b3b702bfd89a'>KimonoShapeOval</a></td><td style='width:75%' ><p><a name="3318877b-7c4b-4ccf-ae59-b3b702bfd89a"></a></p>
@@ -6041,17 +6041,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="47c05ff9-2854-48cb-835e-279a4c1934c1"></a>
-##KimonoShapePolygon
+## KimonoShapePolygon
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a multi-sided polygon into the Design Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#3e948496-995e-44d9-b0a8-4c8f128e77fb'>NumberOfSides</a></td><td style='width:75%' ><p><a name="3e948496-995e-44d9-b0a8-4c8f128e77fb"></a></p>
@@ -6334,17 +6334,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="1de07b5c-5e65-4fb1-96b2-6d7d8feb85af"></a>
-##KimonoShapeRect
+## KimonoShapeRect
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a rectangle into the Design Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Methods</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#13af236a-e7ff-4637-800b-1a3bd6b2afb6'>KimonoShapeRect</a></td><td style='width:75%' ><p><a name="13af236a-e7ff-4637-800b-1a3bd6b2afb6"></a></p>
@@ -6551,17 +6551,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="06f856c1-f3d5-4e46-9c14-806d3a2efffe"></a>
-##KimonoShapeRoundRect
+## KimonoShapeRoundRect
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a rounded rectangle into the Design Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#d13fd1f6-7413-40de-8440-85f9e274f804'>CornerRadius</a></td><td style='width:75%' ><p><a name="d13fd1f6-7413-40de-8440-85f9e274f804"></a></p>
@@ -6863,17 +6863,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="6c3d5f46-52b8-40d4-93d0-939867f6eabe"></a>
-##KimonoShapeStar
+## KimonoShapeStar
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a multi-sided star shape into the Design Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#277845fc-ea6d-41c1-9c37-335807109154'>NumberOfPoints</a></td><td style='width:75%' ><p><a name="277845fc-ea6d-41c1-9c37-335807109154"></a></p>
@@ -7261,17 +7261,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="d346396c-3c00-4318-8c82-ebafcfb6b108"></a>
-##KimonoShapeState
+## KimonoShapeState
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Holds the current state of a `KimonoShape` while it is being edited by the user.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#6ba4a53a-7346-465a-a7a6-79a198f2c9e7'>Unselected</a></td><td style='width:75%' ><p><a name="6ba4a53a-7346-465a-a7a6-79a198f2c9e7"></a>
@@ -7316,17 +7316,17 @@ Holds the current state of a `KimonoShape` while it is being edited by the user.
 ---
 
 <a name="24982fc8-412b-4c73-8fcf-2b48eb09e67f"></a>
-##KimonoShapeText
+## KimonoShapeText
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a block of text into the Design Surface within the specifid bounds of this shape.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#4680367d-3085-4045-aaaf-0e3dbda3f258'>Text</a></td><td style='width:75%' ><p><a name="4680367d-3085-4045-aaaf-0e3dbda3f258"></a></p>
@@ -7817,17 +7817,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="383ac657-8cef-469a-857b-bb42481a0ce3"></a>
-##KimonoShapeTriangle
+## KimonoShapeTriangle
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Draws a triangle into the Design Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Methods</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#1c4c37c6-5cae-4f8f-b855-4ef19aa0f575'>KimonoShapeTriangle</a></td><td style='width:75%' ><p><a name="1c4c37c6-5cae-4f8f-b855-4ef19aa0f575"></a></p>
@@ -8034,17 +8034,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="a1d32782-f8dc-4add-962a-324097d3d34b"></a>
-##KimonoShapeVector
+## KimonoShapeVector
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 A vector is a hard edged shape consisting of a set of datapoints that will be drawn into the Desing Surface.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#ad37e47d-29f8-4008-9c9f-bba184480695'>Points</a></td><td style='width:75%' ><p><a name="ad37e47d-29f8-4008-9c9f-bba184480695"></a></p>
@@ -8438,17 +8438,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="b34e2caa-a148-40b0-a15d-9e805664db66"></a>
-##KimonoProperty
+## KimonoProperty
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a property that can be attached to another Kimono object (such as a `KimonoColor`, `KimonoStyle` or `KimonoShape`) and be used as a local variable, global variable or a  parameter or be the result of a calculation using the Obi Simple Scripting Language.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#407896e7-1113-4958-8510-b18469eaa504'>UniqueID</a></td><td style='width:75%' ><p><a name="407896e7-1113-4958-8510-b18469eaa504"></a></p>
@@ -8680,17 +8680,17 @@ Defines a property that can be attached to another Kimono object (such as a `Kim
 ---
 
 <a name="94a18758-140b-44ea-9163-af36ce62b6e5"></a>
-##KimonoPropertyUsage
+## KimonoPropertyUsage
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines how a `KimonoProperty` is used when it is attached to a `KimonoShape`, `KimonoSketch` or `KimonoPortfolio`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#1becf8f5-38a0-4624-b29f-7e34ea1c9454'>LocalVariable</a></td><td style='width:75%' ><p><a name="1becf8f5-38a0-4624-b29f-7e34ea1c9454"></a>
@@ -8717,17 +8717,17 @@ Defines how a `KimonoProperty` is used when it is attached to a `KimonoShape`, `
 ---
 
 <a name="457b2aa8-a89f-4ef0-8e32-986e966ba386"></a>
-##KimonoPropertyConnectionPoint
+## KimonoPropertyConnectionPoint
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the point that a `KimonoProperty` value can be connected to another Kimono object such as the `Top` coordinate of a `KimonoShape`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#0b2c1aee-67b8-4c0c-99d4-60ce8c9b6162'>Undefined</a></td><td style='width:75%' ><p><a name="0b2c1aee-67b8-4c0c-99d4-60ce8c9b6162"></a>
@@ -9150,17 +9150,17 @@ Defines the point that a `KimonoProperty` value can be connected to another Kimo
 ---
 
 <a name="e9fce7d9-c22e-426e-b931-7b5acb3639e2"></a>
-##KimonoPropertyConnection
+## KimonoPropertyConnection
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a connection between a given Kimono Object and a `KimonoProperty`.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#ee285a3e-d28c-435f-947f-cd4ead229e41'>UniqueID</a></td><td style='width:75%' ><p><a name="ee285a3e-d28c-435f-947f-cd4ead229e41"></a></p>
@@ -9261,15 +9261,15 @@ Property.</p>
 <a name="dddec5a0-cd1a-4020-96ac-60fa04ed8c45"></a>
 ##ObiScriptResult
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the result of attempting to execute an Obi Script on a `KimonoProperty`
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#b3866c80-db65-4418-95d8-2ec1e94ffa18'>Successful</a></td><td style='width:75%' ><p><a name="b3866c80-db65-4418-95d8-2ec1e94ffa18"></a></p>
@@ -9338,17 +9338,17 @@ Error message.</p>
 ---
 
 <a name="230a9f15-e139-4b0d-a1ca-b10ca63df4cc"></a>
-##KimonoBezierPoint
+## KimonoBezierPoint
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Holds the control and end point for a `KimonoShapeBezier` that define a quad section of the Bezier.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#afc4f0ad-aa5e-41f8-ac09-ba188b60721c'>ControlPoint</a></td><td style='width:75%' ><p><a name="afc4f0ad-aa5e-41f8-ac09-ba188b60721c"></a></p>
@@ -9453,17 +9453,17 @@ End y.</p>
 ---
 
 <a name="55f3615a-5284-4338-ae4d-584e9f909e1d"></a>
-##KimonoBounds
+## KimonoBounds
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the outter bounding box for a `KimonoShape` and contains the routines required to draw the bounds and the control handles as the user edits and moves the shape.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#8d6a3a95-f567-455e-97f4-a90bdb15fb8c'>Rect</a></td><td style='width:75%' ><p><a name="8d6a3a95-f567-455e-97f4-a90bdb15fb8c"></a>
@@ -10211,17 +10211,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="141c5d64-7afe-45b5-93f7-db847d5285ec"></a>
-##KimonoHandle
+## KimonoHandle
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines an edit handle that the user manipulates to edit the bounds of a `KimonoShape` or the control points of a Bezier object.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#019ef146-15d1-4d37-bdd7-d79882c40fe5'>DrawWidth</a></td><td style='width:75%' ><p><a name="019ef146-15d1-4d37-bdd7-d79882c40fe5"></a>
@@ -10630,17 +10630,17 @@ Point.</p>
 ---
 
 <a name="ddcfbf9a-5844-49ad-b99b-e6064d792f6d"></a>
-##KimonoHandleConstraint
+## KimonoHandleConstraint
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Constrains the movement of a `KimonoHandle` when it is being moved by the user.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#aa36ecc8-2747-47c1-ae5d-df136d0753df'>None</a></td><td style='width:75%' ><p><a name="aa36ecc8-2747-47c1-ae5d-df136d0753df"></a>
@@ -10673,17 +10673,17 @@ Constrains the movement of a `KimonoHandle` when it is being moved by the user.
 ---
 
 <a name="56cbbbf7-82bf-4f53-958a-b26f0cc00b92"></a>
-##KimonoHandleType
+## KimonoHandleType
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the type of a `KimonoHandle` that can be used as a general purpose control point to adjust the bounds of a `KimonoShape` or as a point for a vector or bezier object.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#8bd85fca-c598-40b7-b5a7-de054dda523a'>ControlPoint</a></td><td style='width:75%' ><p><a name="8bd85fca-c598-40b7-b5a7-de054dda523a"></a>
@@ -10716,17 +10716,17 @@ Defines the type of a `KimonoHandle` that can be used as a general purpose contr
 ---
 
 <a name="af98bc95-c176-46d5-9980-48a7908ff039"></a>
-##KimonoBlur
+## KimonoBlur
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a blur effect that can be attached to the fill or the frame of a `KimonoShape`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#073c16f4-f325-4b3b-a180-0d8224d7605b'>_horizontalBlurAmount</a></td><td style='width:75%' ><p><a name="073c16f4-f325-4b3b-a180-0d8224d7605b"></a>
@@ -10965,17 +10965,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="8346526c-9b9a-4b49-ad94-95ca9b77aef7"></a>
-##KimonoShadow
+## KimonoShadow
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a shadow effect that can be attached to the fill or the frame of a `KimonoShape`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#9069d818-60b7-4ff2-b902-777c72060612'>_horizontalOffset</a></td><td style='width:75%' ><p><a name="9069d818-60b7-4ff2-b902-777c72060612"></a>
@@ -11332,17 +11332,17 @@ The <code>CodeOutputLibrary</code>.</p>
 ---
 
 <a name="a132d4cf-8cf6-4e06-b1d8-6b15c6d3e191"></a>
-##KimonoGradient
+## KimonoGradient
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a gradient as a collection of either `SKColor` or linked `KimonoColors` that can be applied to a `KimonoStyle` and used when drawing a `KimonoShape`.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#8d56ef56-285f-4b29-a1cb-53ceb951bf76'>_gradientType</a></td><td style='width:75%' ><p><a name="8d56ef56-285f-4b29-a1cb-53ceb951bf76"></a>
@@ -12326,17 +12326,17 @@ Handle.</p>
 ---
 
 <a name="8a84cf60-472d-49b6-920d-2205ed0e01a5"></a>
-##KimonoGradientType
+## KimonoGradientType
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Kimono gradient type.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#98171fc9-46cc-4454-b767-24a62e1d05e6'>LinearGradient</a></td><td style='width:75%' ><p><a name="98171fc9-46cc-4454-b767-24a62e1d05e6"></a>
@@ -12369,17 +12369,17 @@ Kimono gradient type.
 ---
 
 <a name="46c1096f-e31c-4843-abfa-ee248207a9d8"></a>
-##KimonoStyle
+## KimonoStyle
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines as style that can be applied to a `KimonoShape` to control its appearance.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#e353a136-375b-42cd-aa76-5c39283aecee'>_frameColor</a></td><td style='width:75%' ><p><a name="e353a136-375b-42cd-aa76-5c39283aecee"></a>
@@ -13583,17 +13583,17 @@ If set to <code>true</code>, a deep clone of the style is made.</p>
 ---
 
 <a name="0d328d70-920b-423c-9c80-356b9685b9f9"></a>
-##KimonoStyleType
+## KimonoStyleType
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the type of a `KimonoStyle` that will be used to draw a given `KimonoShape` in.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#c784ca53-60f2-4491-897f-0731f1db2f31'>Default</a></td><td style='width:75%' ><p><a name="c784ca53-60f2-4491-897f-0731f1db2f31"></a>
@@ -13632,17 +13632,17 @@ Defines the type of a `KimonoStyle` that will be used to draw a given `KimonoSha
 ---
 
 <a name="76d2da2e-c6b0-402e-adfb-ee1b722680e8"></a>
-##KimonoPropertyRect
+## KimonoPropertyRect
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `SKRect`.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#53edf5d7-f196-4efc-a29a-6a2ca0708422'>Value</a></td><td style='width:75%' ><p><a name="53edf5d7-f196-4efc-a29a-6a2ca0708422"></a></p>
@@ -13724,17 +13724,17 @@ Defines a `KimonoProperty` that represents a `SKRect`.
 ---
 
 <a name="86bdba1e-f610-4e7f-ba44-499671557e12"></a>
-##KimonoPropertyNumber
+## KimonoPropertyNumber
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `float` or `int` value.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#ef8c05f2-76de-4f2f-b473-8afedf3542cd'>Value</a></td><td style='width:75%' ><p><a name="ef8c05f2-76de-4f2f-b473-8afedf3542cd"></a></p>
@@ -13831,17 +13831,17 @@ Defines a `KimonoProperty` that represents a `float` or `int` value.
 ---
 
 <a name="0b7e6490-7c2c-4da0-95b9-58d985d6a2c2"></a>
-##KimonoPropertyStyle
+## KimonoPropertyStyle
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `KimonoStyle` value.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#62566ca8-2fae-44d4-b5a8-0773824dcb40'>Value</a></td><td style='width:75%' ><p><a name="62566ca8-2fae-44d4-b5a8-0773824dcb40"></a></p>
@@ -13938,17 +13938,17 @@ Defines a `KimonoProperty` that represents a `KimonoStyle` value.
 ---
 
 <a name="f8ae9bff-05de-4dcf-bdc1-91c986f1c993"></a>
-##KimonoPropertyBoolean
+## KimonoPropertyBoolean
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `bool` value.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#8db43b3a-32bf-458d-be53-fe7a8b619716'>Value</a></td><td style='width:75%' ><p><a name="8db43b3a-32bf-458d-be53-fe7a8b619716"></a></p>
@@ -14030,17 +14030,17 @@ Defines a `KimonoProperty` that represents a `bool` value.
 ---
 
 <a name="7582e65f-a4e4-40ab-8a53-a8a929f5667c"></a>
-##KimonoPropertyText
+## KimonoPropertyText
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `string` value.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#8b627bc1-94e9-471f-9976-769a4587c474'>Value</a></td><td style='width:75%' ><p><a name="8b627bc1-94e9-471f-9976-769a4587c474"></a></p>
@@ -14122,17 +14122,17 @@ Defines a `KimonoProperty` that represents a `string` value.
 ---
 
 <a name="cc0d1f51-c777-4035-bb47-fd7ea6bfa0f4"></a>
-##KimonoPropertyColor
+## KimonoPropertyColor
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `KimonoColor` value.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#c80b868d-a804-4a23-ac78-6383579e985e'>Value</a></td><td style='width:75%' ><p><a name="c80b868d-a804-4a23-ac78-6383579e985e"></a></p>
@@ -14229,17 +14229,17 @@ Defines a `KimonoProperty` that represents a `KimonoColor` value.
 ---
 
 <a name="09e2a12a-c6e6-4f46-883f-cb3d2cc82d9e"></a>
-##KimonoPropertyGradient
+## KimonoPropertyGradient
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines a `KimonoProperty` that represents a `KimonoGradient` value.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#436fb944-c018-4399-9736-ecced934296e'>Value</a></td><td style='width:75%' ><p><a name="436fb944-c018-4399-9736-ecced934296e"></a></p>
@@ -14336,17 +14336,17 @@ Defines a `KimonoProperty` that represents a `KimonoGradient` value.
 ---
 
 <a name="4f60550f-ed3f-4674-869c-50a5bb734427"></a>
-##CodeOutputOS
+## CodeOutputOS
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the OS that code will be generated for
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#834b7012-91e6-4ffb-a873-d152c0a2653c'>Windows</a></td><td style='width:75%' ><p><a name="834b7012-91e6-4ffb-a873-d152c0a2653c"></a>
@@ -14403,17 +14403,17 @@ Defines the OS that code will be generated for
 ---
 
 <a name="ccb21685-5215-4c79-a19b-2ace3554426b"></a>
-##CodeOutputLanguage
+## CodeOutputLanguage
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Defines the language that code will be output in.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#eb7be29c-e685-42f3-acfc-97783d4d50f4'>CSharp</a></td><td style='width:75%' ><p><a name="eb7be29c-e685-42f3-acfc-97783d4d50f4"></a>
@@ -14434,17 +14434,17 @@ Defines the language that code will be output in.
 ---
 
 <a name="006036ea-70ff-4355-975c-20de7e52ac2b"></a>
-##CodeOutputLibrary
+## CodeOutputLibrary
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Code output library.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#eeb2a166-4ce2-46c0-b2a9-48445d376150'>SkiaSharp</a></td><td style='width:75%' ><p><a name="eeb2a166-4ce2-46c0-b2a9-48445d376150"></a>
@@ -14465,17 +14465,17 @@ Code output library.
 ---
 
 <a name="bed72a88-fa7b-4b40-aa3d-d2a470d58898"></a>
-##KimonoCodeGenerator
+## KimonoCodeGenerator
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 The Kimono Code Generator has routine to assist in the generation of output source code.
 <p><table style='width:100%'><tr><th style='width:25%'>Fields</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#01009419-938d-47b1-8a6d-7fb2cb007fdb'>NextElementNumber</a></td><td style='width:75%' ><p><a name="01009419-938d-47b1-8a6d-7fb2cb007fdb"></a>
@@ -14897,15 +14897,15 @@ The <code>KimonoHandle</code> to encode.</p>
 <a name="fe535d44-38bf-48f6-be7b-e09267aca093"></a>
 ##IKimonoCodeGeneration
 
-###Namespace
+### Namespace
 
 [KimonoCore](#8f9b0d76-5653-4ad0-96b3-560f4444b75f)
 
-###Added In API Version
+### Added In API Version
 
 01.00.00
 
-###Summary
+### Summary
 
 Interface for any Kimono Object that support source code generation.
 <p><table style='width:100%'><tr><th style='width:25%'>Properties</th><th style='width:75%'>Summary</th></tr><tr><td style='width:25%' class='term'><a href='#468426fa-6712-4f1d-a38f-37ac313d4c0d'>Name</a></td><td style='width:75%' ><p><a name="468426fa-6712-4f1d-a38f-37ac313d4c0d"></a></p>
